@@ -1,47 +1,29 @@
 // knexfile.ts - USE ESTA VERSÃO
 import type { Knex } from 'knex';
 
+const migrations = {
+  directory: './migrations',
+  extension: 'ts'
+};
+
+const useNullAsDefault = true;
+
+const sqliteConfig = (filename: string, pool?: Knex.PoolConfig): Knex.Config => ({
+  client: 'sqlite3',
+  connection: { filename },
+  migrations,
+  useNullAsDefault,
+  ...(pool && { pool })
+});
+
 const config: { [key: string]: Knex.Config } = {
-  development: {
-    client: 'sqlite3',
-    connection: {
-      filename: './dev.sqlite3'
-    },
-    migrations: {
-      directory: './migrations',
-      extension: 'ts'
-    },
-    useNullAsDefault: true,
-    pool: {
-      afterCreate: (conn: any, done: any) => {
-        conn.run('PRAGMA foreign_keys = ON', done);
-      }
+  development: sqliteConfig('./dev.sqlite3', {
+    afterCreate: (conn: any, done: (err: Error | null, conn?: any) => void) => {
+      conn.run('PRAGMA foreign_keys = ON', done);
     }
-  },
-
-  staging: {
-    client: 'sqlite3',
-    connection: {
-      filename: './staging.sqlite3'
-    },
-    migrations: {
-      directory: './migrations',
-      extension: 'ts'
-    },
-    useNullAsDefault: true
-  },
-
-  production: {
-    client: 'sqlite3',
-    connection: {
-      filename: './prod.sqlite3'
-    },
-    migrations: {
-      directory: './migrations',
-      extension: 'ts'
-    },
-    useNullAsDefault: true
-  }
+  }),
+  staging: sqliteConfig('./staging.sqlite3'),
+  production: sqliteConfig('./prod.sqlite3')
 };
 
 // Use module.exports em vez de export default
