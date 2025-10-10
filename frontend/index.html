@@ -1,13 +1,38 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Bombeiro Militar Brasil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="bombeiroscarro.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="top-bar">
+      <span class="title">Entrar</span>
+    </div>
+  </header>
+  <main>
+    <div class="login-container">
+      <div class="icon-user">
+        <!-- icone -->
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="45" fill="#B40000"/>
+          <circle cx="45" cy="38" r="16" fill="#fff"/>
+          <ellipse cx="45" cy="68" rx="20" ry="12" fill="#fff"/>
+        </svg>
+      </div>
+      <form id="loginForm">
+        <label for="login" class="label">Login:</label><br>
+        <input type="email" id="login" name="login" class="input" placeholder="bombeiros@exemplo.com" required><br>
+        <label for="senha" class="label">Senha:</label><br>
+        <input type="password" id="senha" name="senha" class="input" placeholder="12345678" required><br>
+        <div class="forgot"><a href="forgot.html">Esqueci minha senha</a></div>
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
 </html>
