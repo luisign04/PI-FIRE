@@ -1,12 +1,14 @@
 import express from 'express'; 
 import cors from 'cors';
+import ocorrenciasRotas from './routes/ocorrenciasRotas';
 
 const app = express();
-
 const PORT = process.env.PORT || 3333;
 
 app.use(cors());
 app.use(express.json());    
+
+app.use('/api', ocorrenciasRotas);
 
 app.get('/teste', (req, res) => {
     res.json({ status: 'OK', message: 'Server is running' });

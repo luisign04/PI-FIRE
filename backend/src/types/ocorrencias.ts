@@ -1,4 +1,4 @@
-export interface Occurrence {
+export interface Ocorrencia {
   id?: number;
   // Dados Internos
   carimbo_data_hora?: Date;
