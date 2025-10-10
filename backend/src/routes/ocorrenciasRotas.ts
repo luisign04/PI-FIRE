@@ -1,9 +1,11 @@
-import {Router} from 'express'
-import { OcorrenciaController } from '../controllers/ocorrenciaController'
+// src/routes/ocorrenciasRoutes.ts
+import { Router } from 'express';
+import { ocorrenciaController } from '../controllers/ocorrenciaController';
 
 const router = Router();
 
-router.post('/ocorrencias', new OcorrenciaController().create);
-router.get('/ocorrencias', new OcorrenciaController().list);
+router.post('/ocorrencias', ocorrenciaController.create);
+router.get('/ocorrencias', ocorrenciaController.list);
+router.get('/ocorrencias/:id', ocorrenciaController.getById);
 
 export default router;
