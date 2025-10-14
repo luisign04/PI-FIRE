@@ -1,0 +1,144 @@
+.header {
+  background-color: #BC010C;
+  color: white;
+  width: 100%;
+  height: 90px;
+  display: flex;
+  align-items: center;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Logo Section */
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logoIcon {
+  color: #BC010C;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+}
+
+.mainTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: #fecaca; /* Vermelho mais claro */
+  line-height: 1.2;
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLink {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navLink:hover {
+  background-color: #991a1a; /* Vermelho mais escuro */
+}
+
+.navLinkActive {
+  background-color: white;
+  color: #BC010C;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .header {
+    height: 70px;
+  }
+  
+  .headerContent {
+    padding: 0 0.5rem;
+  }
+  
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .logoIcon {
+    font-size: 1rem;
+  }
+  
+  .mainTitle {
+    font-size: 1.125rem;
+  }
+  
+  .subtitle {
+    font-size: 0.75rem;
+  }
+  
+  .nav {
+    gap: 0.5rem;
+  }
+  
+  .navLink {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .navText {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    height: 60px;
+  }
+  
+  .logoSection {
+    gap: 0.5rem;
+  }
+  
+  .mainTitle {
+    font-size: 1rem;
+  }
+  
+  .navLink {
+    padding: 0.5rem;
+  }
+}
