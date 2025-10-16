@@ -3,21 +3,36 @@ import { Ocorrencia } from '../types/ocorrencias';
 
 export class OcorrenciaModel {
     async create(ocorrencia: Omit<Ocorrencia, 'id'>): Promise<number> {
-        const [id] = await db('occurrences').insert(ocorrencia); // ← Note: 'occurrences' (inglês)
-        
-        // Garantir que o ID não é undefined
-        if (id === undefined) {
-            throw new Error('Falha ao criar ocorrência: ID não retornado');
+        try {
+            console.log('🎯 Inserindo no banco:', ocorrencia); // Debug
+            const [id] = await db('occurrences').insert(ocorrencia);
+            console.log('✅ ID retornado:', id); // Debug
+            return id;
+        } catch (error: any) {
+            console.error('❌ Erro no model create:', error);
+            throw error;
         }
-        
-        return id;
     }
 
     async findAll(): Promise<Ocorrencia[]> {
-        return db('occurrences').select('*').orderBy('created_at', 'desc');
+        try {
+            const ocorrencias = await db('occurrences').select('*').orderBy('created_at', 'desc');
+            console.log('📊 Total de ocorrências:', ocorrencias.length); // Debug
+            return ocorrencias;
+        } catch (error: any) {
+            console.error('❌ Erro no model findAll:', error);
+            throw error;
+        }
     }
 
     async findById(id: number): Promise<Ocorrencia | undefined> {
-        return db('occurrences').where({ id }).first();
+        try {
+            const ocorrencia = await db('occurrences').where({ id }).first();
+            console.log('🔎 Ocorrência encontrada:', ocorrencia); // Debug
+            return ocorrencia;
+        } catch (error: any) {
+            console.error('❌ Erro no model findById:', error);
+            throw error;
+        }
     }
 }

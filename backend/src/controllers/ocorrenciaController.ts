@@ -8,16 +8,21 @@ export const ocorrenciaController = {
   async create(req: Request, res: Response) {
     try {
       const ocorrenciaData = req.body;
+      console.log('📝 Dados recebidos:', ocorrenciaData); // Debug
+      
       const id = await ocorrenciaModel.create(ocorrenciaData);
+      
       res.status(201).json({ 
         success: true, 
         message: 'Ocorrência registrada com sucesso', 
         id 
       });
     } catch (error: any) {
+      console.error('❌ Erro ao criar ocorrência:', error);
       res.status(500).json({ 
         success: false, 
-        error: 'Erro ao registrar ocorrência' 
+        error: 'Erro ao registrar ocorrência',
+        details: error.message 
       });
     }
   },
@@ -25,14 +30,18 @@ export const ocorrenciaController = {
   async list(req: Request, res: Response) {
     try {
       const ocorrencias = await ocorrenciaModel.findAll();
+      console.log('📋 Ocorrências encontradas:', ocorrencias.length); // Debug
+      
       res.json({ 
         success: true, 
         data: ocorrencias 
       });
     } catch (error: any) {
+      console.error('❌ Erro ao listar ocorrências:', error);
       res.status(500).json({ 
         success: false, 
-        error: 'Erro ao buscar ocorrências' 
+        error: 'Erro ao buscar ocorrências',
+        details: error.message 
       });
     }
   },
@@ -40,6 +49,8 @@ export const ocorrenciaController = {
   async getById(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      console.log('🔍 Buscando ocorrência ID:', id); // Debug
+      
       const ocorrencia = await ocorrenciaModel.findById(Number(id));
       
       if (!ocorrencia) {
@@ -54,9 +65,11 @@ export const ocorrenciaController = {
         data: ocorrencia 
       });
     } catch (error: any) {
+      console.error('❌ Erro ao buscar ocorrência por ID:', error);
       res.status(500).json({ 
         success: false, 
-        error: 'Erro ao buscar ocorrência' 
+        error: 'Erro ao buscar ocorrência',
+        details: error.message 
       });
     }
   }
