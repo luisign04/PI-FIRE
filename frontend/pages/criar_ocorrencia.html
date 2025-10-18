@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles.css">
+    <title>Registro de Ocorrência</title>
+</head>
+<body>
+    <div class="cabecalho">
+        <header>
+            <h1>Registro de Ocorrência</h1>
+        </header>
+    </div>
+
+    <form id="ocorrenciaForma">
+        <fieldset>
+            <legend>Dados Internos</legend>
+            <div class="form-group">
+                <label for="numero_aviso">Nº do Aviso *</label>
+                <input type="text" id="numero_aviso" name="numero_aviso" required>
+            </div>
+
+            <div class="form-group">
+                <label for="diretoria">Diretoria *</label>
+                <select id="diretoria" name="diretoria" required>
+                    <option value="">Selecione a diretoria</option>
+                    <option value="Norte">Norte</option>
+                    <option value="Sul">Sul</option>
+                    <option value="Leste">Leste</option>
+                    <option value="Oeste">Oeste</option>
+                    <option value="Central">Central</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="grupamento">Grupamento *</label>
+                <input type="text" id="grupamento" name="grupamento" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ponto_base">Ponto Base *</label>
+                <input type="text" id="ponto_base" name="ponto_base" required>
+            </div>
+
+            <div class="form-group">
+                <label for="data_acionamento">Data do Acionamento *</label>
+                <input type="datetime-local" id="data_acionamento" name="data_acionamento" required>
+            </div>
+            
+        </fieldset>
+        <fieldset>
+            <legend>Dados da Ocorrência</legend>
+
+            <div class="form-group">
+                <label for="natureza_ocorrencia">Natureza da Ocorrência *</label>
+                <select id="natureza_ocorrencia" name="natureza_ocorrencia" required>
+                    <option value="">Selecione a natureza</option>
+                    <option value="Incêndio">Incêndio</option>
+                    <option value="Acidente">Acidente</option>
+                    <option value="Resgate">Resgate</option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="grupo_ocorrencia">Grupo da Ocorrência *</label>
+                <input type="text" id="grupo_ocorrencia" name="grupo_ocorrencia" required>
+            </div>
+
+            <div class="form-group">
+                <label for="subgrupo_ocorrencia">Subgrupo da Ocorrência *</label>
+                <input type="text" id="subgrupo_ocorrencia" name="subgrupo_ocorrencia" required>
+            </div>
+
+            <div class="form-group">
+                <label for="situacao_ocorrencia">Situação da Ocorrência *</label>
+                <select id="situacao_ocorrencia" name="situacao_ocorrencia" required>
+                    <option value="">Selecione a situação</option>
+                    <option value="Atendida">Atendida</option>
+                    <option value="Em Andamento">Em Andamento</option>
+                    <option value="Não Atendida">Não Atendida</option>
+                </select>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="ocorrencia_nao_atendida" name="ocorrencia_nao_atendida">
+                    Ocorrência não atendida
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="horario_saida_quartel">Horário de Saída do Quartel</label>
+                <input type="time" id="horario_saida_quartel" name="horario_saida_quartel">
+            </div>
+
+            <div class="form-group">
+                <label for="horario_chegada_local">Horário no Local da Ocorrência</label>
+                <input type="time" id="horario_chegada_local" name="horario_chegada_local">
+            </div>
+
+            <div class="form-group">
+                <label for="motivo_nao_atendida">Ocorrência não atendida: (motivo)</label>
+                <textarea id="motivo_nao_atendida" name="motivo_nao_atendida" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="motivo_sem_atuacao">Ocorrência sem atuação: (motivo)</label>
+                <textarea id="motivo_sem_atuacao" name="motivo_sem_atuacao" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="horario_saida_local">Horário de Saída do Local</label>
+                <input type="time" id="horario_saida_local" name="horario_saida_local">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Informações da Vítima</legend>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="vitima_envolvida" name="vitima_envolvida">
+                    Vítima envolvida
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="sexo_vitima">Sexo da Vítima</label>
+                <select id="sexo_vitima" name="sexo_vitima">
+                    <option value="">Selecione</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="idade_vitima">Idade da Vítima</label>
+                <input type="number" id="idade_vitima" name="idade_vitima" min="0" max="120">
+            </div>
+
+            <div class="form-group">
+                <label for="classificacao_vitima">Classificação da Vítima</label>
+                <input type="text" id="classificacao_vitima" name="classificacao_vitima">
+            </div>
+
+            <div class="form-group">
+                <label for="destino_vitima">Destino da Vítima</label>
+                <input type="text" id="destino_vitima" name="destino_vitima">
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Viatura e Forma de Acionamento</legend>
+
+            <div class="form-group">
+                <label for="viatura_empregada">Viatura Empregada *</label>
+                <input type="text" id="viatura_empregada" name="viatura_empregada" required>
+            </div>
+
+            <div class="form-group">
+                <label for="numero_viatura">Número da Viatura *</label>
+                <input type="text" id="numero_viatura" name="numero_viatura" required>
+            </div>
+
+            <div class="form-group">
+                <label for="forma_acionamento">Forma de Acionamento *</label>
+                <select id="forma_acionamento" name="forma_acionamento" required>
+                    <option value="">Selecione a forma</option>
+                    <option value="Telefone">Telefone</option>
+                    <option value="Rádio">Rádio</option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="local_acionamento">Local do Acionamento *</label>
+                <input type="text" id="local_acionamento" name="local_acionamento" required>
+            </div>
+        </fieldset>
+                <fieldset>
+            <legend>Endereço</legend>
+
+            <div class="form-group">
+                <label for="municipio">Município *</label>
+                <input type="text" id="municipio" name="municipio" required>
+            </div>
+
+            <div class="form-group">
+                <label for="regiao">Região *</label>
+                <input type="text" id="regiao" name="regiao" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bairro">Bairro *</label>
+                <input type="text" id="bairro" name="bairro" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo_logradouro">Tipo de Logradouro *</label>
+                <select id="tipo_logradouro" name="tipo_logradouro" required>
+                    <option value="">Selecione</option>
+                    <option value="Rua">Rua</option>
+                    <option value="Avenida">Avenida</option>
+                    <option value="Praça">Praça</option>
+                    <option value="Travessa">Travessa</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ais">AIS *</label>
+                <input type="text" id="ais" name="ais" required>
+            </div>
+
+            <div class="form-group">
+                <label for="logradouro">Logradouro *</label>
+                <input type="text" id="logradouro" name="logradouro" required>
+            </div>
+
+            <div class="form-group">
+                <label for="latitude">Latitude</label>
+                <input type="number" step="any" id="latitude" name="latitude">
+            </div>
+
+            <div class="form-group">
+                <label for="longitude">Longitude</label>
+                <input type="number" step="any" id="longitude" name="longitude">
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit">Registrar Ocorrência</button>
+            <button type="reset">Limpar Formulário</button>
+        </div>
+    </form>
+
+</body>
+</html>

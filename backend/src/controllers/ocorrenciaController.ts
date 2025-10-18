@@ -1,4 +1,3 @@
-// src/controllers/ocorrenciaController.ts
 import { Request, Response } from 'express';
 import { OcorrenciaModel } from '../models/ocorrenciaModel';
 

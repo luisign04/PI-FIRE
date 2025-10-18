@@ -1,74 +1,70 @@
-import api from './api';
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+import { userModel } from '../models/userModel'; // Importa o modelo para interação com o DB
+import { User, AuthUser } from '../types/user';
 
-export interface User {
-  id: number;
-  username: string;
-  role: string;
-}
 
-export interface AuthResponse {
-  success: boolean;
-  message: string;
-  token: string;
-  user: User;
-}
+// CHAVE SECRETA para assinar os tokens (DEVE vir de variáveis de ambiente)
+const JWT_SECRET = process.env.JWT_SECRET || 'sua-chave-secreta-forte-aqui'; 
 
-class AuthService {
-  private token: string | null = null;
-  private user: User | null = null;
-
-  async login(username: string, password: string): Promise<AuthResponse> {
-    const response = await api.post('/auth/login', { username, password });
+export class AuthService {
     
-    if (response.data.success) {
-      this.token = response.data.token;
-      this.user = response.data.user;
-      localStorage.setItem('token', this.token);
-      localStorage.setItem('user', JSON.stringify(this.user));
+    // 1. REGISTRO (Cria o hash da senha e gera o token)
+    public async register(name: string, email: string, password_input: string, role: string = 'firefighter'): Promise<{ user: AuthUser, token: string }> {
+        // ... (Verificação se o usuário existe)
+
+        // Gera o hash seguro da senha
+        const saltRounds = 10;
+        const password_hash = await bcrypt.hash(password_input, saltRounds);
+
+        // CORREÇÃO AQUI: Afirmamos que a variável 'role' é do tipo correto
+        const userRole = role as User['role']; 
+
+        // Salva no banco de dados, usando a role tipada corretamente
+        const id = await userModel.create({ name, email, password_hash, role: userRole });
+
+        // Gera o token de acesso
+        const user: AuthUser = { id, name, email, role: userRole };
+        const token = this.generateToken(user);
+
+        return { user, token };
     }
-    
-    return response.data;
-  }
 
-  logout(): void {
-    this.token = null;
-    this.user = null;
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  }
+    // 2. LOGIN (Compara o hash da senha e gera o token)
+        public async login(email: string, password_input: string): Promise<{ user: AuthUser, token: string }> {
+        const user = await userModel.findByEmail(email);
 
-  getToken(): string | null {
-    if (!this.token) {
-      this.token = localStorage.getItem('token');
+        // Se o email não existir ou a senha não bater, retorna erro genérico por segurança
+        if (!user) {
+            throw new Error('Credenciais inválidas.'); 
+        }
+
+        // Compara a senha digitada com o hash salvo
+        const isMatch = await bcrypt.compare(password_input, user.password_hash);
+        
+        if (!isMatch) {
+            throw new Error('Credenciais inválidas.');
+        }
+
+        // Gera o token de acesso
+        const authUser: AuthUser = { id: user.id, name: user.name, email: user.email, role: user.role };
+        const token = this.generateToken(authUser);
+
+        return { user: authUser, token };
     }
-    return this.token;
-  }
 
-  getUser(): User | null {
-    if (!this.user) {
-      const userStr = localStorage.getItem('user');
-      this.user = userStr ? JSON.parse(userStr) : null;
+    // 3. GERAÇÃO DE TOKEN (Assina o token)
+    private generateToken(user: AuthUser): string {
+        return jwt.sign(user, JWT_SECRET, { expiresIn: '1d' }); 
     }
-    return this.user;
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.getToken();
-  }
-
-  // Verificar se o token ainda é válido
-  async checkAuth(): Promise<boolean> {
-    const token = this.getToken();
-    if (!token) return false;
-
-    try {
-      const response = await api.get('/auth/verify');
-      return response.data.success;
-    } catch (error) {
-      this.logout();
-      return false;
+    // 4. VERIFICAÇÃO DE TOKEN (Usado pelo middleware)
+    public verifyToken(token: string): AuthUser | null {
+        try {
+            const decoded = jwt.verify(token, JWT_SECRET) as AuthUser;
+            return decoded;
+        } catch (error) {
+            return null;
+        }
     }
-  }
 }
-
 export const authService = new AuthService();
