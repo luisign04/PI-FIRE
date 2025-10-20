@@ -13,8 +13,8 @@ Projeto Integrador do 3º Período do curso de Análise e Desenvolvimento de Sis
 
 ## 📋 Índice
 
-- [Sobre](#sobre)
-- [Uso](#uso)
+- [Sobre](#-sobre)
+- [Uso](#-uso)
 
 ## 💬 Sobre
 
