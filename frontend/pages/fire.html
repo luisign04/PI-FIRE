@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bem vindo ao FIRE</title>
+  <link rel="stylesheet" href="fire-style.css">
+</head>
+<body>
+  <header>
+    <h1>Bem vindo ao FIRE</h1>
+    <div class="usuario">
+      <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png" alt="Usuário">
+      <span>Usuário</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="conteudo">
+      <div class="mapa-container">
+        <!-- Mapa real via iframe -->
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.6609402710783!2d-34.87935228522111!3d-8.04756278242762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab18a1d8b7f59f%3A0x576b5ce0e19c7e!2sRecife%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1699056788770!5m2!1spt-BR!2sbr"
+          width="400"
+          height="300"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+      <div class="opcoes">
+        <p>Utilize a localização atual ou selecione a cidade da ocorrência:</p>
+        <div class="botoes">
+          <button class="btn localizacao">📍 Localização Atual</button>
+          <button class="btn pesquisar">🌐 Pesquisar local</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

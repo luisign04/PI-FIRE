@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+header {
+  background-color: #b00000;
+  color: white;
+  width: 100%;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+header h1 {
+  font-size: 1.8em;
+  text-align: center;
+}
+
+.usuario {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.usuario img {
+  width: 25px;
+  height: 25px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+}
+
+.conteudo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.mapa-container {
+  border: 4px solid #b00000;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.opcoes {
+  text-align: center;
+  max-width: 400px;
+}
+
+.opcoes p {
+  font-size: 1.1em;
+  margin-bottom: 25px;
+}
+
+.botoes {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  background-color: #b00000;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: 0.2s ease-in-out;
+}
+
+.btn:hover {
+  background-color: #d11a1a;
+}
