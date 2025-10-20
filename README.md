@@ -2,6 +2,15 @@
 
 Projeto Integrador do 3º Período do curso de Análise e Desenvolvimento de Sistemas da Faculdade SENAC Pernambuco, Polo Recife.
 
+**Integrantes:**
+
+- Luís Augusto Barbosa
+- Gustavo Nemésio
+- João Pedro Santana
+- Victor Torres
+- Eduardo Soares
+- Marlio Ramos
+
 ---
 
 ## Índice
