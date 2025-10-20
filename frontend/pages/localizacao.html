@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Localização</title>
-  <link rel="stylesheet" href="localizacao-style.css"/>
+  <link rel="stylesheet" href="localizacao-styles.css"/>
 </head>
 <body>
   <header class="topbar">
@@ -80,6 +80,7 @@
     }
 
     // máscara simples de CEP
+    
     const cepInput = document.getElementById("cep");
     cepInput.addEventListener("input", () => {
       let v = cepInput.value.replace(/\D/g, "").slice(0, 8);
@@ -106,8 +107,7 @@
       localStorage.setItem("enderecoOcorrencia", JSON.stringify(dados));
 
       alert("Localização salva com sucesso!");
-      // redirecione para a próxima etapa se já tiver (ex.: criar_ocorrencia.html)
-      // window.location.href = "criar_ocorrencia.html";
+      window.location.href = "criar_ocorrencia.html";
     });
   </script>
 </body>
