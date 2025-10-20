@@ -1,0 +1,108 @@
+:root {
+  --vermelho: #b00000;
+  --vermelho-escuro: #8d0000;
+  --verde: #2e7d32;
+  --verde-escuro: #1b5e20;
+  --fonte: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--fonte);
+}
+
+body {
+  background: #fff;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
+  background-color: var(--vermelho);
+  color: white;
+  display: grid;
+  grid-template-columns: 56px 1fr 160px;
+  align-items: center;
+  padding: 12px 20px;
+}
+
+.topbar h1 {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.menu {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.menu span {
+  display: block;
+  width: 22px;
+  height: 3px;
+  background: #fff;
+  margin: 3px 0;
+  border-radius: 2px;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: end;
+  font-weight: 600;
+}
+.usuario img {
+  width: 24px;
+  height: 24px;
+}
+
+.conteudo {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.conteudo h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.conteudo p {
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+.botoes {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  padding: 14px 24px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  min-width: 220px;
+}
+
+.btn.vermelho {
+  background: var(--vermelho);
+}
+.btn.vermelho:hover {
+  background: var(--vermelho-escuro);
+}
+
+.btn.verde {
+  background: var(--verde);
+}
+.btn.verde:hover {
+  background: var(--verde-escuro);
+}

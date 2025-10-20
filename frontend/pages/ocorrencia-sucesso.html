@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Ocorrência</title>
+  <link rel="stylesheet" href="ocorrencia-sucesso-styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="menu" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <h1>Registro de Ocorrência</h1>
+
+    <div class="usuario">
+      <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png" alt="">
+      <span id="usuario-logado">Usuário</span>
+    </div>
+  </header>
+
+  <main class="conteudo">
+    <h2>Ocorrência registrada com sucesso!</h2>
+    <p>Selecione uma das opções abaixo:</p>
+
+    <div class="botoes">
+      <button id="btn-listagem" class="btn vermelho">📋 Listagem de Ocorrências</button>
+      <button id="btn-nova" class="btn verde">📝 Registrar uma nova ocorrência</button>
+    </div>
+  </main>
+
+  <script>
+    // mostra o usuário logado
+    const u = localStorage.getItem("usuarioEmail");
+    if (u) {
+      document.getElementById("usuario-logado").textContent = u;
+    } else {
+      window.location.href = "login.html";
+    }
+
+    // navegação
+    document.getElementById("btn-listagem").addEventListener("click", () => {
+      window.location.href = "listagem-ocorrencia.html";
+    });
+
+    document.getElementById("btn-nova").addEventListener("click", () => {
+      window.location.href = "criar_ocorrencia.html";
+    });
+  </script>
+</body>
+</html>

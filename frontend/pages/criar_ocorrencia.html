@@ -234,6 +234,25 @@
             <button type="reset">Limpar Formulário</button>
         </div>
     </form>
+    <script>
+  // Captura o envio do formulário
+  const form = document.querySelector("form");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); // impede o envio padrão (recarregar a página)
+
+    // lugar para salvar os dados no localStorage ou enviar pro backend, se quiser
+    // por exemplo:
+    // const dados = Object.fromEntries(new FormData(form));
+    // localStorage.setItem("ocorrencia", JSON.stringify(dados));
+
+    // exibe uma mensagem opcional
+    alert("Ocorrência registrada com sucesso!");
+
+    // redireciona para a página de sucesso
+    window.location.href = "ocorrencia-sucesso.html";
+  });
+</script>
 
 </body>
 </html>
