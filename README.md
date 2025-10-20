@@ -2,7 +2,7 @@
 
 ## O que é o FIRE?
 
-O FIRE é um software produzido para que bombeiros posssam registrar, listar e gerenciar ocorrências de modo mais eficaz, seguro e transparente, <br> evitando a perca de informações valiosas para o corpo de bombeiros e tornando mais ágil o procedimento de registro de ocorrências.
+O FIRE é um software produzido para que bombeiros posssam registrar, listar e gerenciar ocorrências de modo mais eficaz, seguro e transparente, evitando a perca de informações valiosas para o corpo de bombeiros e tornando mais ágil o procedimento de registro de ocorrências.
 
 ## Como usá-lo?
 
