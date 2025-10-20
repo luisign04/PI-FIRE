@@ -11,7 +11,7 @@ Para utilizar nosso aplicativo web, você deverá acessar o link abaixo, clicand
 
 Link: https://exemplo.com.br
 
-Para usar o aplicativo em seu dispositivo móvel:
+**Para usar o aplicativo em seu dispositivo móvel:**
 
 1. Vá até a sessão "Releases" em nosso repositório;
 2. Baixe o APK mais recente;
