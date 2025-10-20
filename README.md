@@ -11,8 +11,6 @@ Projeto Integrador do 3º Período do curso de Análise e Desenvolvimento de Sis
 - Eduardo Soares
 - Marlio Ramos
 
----
-
 ## Índice
 
 - [Sobre](#sobre)
