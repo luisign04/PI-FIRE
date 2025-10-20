@@ -13,4 +13,7 @@ Link: https://exemplo.com.br
 
 Para usar o aplicativo em seu dispositivo móvel:
 
-1. Vá até a sessão "Releases" em nosso repositório; <br> 2. Baixe o APK mais recente; <br> 3. Vá até o gerenciador de arquivos do seu celular; <br> 4. Execute o APK para realizar a instalação.
+1. Vá até a sessão "Releases" em nosso repositório;
+2. Baixe o APK mais recente;
+3. Vá até o gerenciador de arquivos do seu celular;
+4. Execute o APK para realizar a instalação.
