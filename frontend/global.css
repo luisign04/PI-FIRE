@@ -1,0 +1,52 @@
+/* frontend/global.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+/* Variáveis (Tokens de Design) */
+:root {
+    --font-family: 'Roboto', sans-serif;
+    --font-h1-size: 24px;
+    --font-h1-weight: 900;
+    --color-primary: #BC010C; /* Vermelho principal do Corpo de Bombeiros */
+    --color-text-light: white;
+    --color-background-app: #f7f7f7;
+    --spacing-medium: 20px;
+}
+
+/* Reset Básico */
+* {
+    font-family: var(--font-family);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo do Corpo da Aplicação */
+body {
+    background-color: var(--color-background-app);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 80px; /* Garante que o conteúdo não fique sob o cabeçalho fixo (se houver) */
+}
+
+/* Estilo do Cabeçalho Padrão (que será usado em todas as páginas) */
+.cabecalho {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-primary);
+    width: 100vw;
+    height: 80px;
+    position: fixed; /* Fixa o cabeçalho no topo (bom para PWA) */
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cabecalho h1 {
+    font-size: var(--font-h1-size);
+    font-weight: var(--font-h1-weight);
+    color: var(--color-text-light);
+}
