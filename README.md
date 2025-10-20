@@ -6,10 +6,11 @@ O FIRE é um software produzido para que bombeiros posssam registrar, listar e g
 
 ## Como usá-lo?
 
-O FIRE é um software que suporta tanto uso web via navegador quanto o uso mobile (atualmente Android e futuramente IOS).<br>
-Para utilizar nosso aplicativo web, você deverá acessar o link abaixo, clicando ou copiando e colando-o na barra de endereço do seu navegador. <br>
+O FIRE é um software que suporta tanto uso web via navegador quanto o uso mobile (atualmente Android e futuramente IOS).
 
-Link: https://exemplo.com.br
+**Para utilizar o aplicativo via web:**
+
+1. Clique no Link: https://exemplo.com.br
 
 **Para usar o aplicativo em seu dispositivo móvel:**
 
