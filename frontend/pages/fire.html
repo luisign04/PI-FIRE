@@ -18,35 +18,110 @@
   <main>
     <section class="conteudo">
       <div class="mapa-container">
-        <!-- Mapa real via iframe -->
-        <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.6609402710783!2d-34.87935228522111!3d-8.04756278242762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab18a1d8b7f59f%3A0x576b5ce0e19c7e!2sRecife%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1699056788770!5m2!1spt-BR!2sbr"
-          width="400"
-          height="300"
-          style="border:0;"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade">
+        <iframe id="map"
+          src="https://www.google.com/maps?q=Recife&output=embed"
+          width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy">
         </iframe>
       </div>
 
       <div class="opcoes">
-        <p>Utilize a localização atual ou selecione a cidade da ocorrência:</p>
-        <div class="botoes">
-          <button class="btn localizacao">📍 Localização Atual</button>
-          <button class="btn pesquisar">🌐 Pesquisar local</button>
+        <p id="texto-principal">Utilize a localização atual ou selecione a cidade da ocorrência:</p>
+        <div class="botoes" id="botoes-principais">
+          <button class="btn localizacao" id="btn-localizacao">📍 Localização Atual</button>
+          <button class="btn pesquisar" id="btn-pesquisar">🌐 Pesquisar local</button>
+        </div>
+
+        <!-- Campo de pesquisa (inicialmente oculto) -->
+        <div class="pesquisa-cidade" id="campo-pesquisa" style="display: none;">
+          <p>Digite o nome da cidade para efetuar o registro:</p>
+          <input type="text" id="cidade" placeholder="Digite aqui..." />
+          <div class="botoes">
+            <button class="btn voltar" id="btn-voltar">🔙 Voltar</button>
+            <button class="btn confirmar" id="btn-confirmar">✅ Confirmar</button>
+          </div>
         </div>
       </div>
     </section>
   </main>
+
+  <!-- login guard + saudação -->
   <script>
-  const usuarioEmail = localStorage.getItem("usuarioEmail");
-  if (usuarioEmail) {
-    document.getElementById("usuario-logado").textContent = `Bem-vindo, ${usuarioEmail}!`;
-  } else {
-    // se não tiver login salvo, volta pra tela de login
-    window.location.href = "login.html";
-  }
-</script>
+    const usuarioEmail = localStorage.getItem("usuarioEmail");
+    if (usuarioEmail) {
+      document.getElementById("usuario-logado").textContent = `Bem-vindo, ${usuarioEmail}!`;
+    } else {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- lógica de pesquisa/armazenamento da cidade + mapa dinâmico -->
+  <script>
+    const btnPesquisar = document.getElementById("btn-pesquisar");
+    const campoPesquisa = document.getElementById("campo-pesquisa");
+    const botoesPrincipais = document.getElementById("botoes-principais");
+    const textoPrincipal = document.getElementById("texto-principal");
+    const btnVoltar = document.getElementById("btn-voltar");
+    const btnConfirmar = document.getElementById("btn-confirmar");
+    const inputCidade = document.getElementById("cidade");
+    const map = document.getElementById("map");
+
+    // 👉 se houver cidade salva, já abre o mapa nela
+    const cidadeSalva = localStorage.getItem("cidadeSelecionada");
+    if (cidadeSalva) {
+      map.src = `https://www.google.com/maps?q=${encodeURIComponent(cidadeSalva)}&output=embed`;
+    }
+
+    btnPesquisar.addEventListener("click", () => {
+      campoPesquisa.style.display = "block";
+      botoesPrincipais.style.display = "none";
+      textoPrincipal.textContent = "Pesquisa de Localização";
+      inputCidade.value = cidadeSalva || "";
+      setTimeout(() => inputCidade.focus(), 0);
+    });
+
+    btnVoltar.addEventListener("click", () => {
+      campoPesquisa.style.display = "none";
+      botoesPrincipais.style.display = "flex";
+      textoPrincipal.textContent = "Utilize a localização atual ou selecione a cidade da ocorrência:";
+    });
+
+    // tecla Enter confirma também
+    inputCidade.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") btnConfirmar.click();
+    });
+
+    // botão confirmar — salva e redireciona
+    btnConfirmar.addEventListener("click", () => {
+      const cidade = inputCidade.value.trim();
+      if (!cidade) {
+        alert("Por favor, digite o nome da cidade!");
+        inputCidade.focus();
+        return;
+      }
+
+      // salva e atualiza o mapa
+      localStorage.setItem("cidadeSelecionada", cidade);
+      map.src = `https://www.google.com/maps?q=${encodeURIComponent(cidade)}&output=embed`;
+
+      // redireciona para a próxima página
+      window.location.href = "localizacao.html";
+    });
+
+    // (opcional) usar geolocalização do navegador para "Localização Atual"
+    document.getElementById("btn-localizacao").addEventListener("click", () => {
+      if (!navigator.geolocation) {
+        alert("Geolocalização não suportada neste navegador.");
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          localStorage.setItem("cidadeSelecionada", `${latitude},${longitude}`);
+          map.src = `https://www.google.com/maps?q=${latitude},${longitude}&output=embed`;
+        },
+        () => alert("Não foi possível obter sua localização.")
+      );
+    });
+  </script>
 </body>
 </html>

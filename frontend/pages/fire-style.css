@@ -98,3 +98,34 @@ main {
 .btn:hover {
   background-color: #d11a1a;
 }
+
+.pesquisa-cidade {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pesquisa-cidade input {
+  width: 80%;
+  padding: 10px;
+  margin: 15px 0;
+  border: 2px solid #b00000;
+  border-radius: 10px;
+  font-size: 1em;
+  text-align: center;
+}
+
+.btn.voltar {
+  background-color: #c62828;
+}
+
+.btn.confirmar {
+  background-color: #2e7d32;
+}
+
+.btn.voltar:hover {
+  background-color: #e53935;
+}
+
+.btn.confirmar:hover {
+  background-color: #43a047;
+}
