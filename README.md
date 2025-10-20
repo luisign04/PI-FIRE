@@ -1,10 +1,15 @@
 # FIRE - FERRAMENTA INTEGRADA DE RESPOSTA A EMERGÊNCIAS
 
-## O que é o FIRE?
+## Índice
+
+- [Sobre](#-sobre)
+- [Uso](#-uso)
+
+## Sobre
 
 O FIRE é um software produzido para que bombeiros posssam registrar, listar e gerenciar ocorrências de modo mais eficaz, seguro e transparente, evitando a perca de informações valiosas para o corpo de bombeiros e tornando mais ágil o procedimento de registro de ocorrências.
 
-## Como usá-lo?
+## Uso
 
 O FIRE é um software que suporta tanto uso web via navegador quanto o uso mobile (atualmente Android e futuramente IOS). Abaixo há um breve tutorial de como acessar nossa aplicação tanto pelo seu navegador quanto pelo seu aparelho celular.
 
