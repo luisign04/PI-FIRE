@@ -2,8 +2,8 @@
 
 ## Índice
 
-- [Sobre](#-sobre)
-- [Sobre](#-sobre)
+- [Sobre](##-sobre)
+- [Uso](##-Uso)
 
 ## Sobre
 
