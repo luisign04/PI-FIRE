@@ -11,7 +11,7 @@
     <h1>Bem vindo ao FIRE</h1>
     <div class="usuario">
       <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png" alt="Usuário">
-      <span>Usuário</span>
+      <span><h2 id="usuario-logado"></h2></span>
     </div>
   </header>
 
@@ -39,5 +39,14 @@
       </div>
     </section>
   </main>
+  <script>
+  const usuarioEmail = localStorage.getItem("usuarioEmail");
+  if (usuarioEmail) {
+    document.getElementById("usuario-logado").textContent = `Bem-vindo, ${usuarioEmail}!`;
+  } else {
+    // se não tiver login salvo, volta pra tela de login
+    window.location.href = "login.html";
+  }
+</script>
 </body>
 </html>
