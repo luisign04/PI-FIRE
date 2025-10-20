@@ -3,7 +3,7 @@
 ## Índice
 
 - [Sobre](#sobre)
-- [Uso](##uso)
+- [Uso](#uso)
 
 ## Sobre
 
