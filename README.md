@@ -20,7 +20,9 @@ Projeto Integrador do 3º Período do curso de Análise e Desenvolvimento de Sis
 
 O FIRE é um software produzido para que bombeiros posssam registrar, listar e gerenciar ocorrências de modo mais eficaz, seguro e transparente, evitando a perca de informações valiosas para o corpo de bombeiros e tornando mais ágil o procedimento de registro de ocorrências.
 
-Pretendemos com este aplicativo substituir o registro de ocorrências via planilhas Excel, que tornou-se obsoleto para o uso dos bombeiros dado o número alto de ocorrências que são registradas diariamente. 
+Nosso aplicativo permite o registro rápido de ocorrências por meio de uma interface interativa, onde o bombeiro poderá selecionar opções prontas para informações fixas que se repetem constantemente, ou utilizar caixas de texto para registrar as informações que precisam ser detalhadas manualmente.
+
+Pretendemos com este aplicativo substituir o registro de ocorrências via planilhas Excel, que tornou-se obsoleto para o uso dos bombeiros dado o número alto de ocorrências que são registradas diariamente.
 
 ## 💻 Uso
 
