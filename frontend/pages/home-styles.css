@@ -1,0 +1,99 @@
+
+@import url('../global.css'); 
+
+/* Remove o padding-top do body adicionado no global para o cabeçalho fixo */
+body {
+    padding-top: 0;
+    align-items: flex-start; /* Alinha o conteúdo à esquerda */
+}
+
+/* 2. Barra de Navegação Superior (Menu Hamburguer, Título, Perfil) */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 55px; /* Altura menor para a nav bar */
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 0 15px;
+    /* Faz a barra de navegação superior ser a referência */
+    position: sticky; 
+    top: 0;
+    z-index: 10;
+}
+
+.app-title {
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: var(--color-text-light);
+    font-size: 1.4em;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* 3. Área da Imagem Hero */
+.hero-image-container {
+    width: 100%;
+    max-height: 250px; 
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover; /* Garante que a imagem cubra o container */
+}
+
+/* 4. Container do Menu Principal */
+.main-menu-container {
+    width: 100%;
+    padding: var(--spacing-medium);
+}
+
+.main-menu-container h2 {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* 5. Estilo dos Botões de Opções (Menu) */
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menu-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 25px;
+    background-color: white;
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
+    text-decoration: none;
+    color: #333;
+    font-size: 1.1em;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+.menu-button:hover {
+    background-color: #fcebeb;
+    transform: translateY(-2px);
+}
+
+/* Estilo dos Ícones nos Botões */
+.menu-button i {
+    font-size: 1.6em;
+    color: var(--color-primary);
+}
