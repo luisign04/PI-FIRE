@@ -25,7 +25,10 @@ Nosso aplicativo permite o registro rápido de ocorrências por meio de uma inte
 <img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/ed8a7977-924c-46cb-a68b-a56d5969d64b" />
 
 
-Pretendemos com este aplicativo substituir o registro de ocorrências via planilhas Excel, que tornou-se obsoleto para o uso dos bombeiros dado o número alto de ocorrências que são registradas diariamente.
+Pretendemos com este aplicativo substituir o registro de ocorrências via planilhas Excel, que tornou-se obsoleto para o uso dos bombeiros por vários motivos, sendo os principais deles:
+- Lentidão no registro de ocorrências;
+- Auditoria das ocorrências registradas;
+- Dificuldade em monitorar os dados adquiridos por meio do registro de ocorrências.
 
 ## 💻 Uso
 
