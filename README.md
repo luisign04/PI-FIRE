@@ -1,4 +1,4 @@
-# FIRE - FERRAMENTA INTEGRADA DE RESPOSTA A EMERGÊNCIAS
+# 🚒 FIRE - FERRAMENTA INTEGRADA DE RESPOSTA A EMERGÊNCIAS
 
 Projeto Integrador do 3º Período do curso de Análise e Desenvolvimento de Sistemas da Faculdade SENAC Pernambuco, Polo Recife.
 
