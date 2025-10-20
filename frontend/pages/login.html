@@ -26,5 +26,20 @@
 
     <button type="submit" class="login-button">Entrar</button>
   </form>
+  <script>
+  const form = document.querySelector(".login-form");
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // impede o reload da página
+
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("password").value;
+
+    // (aqui você poderia validar o login, mas vamos direto salvar)
+    localStorage.setItem("usuarioEmail", email);
+
+    // redireciona para a tela fire.html
+    window.location.href = "fire.html";
+  });
+</script>
 </body>
 </html>
