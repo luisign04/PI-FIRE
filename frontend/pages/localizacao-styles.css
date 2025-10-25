@@ -1,52 +1,8 @@
-:root {
-  --vermelho: #b00000;
-  --vermelho-escuro: #8d0000;
-  --cinza-borda: #cfcfcf;
-  --verde: #2e7d32;
-  --verde-escuro: #1b5e20;
-  --preto: #111;
-  --bg: #ffffff;
-  --fonte: "Segoe UI", Arial, Helvetica, sans-serif;
-}
+@import url('../../global.css');
 
-* { box-sizing: border-box; }
-html, body { height: 100%; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--preto);
-  font-family: var(--fonte);
-}
+/* Página: Localização — mantém apenas regras específicas da página abaixo */
 
-/* Topbar */
-.topbar {
-  position: sticky; top: 0;
-  display: grid;
-  grid-template-columns: 56px 1fr 180px;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: var(--vermelho);
-  color: #fff;
-}
-
-.topbar h1 {
-  margin: 0; text-align: center; font-size: 1.6rem;
-}
-
-.menu {
-  width: 40px; height: 40px; border: none; background: transparent; cursor: pointer;
-  display: grid; place-items: center; padding: 0;
-}
-.menu span {
-  display: block; width: 22px; height: 3px; background: #fff; margin: 2.5px 0; border-radius: 2px;
-}
-
-.usuario {
-  justify-self: end;
-  display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
-}
-.usuario img { width: 22px; height: 22px; }
+/* Header e ícones padronizados em global.css (baseado em home.html) */
 
 /* Conteúdo */
 .container {

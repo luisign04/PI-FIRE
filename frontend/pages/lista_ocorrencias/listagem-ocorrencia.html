@@ -12,21 +12,20 @@
 <body>
     
     <header class="topbar">
-        <button class="menu-toggle" aria-label="Abrir menu" onclick="window.location.href='home.html'"> 
+        <button class="menu-toggle" aria-label="Abrir menu" onclick="window.location.href='/frontend/pages/home/home.html'"> 
             <i class="fas fa-bars"></i>
         </button>
 
         <h1>Listagem de Ocorrências</h1>
 
-        <div class="usuario">
-            <i class="fas fa-user-circle"></i>
-            <span id="usuario-logado">Usuário</span>
+        <div class="usuario" aria-hidden="false" aria-label="Área do usuário">
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
         </div>
     </header>
 
     <main class="layout">
         
-        <a href="criar-ocorrencia.html" class="fab-button" title="Registrar Nova Ocorrência">
+        <a href="/frontend/pages/criar_ocorrencia/criar_ocorrencia.html" class="fab-button" title="Registrar Nova Ocorrência">
             <i class="fas fa-plus"></i>
         </a>
         
@@ -141,10 +140,6 @@
     // Inicializa
     document.addEventListener('DOMContentLoaded', renderizarLista);
     
-    const u = localStorage.getItem("usuarioEmail");
-    if (u) {
-        document.getElementById("usuario-logado").textContent = u;
-    }
 </script>
 </body>
 </html>

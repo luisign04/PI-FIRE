@@ -4,14 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./criar_ocorrencia-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Registro de Ocorrência</title>
 </head>
 <body>
-    <div class="cabecalho">
-        <header>
-            <h1>Registro de Ocorrência</h1>
-        </header>
-    </div>
+    <header class="topbar">
+        <button class="menu" aria-label="Abrir menu" onclick="window.location.href='/frontend/pages/home/home.html'">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+
+        <h1>Registro de Ocorrência</h1>
+
+        <div class="usuario" aria-hidden="false" aria-label="Área do usuário">
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+        </div>
+    </header>
 
     <form id="ocorrenciaForma">
         <fieldset>

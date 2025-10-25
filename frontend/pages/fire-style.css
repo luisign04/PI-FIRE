@@ -1,56 +1,6 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
+@import url('../../global.css');
 
-body {
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
-
-header {
-  background-color: #b00000;
-  color: white;
-  width: 100%;
-  padding: 20px 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-header h1 {
-  font-size: 1.8em;
-  text-align: center;
-}
-
-.usuario {
-  position: absolute;
-  right: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.usuario img {
-  width: 25px;
-  height: 25px;
-}
-
-main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  width: 100%;
-}
+/* Página: Fire — mantém regras específicas abaixo. Header/ícones padronizados via global.css */
 
 .conteudo {
   display: flex;
@@ -59,7 +9,7 @@ main {
   justify-content: center;
   gap: 60px;
   flex-wrap: wrap;
-  margin-top: 50px;
+  margin-top: 0;
 }
 
 .mapa-container {

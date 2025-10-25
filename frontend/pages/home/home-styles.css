@@ -32,9 +32,12 @@ body {
     background: none;
     border: none;
     color: var(--color-text-light);
-    font-size: 1.4em;
     cursor: pointer;
     padding: 5px;
+}
+
+.nav-button i {
+    font-size: 1.4em; /* padronizado com o tamanho do ícone nas outras páginas */
 }
 
 /* 3. Área da Imagem Hero */

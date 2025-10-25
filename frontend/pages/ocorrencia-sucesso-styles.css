@@ -1,69 +1,13 @@
-:root {
-  --vermelho: #b00000;
-  --vermelho-escuro: #8d0000;
-  --verde: #2e7d32;
-  --verde-escuro: #1b5e20;
-  --fonte: "Segoe UI", Arial, Helvetica, sans-serif;
-}
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: var(--fonte);
-}
+@import url('../../global.css');
 
-body {
-  background: #fff;
-  color: #000;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.topbar {
-  background-color: var(--vermelho);
-  color: white;
-  display: grid;
-  grid-template-columns: 56px 1fr 160px;
-  align-items: center;
-  padding: 12px 20px;
-}
-
-.topbar h1 {
-  text-align: center;
-  font-size: 1.5rem;
-}
-
-.menu {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-.menu span {
-  display: block;
-  width: 22px;
-  height: 3px;
-  background: #fff;
-  margin: 3px 0;
-  border-radius: 2px;
-}
-
-.usuario {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-self: end;
-  font-weight: 600;
-}
-.usuario img {
-  width: 24px;
-  height: 24px;
-}
+/* Página: Ocorrência - estilo específico (após importar regras globais)
+   Cabeçalho, ícones e texto do header agora são gerenciados por global.css
+*/
 
 .conteudo {
   text-align: center;
-  margin-top: 80px;
+  /* não compensa a altura do header; header é sticky e ocupa fluxo */
 }
 
 .conteudo h2 {

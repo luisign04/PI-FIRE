@@ -8,6 +8,13 @@
     --font-h1-size: 24px;
     --font-h1-weight: 900;
     --color-primary: #BC010C; /* Vermelho principal do Corpo de Bombeiros */
+    --color-primary-dark: #8c0007;
+    /* legacy aliases used in some page styles - map to primary tokens */
+    --vermelho: var(--color-primary);
+    --vermelho-escuro: var(--color-primary-dark);
+    --cinza-borda: #cfcfcf;
+    --verde: #2e7d32;
+    --verde-escuro: #1b5e20;
     --color-text-light: white;
     --color-background-app: #f7f7f7;
     --spacing-medium: 20px;
@@ -50,3 +57,140 @@ body {
     font-weight: var(--font-h1-weight);
     color: var(--color-text-light);
 }
+
+/* Componentes e utilitários globais (moved common rules here) */
+
+/* Topbar/header compatibility: support both .topbar and .cabecalho and header element */
+
+.topbar, .cabecalho, .top-navbar, header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    width: 100%;
+    height: 55px; /* padronizado com base em home.html */
+    position: sticky; /* mantém o cabeçalho no fluxo (como em home) */
+    top: 0;
+    z-index: 10;
+    padding: 0 15px;
+}
+
+.topbar h1, .cabecalho h1, .top-navbar .app-title, header h1 {
+    margin: 0;
+    font-size: 1.2em; /* baseada em home */
+    font-weight: 700;
+    color: var(--color-text-light);
+    /* centraliza visualmente o título independentemente dos botões laterais */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    pointer-events: none; /* evita bloquear os botões do cabeçalho */
+}
+
+/* Ajuste para ícones de usuário baseados em font-awesome */
+.usuario i, .user i, .usuario .fa-user-circle { font-size: 1.4em; }
+
+/* Ícones e botões do cabeçalho (hamburger, botões de navegação, usuário) */
+.menu, .menu-toggle, .nav-button, .menu-button {
+    background: none;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    padding: 5px;
+    display: inline-grid;
+    place-items: center;
+}
+
+.menu span, .menu .bar {
+    display: block;
+    width: 22px;
+    height: 3px;
+    background: var(--color-text-light);
+    margin: 2.5px 0;
+    border-radius: 2px;
+}
+
+.nav-button { font-size: 1.4em; }
+
+.usuario, .user, .user-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.usuario img, .user img { width: 24px; height: 24px; border-radius: 50%; }
+
+/* Menu / hamburger button */
+.menu, .menu-toggle, .nav-button, .nav-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-light);
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* Usuário / avatar area */
+.usuario, .user, .user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Container utilitário */
+.container {
+    max-width: 980px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+/* Botões globais */
+.btn, .button, button {
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .05s ease, filter .15s ease;
+}
+
+.btn { padding: 10px 18px; border-radius: 8px; }
+.btn.voltar, .btn.vermelho { background: var(--vermelho); color: var(--color-text-light); }
+.btn.voltar:hover, .btn.vermelho:hover { background: var(--vermelho-escuro); }
+.btn.confirmar, .btn.verde { background: var(--verde); color: var(--color-text-light); }
+.btn.confirmar:hover, .btn.verde:hover { background: var(--verde-escuro); }
+
+/* Cards, listas e elementos comuns */
+.card {
+    background-color: white;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.badge, .chip {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
+/* Forms */
+.form-group, .campo { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-weight: 600; color: #333; }
+.form-group input, .form-group select, .form-group textarea, .campo input {
+    padding: 8px 10px; border: 1px solid var(--cinza-borda); border-radius: 6px; font-size: 1rem;
+}
+
+/* Small grid utilities */
+.grid { display: grid; gap: 16px; }
+
+/* Responsive helpers */
+@media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+}
+
+/* keep body padding to offset fixed header, pages can override if needed */
+/* Não forçamos padding-top globalmente; páginas seguem fluxo do header sticky do home */
+body { padding-top: 0; }
