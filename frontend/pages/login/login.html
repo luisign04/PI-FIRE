@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <link rel="stylesheet" href="./login-styles.css">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/frontend/manifest.json">
+  <link rel="icon" href="/frontend/assets/icone2.png">
 </head>
 
 <body>
@@ -46,7 +47,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
+      navigator.serviceWorker.register('/frontend/service-worker.js')
         .then((reg) => console.log('Service Worker registrado. Scope:', reg.scope))
         .catch((err) => console.warn('Falha ao registrar Service Worker:', err));
     }

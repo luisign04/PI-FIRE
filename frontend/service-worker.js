@@ -2,12 +2,12 @@ const CACHE_NAME = 'registro-bombeiros-cache-v1';
 const FILES_TO_CACHE = [
   '/',
   // os arquivos abaixo usam o caminho relativo ao root do site
-  '/pages/login/login.html',
-  '/global.css',
-  '/pages/home/home.html',
-  '/assets/icone2.png',
-  '/assets/icone.png',
-  '/manifest.json',
+  '/frontend/pages/login/login.html',
+  '/frontend/global.css',
+  '/frontend/pages/home/home.html',
+  '/frontend/assets/icone2.png',
+  '/frontend/assets/icone.png',
+  '/frontend/manifest.json',
 ];
 
 // Instalação do Service Worker e cache de arquivos essenciais
