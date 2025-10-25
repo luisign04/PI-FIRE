@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <link rel="stylesheet" href="./login-styles.css">
+  <link rel="manifest" href="/manifest.json">
 </head>
+
 <body>
   <div class="cabecalho">
     <header>
@@ -27,20 +30,27 @@
     <button type="submit" class="login-button">Entrar</button>
   </form>
   <script>
-  const form = document.querySelector(".login-form");
-  form.addEventListener("submit", function (event) {
-    event.preventDefault(); // impede o reload da página
+    const form = document.querySelector(".login-form");
+    form.addEventListener("submit", function (event) {
+      event.preventDefault(); // impede o reload da página
 
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("password").value;
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("password").value;
 
-    // (aqui você poderia validar o login, mas vamos direto salvar)
-    localStorage.setItem("usuarioEmail", email);
+      // (aqui você poderia validar o login, mas vamos direto salvar)
+      localStorage.setItem("usuarioEmail", email);
 
-    // redireciona para a tela fire.html
-    window.location.href = "../home/home.html";
-  });
-</script>
-<script src="../../service-worker.js"></script>
+      // redireciona para a tela fire.html
+      window.location.href = "../home/home.html";
+    });
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((reg) => console.log('Service Worker registrado. Scope:', reg.scope))
+        .catch((err) => console.warn('Falha ao registrar Service Worker:', err));
+    }
+  </script>
 </body>
+
 </html>
