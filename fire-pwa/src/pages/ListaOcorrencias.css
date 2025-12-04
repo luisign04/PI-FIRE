@@ -1,0 +1,234 @@
+.lista-ocorrencias-page {
+    min-height: 100vh;
+    background-color: var(--color-background-app);
+}
+
+.fab-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.fab-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.layout {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-medium);
+}
+
+.filtros {
+    width: 250px;
+    padding-right: var(--spacing-medium);
+    border-right: 1px solid #eee;
+    display: none;
+}
+
+.filtros h3 {
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.chip {
+    background-color: #eee;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 8px 15px;
+    margin: 5px 5px 5px 0;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+.chip:hover {
+    background-color: #ddd;
+}
+
+.lista {
+    flex-grow: 1;
+    padding: 0 0 0 var(--spacing-medium);
+}
+
+.titulo-lista {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.ocorrencias {
+    list-style: none;
+    padding: 0;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s;
+    position: relative;
+    padding-right: 90px;
+}
+
+.item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.icone {
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.texto {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.linha1, .linha2, .linha3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.titulo {
+    font-size: 1.1em;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+.hora {
+    font-size: 0.9em;
+    color: #888;
+    font-weight: 500;
+}
+
+.detalhe {
+    font-size: 0.85em;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+}
+
+.badge {
+    background-color: #f0f0f0;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 0.8em;
+    font-weight: 700;
+    margin-left: 10px;
+}
+
+.registrado-por {
+    font-size: 0.85em;
+    color: #666;
+}
+
+.acoes {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+.acoes button {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.botao-editar {
+    color: #007bff;
+}
+
+.botao-editar:hover {
+    background-color: #e0f7ff;
+}
+
+.botao-deletar {
+    color: #dc3545;
+}
+
+.botao-deletar:hover {
+    background-color: #f8d7da;
+}
+
+.empty-message {
+    text-align: center;
+    color: #888;
+    padding: 40px;
+    font-size: 1.1em;
+}
+
+@media (min-width: 768px) {
+    .filtros {
+        display: block;
+    }
+}
+
+@media (max-width: 550px) {
+    .item {
+        padding-right: 80px;
+    }
+
+    .linha2 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .detalhe {
+        margin-bottom: 5px;
+    }
+
+    .badge {
+        margin-left: 0;
+    }
+
+    .titulo {
+        font-size: 1em;
+    }
+}

@@ -1,0 +1,121 @@
+.criar-ocorrencia-page {
+    min-height: 100vh;
+    background-color: var(--color-background-app);
+}
+
+#ocorrenciaForma {
+    width: 95%;
+    max-width: 800px;
+    margin: 20px auto 40px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--color-primary);
+    padding: 0 10px;
+    margin-left: -5px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.form-group input:not([type="checkbox"]),
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    width: 100%;
+}
+
+.checkbox-group {
+    grid-column: span 1;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    padding-top: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding: 10px;
+}
+
+.form-actions button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-actions button[type="submit"] {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.form-actions button[type="submit"]:hover {
+    background-color: #8c0007;
+}
+
+.form-actions button[type="button"] {
+    background-color: #aaa;
+    color: white;
+}
+
+.form-actions button[type="button"]:hover {
+    background-color: #888;
+}
+
+@media (max-width: 600px) {
+    fieldset {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
