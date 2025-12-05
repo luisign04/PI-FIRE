@@ -9,6 +9,7 @@
     "start": "node dist/app.js",
     "knex": "knex",
     "migrate": "knex migrate:latest",
+    "migrate:latest": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
     "migrate:make": "knex migrate:make",
     "test": "echo \"Error: no test specified\" && exit 1"
