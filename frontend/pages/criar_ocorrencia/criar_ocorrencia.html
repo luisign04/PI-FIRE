@@ -32,18 +32,20 @@
                 <label for="diretoria">Diretoria *</label>
                 <select id="diretoria" name="diretoria" required>
                     <option value="">Selecione a diretoria</option>
-                    <option value="Norte">Norte</option>
-                    <option value="Sul">Sul</option>
-                    <option value="Leste">Leste</option>
-                    <option value="Oeste">Oeste</option>
-                    <option value="Central">Central</option>
+                    <option value="DIM">DIM</option>
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="grupamento">Grupamento *</label>
-                <input type="text" id="grupamento" name="grupamento" required>
-            </div>
+<div class="form-group">
+  <label for="grupamentos">Grupamento</label>
+  <select id="grupamentos" name="grupamentos">
+    <option value="GBAPH">GBAPH</option>
+    <option value="GBI">GBI</option>
+    <option value="GBMar">GBMar</option>
+    <option value="GBS">GBS</option>
+  </select>
+</div>
+
 
             <div class="form-group">
                 <label for="ponto_base">Ponto Base *</label>
@@ -63,32 +65,129 @@
                 <label for="natureza_ocorrencia">Natureza da Ocorrência *</label>
                 <select id="natureza_ocorrencia" name="natureza_ocorrencia" required>
                     <option value="">Selecione a natureza</option>
+                    <option value="APH">APH</option>
                     <option value="Incêndio">Incêndio</option>
-                    <option value="Acidente">Acidente</option>
-                    <option value="Resgate">Resgate</option>
-                    <option value="Outros">Outros</option>
+                    <option value="Prevenção">Prevenção</option>
+                    <option value="Produtos Perigosos">Produtos Perigosos</option>
+                    <option value="Salvamento">Salvamento</option>    
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="grupo_ocorrencia">Grupo da Ocorrência *</label>
-                <input type="text" id="grupo_ocorrencia" name="grupo_ocorrencia" required>
-            </div>
+<div class="form-group">
+  <label for="grupos-ocorrencia">Grupo de Ocorrência</label>
+  <select id="grupos-ocorrencia" name="grupos-ocorrencia">
+    <option value="">Selecione o grupo da ocorrência</option>
+    <option value="Acidente de Trânsito Atropelamento">Acidente de Trânsito Atropelamento</option>
+    <option value="Acidente de Trânsito Choque">Acidente de Trânsito Choque</option>
+    <option value="Acidente de Trânsito Colisão Abalroamento">Acidente de Trânsito Colisão Abalroamento</option>
+    <option value="Apoio em Operações">Apoio em Operações</option>
+    <option value="APH Diversos">APH Diversos</option>
+    <option value="Emergência Cardíaca">Emergência Cardíaca</option>
+    <option value="Emergência Respiratória">Emergência Respiratória</option>
+    <option value="Emergências Clínicas Diversas">Emergências Clínicas Diversas</option>
+    <option value="Evento com Animal">Evento com Animal</option>
+    <option value="Evento com Árvores">Evento com Árvores</option>
+    <option value="Evento com Cadáver">Evento com Cadáver</option>
+    <option value="Evento com Meio de Transporte">Evento com Meio de Transporte</option>
+    <option value="Evento com Pessoa">Evento com Pessoa</option>
+    <option value="Evento Esportivo">Evento Esportivo</option>
+    <option value="Evento Festivo">Evento Festivo</option>
+    <option value="Explosão">Explosão</option>
+    <option value="Incêndio em Edificação Concentração de Público">Incêndio em Edificação Concentração de Público</option>
+    <option value="Incêndio em Edificação Escolar">Incêndio em Edificação Escolar</option>
+    <option value="Incêndio em Edificação Industrial">Incêndio em Edificação Industrial</option>
+    <option value="Incêndio em Edificação Outros">Incêndio em Edificação Outros</option>
+    <option value="Incêndio em Edificação Residencial">Incêndio em Edificação Residencial</option>
+    <option value="Incêndio em Meio de Transporte Terrestre">Incêndio em Meio de Transporte Terrestre</option>
+    <option value="Incêndio em Vegetação">Incêndio em Vegetação</option>
+    <option value="Incêndio em Via Pública">Incêndio em Via Pública</option>
+    <option value="Incêndios Diversos">Incêndios Diversos</option>
+    <option value="Prevenção Aquática">Prevenção Aquática</option>
+    <option value="Prevenção Diversos">Prevenção Diversos</option>
+    <option value="Queda">Queda</option>
+    <option value="Vazamento">Vazamento</option>
+    <option value="Vítima de Agressão">Vítima de Agressão</option>
+  </select>
+</div>
 
-            <div class="form-group">
-                <label for="subgrupo_ocorrencia">Subgrupo da Ocorrência *</label>
-                <input type="text" id="subgrupo_ocorrencia" name="subgrupo_ocorrencia" required>
-            </div>
+<div class="form-group">
+  <label for="subgrupos-ocorrencia">Subgrupo de Ocorrência</label>
+  <select id="subgrupos-ocorrencia" name="subgrupos-ocorrencia">
+    <option value="">Selecione o subgrupo da ocorrência</option>
+    <option value="Afogamento">Afogamento</option>
+    <option value="Agência Bancária">Agência Bancária</option>
+    <option value="Arma Branca">Arma Branca</option>
+    <option value="Auto Passeio">Auto Passeio</option>
+    <option value="Auto Passeio x Auto Passeio">Auto Passeio x Auto Passeio</option>
+    <option value="Auto Passeio x Bicicleta">Auto Passeio x Bicicleta</option>
+    <option value="Auto Passeio x Motocicleta">Auto Passeio x Motocicleta</option>
+    <option value="Auto Passeio x Ônibus ou Micro-Ônibus">Auto Passeio x Ônibus ou Micro-Ônibus</option>
+    <option value="Auto Passeio x Van ou Similar">Auto Passeio x Van ou Similar</option>
+    <option value="Bar/Lanchonete ou Similar">Bar/Lanchonete ou Similar</option>
+    <option value="Barbearia/Salão de Beleza ou Similar">Barbearia/Salão de Beleza ou Similar</option>
+    <option value="Bicicleta">Bicicleta</option>
+    <option value="Caminhão">Caminhão</option>
+    <option value="Canino Cão">Canino Cão</option>
+    <option value="Convulsão">Convulsão</option>
+    <option value="Crise Hipertensiva">Crise Hipertensiva</option>
+    <option value="Deslizamento/Escorregamento">Deslizamento/Escorregamento</option>
+    <option value="Desmaio /Síncope">Desmaio /Síncope</option>
+    <option value="Diversos">Diversos</option>
+    <option value="Distúrbio Mental com Risco">Distúrbio Mental com Risco</option>
+    <option value="Ensino Superior">Ensino Superior</option>
+    <option value="Equino">Equino</option>
+    <option value="Fábrica ou Revenda de Artefato Explosivo">Fábrica ou Revenda de Artefato Explosivo</option>
+    <option value="Fábrica ou Revenda de Fogos de Artifício">Fábrica ou Revenda de Fogos de Artifício</option>
+    <option value="Felino Gato">Felino Gato</option>
+    <option value="Fiação Elétrica de Poste">Fiação Elétrica de Poste</option>
+    <option value="Física">Física</option>
+    <option value="Fogo">Fogo</option>
+    <option value="Gravidez">Gravidez</option>
+    <option value="Igreja/Templo ou Similar">Igreja/Templo ou Similar</option>
+    <option value="Inseto Abelha">Inseto Abelha</option>
+    <option value="Inseto Maribondo">Inseto Maribondo</option>
+    <option value="Inseto Outro">Inseto Outro</option>
+    <option value="Intoxicação Endógena">Intoxicação Endógena</option>
+    <option value="Local Especial para Tratamento e Reciclagem">Local Especial para Tratamento e Reciclagem</option>
+    <option value="Mangue">Mangue</option>
+    <option value="Mato">Mato</option>
+    <option value="Máquina Agrícola">Máquina Agrícola</option>
+    <option value="Mercado">Mercado</option>
+    <option value="Moto">Moto</option>
+    <option value="Motocicleta">Motocicleta</option>
+    <option value="Motocicleta x Motocicleta">Motocicleta x Motocicleta</option>
+    <option value="Motocicleta x Ônibus ou Micro-Ônibus">Motocicleta x Ônibus ou Micro-Ônibus</option>
+    <option value="Motocicleta x Veículo de Carga Não Perigosa">Motocicleta x Veículo de Carga Não Perigosa</option>
+    <option value="Multifamiliar Casas Conjugadas">Multifamiliar Casas Conjugadas</option>
+    <option value="Multifamiliar Edificação Elevada">Multifamiliar Edificação Elevada</option>
+    <option value="Oficina">Oficina</option>
+    <option value="Ônibus ou Micro-Ônibus">Ônibus ou Micro-Ônibus</option>
+    <option value="Outro">Outro</option>
+    <option value="Pessoa em Local de Difícil Acesso (Trilha/Montanha/Caverna)">Pessoa em Local de Difícil Acesso (Trilha/Montanha/Caverna)</option>
+    <option value="Pessoa Ilhada">Pessoa Ilhada</option>
+    <option value="Preso em Elevador">Preso em Elevador</option>
+    <option value="Preso em Ferragem de Veículo">Preso em Ferragem de Veículo</option>
+    <option value="Problemas Cardíacos">Problemas Cardíacos</option>
+    <option value="Protesto">Protesto</option>
+    <option value="Queda da Própria Altura">Queda da Própria Altura</option>
+    <option value="Queda de Árvore sobre Imóveis">Queda de Árvore sobre Imóveis</option>
+    <option value="Queda de Bicicleta">Queda de Bicicleta</option>
+    <option value="Queda de Moto">Queda de Moto</option>
+    <option value="Queda de Nível Abaixo de 2M">Queda de Nível Abaixo de 2M</option>
+    <option value="Queda de Nível Acima de 2M">Queda de Nível Acima de 2M</option>
+    <option value="Resgate Aquático">Resgate Aquático</option>
+    <option value="Silvestre Cobra">Silvestre Cobra</option>
+    <option value="Silvestre Jacaré">Silvestre Jacaré</option>
+    <option value="Silvestre Onça">Silvestre Onça</option>
+    <option value="Silvestre Outro">Silvestre Outro</option>
+    <option value="Supermercado">Supermercado</option>
+    <option value="Tentativa de Suicídio">Tentativa de Suicídio</option>
+    <option value="Têxtil">Têxtil</option>
+    <option value="Unifamiliar Casa Residência">Unifamiliar Casa Residência</option>
+    <option value="Van ou Similar">Van ou Similar</option>
+  </select>
+</div>
 
-            <div class="form-group">
-                <label for="situacao_ocorrencia">Situação da Ocorrência *</label>
-                <select id="situacao_ocorrencia" name="situacao_ocorrencia" required>
-                    <option value="">Selecione a situação</option>
-                    <option value="Atendida">Atendida</option>
-                    <option value="Em Andamento">Em Andamento</option>
-                    <option value="Não Atendida">Não Atendida</option>
-                </select>
-            </div>
 
             <div class="form-group checkbox-group">
                 <label>
@@ -149,17 +248,30 @@
             </div>
 
             <div class="form-group">
-                <label for="classificacao_vitima">Classificação da Vítima</label>
-                <input type="text" id="classificacao_vitima" name="classificacao_vitima">
-            </div>
+  <label for="classificacoes">Classificação</label>
+  <select id="classificacoes" name="classificacoes">
+    <option value="">Selecione a classificação da vítima</option>
+    <option value="Ferida grave">Ferida grave</option>
+    <option value="Ferida leve">Ferida leve</option>
+    <option value="Óbito">Óbito</option>
+    <option value="Vítima ilesa">Vítima ilesa</option>
+  </select>
+</div>
 
-            <div class="form-group">
-                <label for="destino_vitima">Destino da Vítima</label>
-                <input type="text" id="destino_vitima" name="destino_vitima">
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Viatura e Forma de Acionamento</legend>
+
+<div class="form-group">
+  <label for="destinos">Destino</label>
+  <select id="destinos" name="destinos">
+    <option value="">Selecione o destino da vítima</option>
+    <option value="Encaminhado ao Suporte Avançado">Encaminhado ao Suporte Avançado</option>
+    <option value="Encaminhado ao Suporte Básico">Encaminhado ao Suporte Básico</option>
+    <option value="Entregue ao Hospital">Entregue ao Hospital</option>
+    <option value="Óbito">Óbito</option>
+    <option value="Outro">Outro</option>
+    <option value="Permaneceu no Local após atendimento">Permaneceu no Local após atendimento</option>
+  </select>
+</div>
+
 
             <div class="form-group">
                 <label for="viatura_empregada">Viatura Empregada *</label>
@@ -174,10 +286,10 @@
             <div class="form-group">
                 <label for="forma_acionamento">Forma de Acionamento *</label>
                 <select id="forma_acionamento" name="forma_acionamento" required>
-                    <option value="">Selecione a forma</option>
-                    <option value="Telefone">Telefone</option>
-                    <option value="Rádio">Rádio</option>
-                    <option value="Outros">Outros</option>
+                    <option value="">Selecione a forma de acionamento</option>
+                    <option value="CIODS">CIODS</option>
+                    <option value="CO do Grupamento">CO do Grupamento</option>
+                    <option value="Pessoalmente">Pessoalmente</option>
                 </select>
             </div>
 
@@ -189,37 +301,245 @@
                 <fieldset>
             <legend>Endereço</legend>
 
-            <div class="form-group">
-                <label for="municipio">Município *</label>
-                <input type="text" id="municipio" name="municipio" required>
-            </div>
+<div class="form-group">
+  <label for="municipios-pernambuco">Município</label>
+  <select id="municipios-pernambuco" name="municipios-pernambuco">
+    <option value="">Selecione o município</option>
+    <option value="Abreu e Lima">Abreu e Lima</option>
+    <option value="Afogados da Ingazeira">Afogados da Ingazeira</option>
+    <option value="Afrânio">Afrânio</option>
+    <option value="Agrestina">Agrestina</option>
+    <option value="Água Preta">Água Preta</option>
+    <option value="Águas Belas">Águas Belas</option>
+    <option value="Alagoinha">Alagoinha</option>
+    <option value="Aliança">Aliança</option>
+    <option value="Altinho">Altinho</option>
+    <option value="Amaraji">Amaraji</option>
+    <option value="Angelim">Angelim</option>
+    <option value="Araçoiaba">Araçoiaba</option>
+    <option value="Araripina">Araripina</option>
+    <option value="Arcoverde">Arcoverde</option>
+    <option value="Barra de Guabiraba">Barra de Guabiraba</option>
+    <option value="Barreiros">Barreiros</option>
+    <option value="Belém de Maria">Belém de Maria</option>
+    <option value="Belém do São Francisco">Belém do São Francisco</option>
+    <option value="Belo Jardim">Belo Jardim</option>
+    <option value="Betânia">Betânia</option>
+    <option value="Bezerros">Bezerros</option>
+    <option value="Bodocó">Bodocó</option>
+    <option value="Bom Conselho">Bom Conselho</option>
+    <option value="Bom Jardim">Bom Jardim</option>
+    <option value="Bonito">Bonito</option>
+    <option value="Brejão">Brejão</option>
+    <option value="Brejinho">Brejinho</option>
+    <option value="Brejo da Madre de Deus">Brejo da Madre de Deus</option>
+    <option value="Buenos Aires">Buenos Aires</option>
+    <option value="Buíque">Buíque</option>
+    <option value="Cabo de Santo Agostinho">Cabo de Santo Agostinho</option>
+    <option value="Cabrobó">Cabrobó</option>
+    <option value="Cachoeirinha">Cachoeirinha</option>
+    <option value="Caetés">Caetés</option>
+    <option value="Calçado">Calçado</option>
+    <option value="Calumbi">Calumbi</option>
+    <option value="Camaragibe">Camaragibe</option>
+    <option value="Camocim de São Félix">Camocim de São Félix</option>
+    <option value="Camutanga">Camutanga</option>
+    <option value="Canhotinho">Canhotinho</option>
+    <option value="Capoeiras">Capoeiras</option>
+    <option value="Carnaíba">Carnaíba</option>
+    <option value="Carnaubeira da Penha">Carnaubeira da Penha</option>
+    <option value="Carpina">Carpina</option>
+    <option value="Caruaru">Caruaru</option>
+    <option value="Casinhas">Casinhas</option>
+    <option value="Catende">Catende</option>
+    <option value="Cedro">Cedro</option>
+    <option value="Chã de Alegria">Chã de Alegria</option>
+    <option value="Chã Grande">Chã Grande</option>
+    <option value="Condado">Condado</option>
+    <option value="Correntes">Correntes</option>
+    <option value="Cortês">Cortês</option>
+    <option value="Cumaru">Cumaru</option>
+    <option value="Cupira">Cupira</option>
+    <option value="Custódia">Custódia</option>
+    <option value="Dormentes">Dormentes</option>
+    <option value="Escada">Escada</option>
+    <option value="Exu">Exu</option>
+    <option value="Feira Nova">Feira Nova</option>
+    <option value="Ferreiros">Ferreiros</option>
+    <option value="Flores">Flores</option>
+    <option value="Floresta">Floresta</option>
+    <option value="Frei Miguelinho">Frei Miguelinho</option>
+    <option value="Gameleira">Gameleira</option>
+    <option value="Garanhuns">Garanhuns</option>
+    <option value="Glória do Goitá">Glória do Goitá</option>
+    <option value="Goiana">Goiana</option>
+    <option value="Granito">Granito</option>
+    <option value="Gravatá">Gravatá</option>
+    <option value="Iati">Iati</option>
+    <option value="Ibimirim">Ibimirim</option>
+    <option value="Ibirajuba">Ibirajuba</option>
+    <option value="Igarassu">Igarassu</option>
+    <option value="Iguaracy">Iguaracy</option>
+    <option value="Inajá">Inajá</option>
+    <option value="Ingazeira">Ingazeira</option>
+    <option value="Ipojuca">Ipojuca</option>
+    <option value="Ipubi">Ipubi</option>
+    <option value="Itacuruba">Itacuruba</option>
+    <option value="Itaíba">Itaíba</option>
+    <option value="Ilha de Itamaracá">Ilha de Itamaracá</option>
+    <option value="Itambé">Itambé</option>
+    <option value="Itapetim">Itapetim</option>
+    <option value="Itapissuma">Itapissuma</option>
+    <option value="Itaquitinga">Itaquitinga</option>
+    <option value="Jaboatão dos Guararapes">Jaboatão dos Guararapes</option>
+    <option value="Jaqueira">Jaqueira</option>
+    <option value="Jataúba">Jataúba</option>
+    <option value="Jatobá">Jatobá</option>
+    <option value="João Alfredo">João Alfredo</option>
+    <option value="Joaquim Nabuco">Joaquim Nabuco</option>
+    <option value="Jucati">Jucati</option>
+    <option value="Jupi">Jupi</option>
+    <option value="Jurema">Jurema</option>
+    <option value="Lagoa do Carro">Lagoa do Carro</option>
+    <option value="Lagoa de Itaenga">Lagoa de Itaenga</option>
+    <option value="Lagoa do Ouro">Lagoa do Ouro</option>
+    <option value="Lagoa dos Gatos">Lagoa dos Gatos</option>
+    <option value="Lagoa Grande">Lagoa Grande</option>
+    <option value="Lajedo">Lajedo</option>
+    <option value="Limoeiro">Limoeiro</option>
+    <option value="Macaparana">Macaparana</option>
+    <option value="Machados">Machados</option>
+    <option value="Manari">Manari</option>
+    <option value="Maraial">Maraial</option>
+    <option value="Mirandiba">Mirandiba</option>
+    <option value="Moreilândia">Moreilândia</option>
+    <option value="Moreno">Moreno</option>
+    <option value="Nazaré da Mata">Nazaré da Mata</option>
+    <option value="Olinda">Olinda</option>
+    <option value="Orobó">Orobó</option>
+    <option value="Orocó">Orocó</option>
+    <option value="Ouricuri">Ouricuri</option>
+    <option value="Palmares">Palmares</option>
+    <option value="Palmeirina">Palmeirina</option>
+    <option value="Panelas">Panelas</option>
+    <option value="Paranatama">Paranatama</option>
+    <option value="Parnamirim">Parnamirim</option>
+    <option value="Passira">Passira</option>
+    <option value="Paudalho">Paudalho</option>
+    <option value="Paulista">Paulista</option>
+    <option value="Pedra">Pedra</option>
+    <option value="Pesqueira">Pesqueira</option>
+    <option value="Petrolândia">Petrolândia</option>
+    <option value="Petrolina">Petrolina</option>
+    <option value="Poção">Poção</option>
+    <option value="Pombos">Pombos</option>
+    <option value="Primavera">Primavera</option>
+    <option value="Quipapá">Quipapá</option>
+    <option value="Quixaba">Quixaba</option>
+    <option value="Recife">Recife</option>
+    <option value="Riacho das Almas">Riacho das Almas</option>
+    <option value="Ribeirão">Ribeirão</option>
+    <option value="Rio Formoso">Rio Formoso</option>
+    <option value="Sairé">Sairé</option>
+    <option value="Salgadinho">Salgadinho</option>
+    <option value="Salgueiro">Salgueiro</option>
+    <option value="Saloá">Saloá</option>
+    <option value="Sanharó">Sanharó</option>
+    <option value="Santa Cruz">Santa Cruz</option>
+    <option value="Santa Cruz da Baixa Verde">Santa Cruz da Baixa Verde</option>
+    <option value="Santa Cruz do Capibaribe">Santa Cruz do Capibaribe</option>
+    <option value="Santa Filomena">Santa Filomena</option>
+    <option value="Santa Maria da Boa Vista">Santa Maria da Boa Vista</option>
+    <option value="Santa Maria do Cambucá">Santa Maria do Cambucá</option>
+    <option value="Santa Terezinha">Santa Terezinha</option>
+    <option value="São Benedito do Sul">São Benedito do Sul</option>
+    <option value="São Bento do Una">São Bento do Una</option>
+    <option value="São Caetano">São Caetano</option>
+    <option value="São João">São João</option>
+    <option value="São Joaquim do Monte">São Joaquim do Monte</option>
+    <option value="São José da Coroa Grande">São José da Coroa Grande</option>
+    <option value="São José do Belmonte">São José do Belmonte</option>
+    <option value="São José do Egito">São José do Egito</option>
+    <option value="São Lourenço da Mata">São Lourenço da Mata</option>
+    <option value="São Vicente Férrer">São Vicente Férrer</option>
+    <option value="Serra Talhada">Serra Talhada</option>
+    <option value="Serrita">Serrita</option>
+    <option value="Sertânia">Sertânia</option>
+    <option value="Sirinhaém">Sirinhaém</option>
+    <option value="Solidão">Solidão</option>
+    <option value="Surubim">Surubim</option>
+    <option value="Tabira">Tabira</option>
+    <option value="Tacaimbó">Tacaimbó</option>
+    <option value="Tacaratu">Tacaratu</option>
+    <option value="Tamandaré">Tamandaré</option>
+    <option value="Taquaritinga do Norte">Taquaritinga do Norte</option>
+    <option value="Terezinha">Terezinha</option>
+    <option value="Terra Nova">Terra Nova</option>
+    <option value="Timbaúba">Timbaúba</option>
+    <option value="Toritama">Toritama</option>
+    <option value="Tracunhaém">Tracunhaém</option>
+    <option value="Trindade">Trindade</option>
+    <option value="Triunfo">Triunfo</option>
+    <option value="Tupanatinga">Tupanatinga</option>
+    <option value="Tuparetama">Tuparetama</option>
+    <option value="Venturosa">Venturosa</option>
+    <option value="Verdejante">Verdejante</option>
+    <option value="Vertente do Lério">Vertente do Lério</option>
+    <option value="Vertentes">Vertentes</option>
+    <option value="Vicência">Vicência</option>
+    <option value="Vitória de Santo Antão">Vitória de Santo Antão</option>
+    <option value="Xexéu">Xexéu</option>
+  </select>
+</div>
 
-            <div class="form-group">
-                <label for="regiao">Região *</label>
-                <input type="text" id="regiao" name="regiao" required>
-            </div>
+
+<div class="form-group">
+  <label for="regiao">Região</label>
+  <select id="regiao" name="regiao">
+    <option value="">Selecione a Região</option>
+    <option value="Agreste">Agreste</option>
+    <option value="RMR">RMR</option>
+    <option value="Sertão">Sertão</option>
+    <option value="Zona da Mata">Zona da Mata</option>
+  </select>
+</div>
+
 
             <div class="form-group">
                 <label for="bairro">Bairro *</label>
                 <input type="text" id="bairro" name="bairro" required>
             </div>
 
-            <div class="form-group">
-                <label for="tipo_logradouro">Tipo de Logradouro *</label>
-                <select id="tipo_logradouro" name="tipo_logradouro" required>
-                    <option value="">Selecione</option>
-                    <option value="Rua">Rua</option>
-                    <option value="Avenida">Avenida</option>
-                    <option value="Praça">Praça</option>
-                    <option value="Travessa">Travessa</option>
-                    <option value="Outro">Outro</option>
-                </select>
-            </div>
+<div class="form-group">
+  <label for="tipoLogradouro">Tipo de Logradouro</label>
+  <select id="tipoLogradouro" name="tipoLogradouro">
+    <option value="">Selecione o Tipo de Logradouro</option>
+    <option value="Alameda">Alameda</option>
+    <option value="Avenida">Avenida</option>
+    <option value="Estrada">Estrada</option>
+    <option value="Rua">Rua</option>
+    <option value="Travessa">Travessa</option>
+  </select>
+</div>
 
-            <div class="form-group">
-                <label for="ais">AIS *</label>
-                <input type="text" id="ais" name="ais" required>
-            </div>
+
+<div class="form-group">
+  <label for="ais">AIS</label>
+  <select id="ais" name="ais">
+    <option value="">Selecione a AIS</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+  </select>
+</div>
+
 
             <div class="form-group">
                 <label for="logradouro">Logradouro *</label>
