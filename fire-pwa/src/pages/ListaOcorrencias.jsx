@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import './ListaOcorrencias.css';
+import '../styles/ListaOcorrencias.css';
 
 function ListaOcorrencias() {
   const navigate = useNavigate();

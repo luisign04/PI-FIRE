@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Fire.css';
+import '../styles/Fire.css';
 
 function Fire() {
   const navigate = useNavigate();

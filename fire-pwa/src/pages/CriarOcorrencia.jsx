@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import './CriaOcorrencia.css';
+import '../styles/CriaOcorrencia.css';
 
 function CriarOcorrencia() {
   const navigate = useNavigate();
