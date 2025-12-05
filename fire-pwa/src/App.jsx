@@ -8,7 +8,7 @@ import ListaOcorrencias from './pages/ListaOcorrencias';
 import OcorrenciaSucesso from './pages/OcorrenciaSucesso';
 import Fire from './pages/Fire';
 import Localizacao from './pages/Localizacao';
-import './App.css';
+import './styles/App.css';
 
 // Componente de rota protegida
 function ProtectedRoute({ children }) {
