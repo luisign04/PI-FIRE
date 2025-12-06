@@ -2,7 +2,7 @@ import React from "react";
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { OcorrenciasProvider } from './contexts/OcorrenciasContext';
-import { AuthProvider } from './contexts/AuthContext'; // 🆕 ADICIONAR
+import { AuthProvider } from './contexts/AuthContext';
 
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -13,6 +13,7 @@ import OcorrenciaSucesso from './pages/OcorrenciaSucesso';
 import Fire from './pages/Fire';
 import Localizacao from './pages/Localizacao';
 import Usuario from './pages/Usuario';
+import DetalhesOcorrencia from './pages/DetalhesOcorrencia';
 import './styles/App.css';
 
 // Componente de rota protegida
@@ -105,6 +106,15 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+
+            <Route 
+  path="/detalhes-ocorrencia/:id" 
+  element={
+    <ProtectedRoute>
+      <DetalhesOcorrencia />
+    </ProtectedRoute>
+  } 
+/>
 
             {/* 🆕 ADICIONAR ROTA DO USUÁRIO */}
             <Route 

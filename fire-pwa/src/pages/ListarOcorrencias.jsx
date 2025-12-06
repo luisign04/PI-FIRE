@@ -1,5 +1,5 @@
 // src/pages/ListarOcorrencias.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import useScrollToTop from "../hooks/useScrollToTop";
 import {
@@ -12,7 +12,6 @@ import {
   Clock,
   Info,
   CalendarDays,
-  CheckCircle,
   Edit,
   Trash2,
   FileDown,
@@ -21,23 +20,18 @@ import {
 } from "lucide-react";
 import Header from "../components/Header";
 import { useOcorrenciasContext } from "../contexts/OcorrenciasContext";
+import { AuthContext } from "../contexts/AuthContext";
 import "../styles/ListarOcorrencias.css";
 
 export default function ListarOcorrencias() {
   useScrollToTop();
   const navigate = useNavigate();
   const { ocorrencias, loading, removerOcorrencia } = useOcorrenciasContext();
+  const { isAdmin } = useContext(AuthContext);
 
   const [dataFiltro, setDataFiltro] = useState("");
   const [selectedOccurrences, setSelectedOccurrences] = useState([]);
   const [exportModalVisible, setExportModalVisible] = useState(false);
-
-  // Verificar se usuário é admin (adapte conforme sua lógica)
-  const isAdmin = () => {
-    // Implemente sua lógica de verificação de admin
-    const role = localStorage.getItem('userRole');
-    return role === 'admin';
-  };
 
   const ocorrenciasFiltradas = ocorrencias.filter((ocorrencia) => {
     if (!dataFiltro) return true;
@@ -53,6 +47,11 @@ export default function ListarOcorrencias() {
   // Navegação
   const handleDashboard = () => navigate("/dashboard");
   const handleNovaOcorrencia = () => navigate("/criar-ocorrencia");
+  
+  // Navegar para detalhes
+  const handleVerDetalhes = (ocorrencia) => {
+    navigate(`/detalhes-ocorrencia/${ocorrencia.id}`);
+  };
 
   // Deletar ocorrência
   const handleDelete = async (ocorrencia) => {
@@ -72,10 +71,6 @@ export default function ListarOcorrencias() {
   };
 
   // Seleção
-  const handleLongPress = (id) => {
-    toggleOccurrenceSelection(id);
-  };
-
   const toggleOccurrenceSelection = (id) => {
     setSelectedOccurrences((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
@@ -86,11 +81,7 @@ export default function ListarOcorrencias() {
     if (selectedOccurrences.length === ocorrenciasFiltradas.length) {
       setSelectedOccurrences([]);
     } else {
-      setSelectedOccurrences(
-        ocorrenciasFiltradas.map(
-          (occ) => occ.id || `ocorrencia-${ocorrenciasFiltradas.indexOf(occ)}`
-        )
-      );
+      setSelectedOccurrences(ocorrenciasFiltradas.map((occ) => occ.id));
     }
   };
 
@@ -98,11 +89,7 @@ export default function ListarOcorrencias() {
   const handleExportCSV = async () => {
     const selectedData =
       selectedOccurrences.length > 0
-        ? ocorrenciasFiltradas.filter((occ) =>
-            selectedOccurrences.includes(
-              occ.id || `ocorrencia-${ocorrenciasFiltradas.indexOf(occ)}`
-            )
-          )
+        ? ocorrenciasFiltradas.filter((occ) => selectedOccurrences.includes(occ.id))
         : ocorrenciasFiltradas;
 
     if (selectedData.length === 0) {
@@ -111,8 +98,40 @@ export default function ListarOcorrencias() {
     }
 
     try {
-      // Implementar lógica de exportação CSV
-      console.log("Exportando CSV:", selectedData);
+      // Criar CSV
+      const headers = [
+        'ID', 'Data/Hora', 'Tipo', 'Local', 'Status', 'Região', 
+        'Número Aviso', 'Grupamento', 'Município', 'Bairro'
+      ];
+      
+      const csvRows = [
+        headers.join(','),
+        ...selectedData.map(occ => [
+          occ.id,
+          occ.dataHora || occ.dataCriacao,
+          getTipoOcorrencia(occ),
+          getLocalOcorrencia(occ).replace(/,/g, ';'),
+          getStatusText(occ) || '',
+          occ.regiao || '',
+          occ.numeroAviso || '',
+          occ.grupamento || '',
+          occ.municipio || '',
+          occ.bairro || ''
+        ].join(','))
+      ];
+
+      const csvContent = csvRows.join('\n');
+      const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      
+      link.setAttribute('href', url);
+      link.setAttribute('download', `ocorrencias_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
       setExportModalVisible(false);
       setSelectedOccurrences([]);
       alert("CSV exportado com sucesso!");
@@ -123,30 +142,8 @@ export default function ListarOcorrencias() {
   };
 
   const handleExportPDF = async () => {
-    const selectedData =
-      selectedOccurrences.length > 0
-        ? ocorrenciasFiltradas.filter((occ) =>
-            selectedOccurrences.includes(
-              occ.id || `ocorrencia-${ocorrenciasFiltradas.indexOf(occ)}`
-            )
-          )
-        : ocorrenciasFiltradas;
-
-    if (selectedData.length === 0) {
-      alert("Não há ocorrências para exportar");
-      return;
-    }
-
-    try {
-      // Implementar lógica de exportação PDF
-      console.log("Exportando PDF:", selectedData);
-      setExportModalVisible(false);
-      setSelectedOccurrences([]);
-      alert("PDF exportado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao exportar PDF:", error);
-      alert("Falha ao exportar PDF");
-    }
+    alert("Funcionalidade de exportação PDF em desenvolvimento");
+    setExportModalVisible(false);
   };
 
   // Funções auxiliares
@@ -363,17 +360,16 @@ export default function ListarOcorrencias() {
             )}
           </div>
         ) : (
-          ocorrenciasFiltradas.map((ocorrencia, idx) => {
-            const occurrenceId = ocorrencia.id || `ocorrencia-${idx}`;
-            const isSelected = selectedOccurrences.includes(occurrenceId);
+          ocorrenciasFiltradas.map((ocorrencia) => {
+            const isSelected = selectedOccurrences.includes(ocorrencia.id);
             const statusText = getStatusText(ocorrencia);
             const statusColor = getStatusColor(statusText);
 
             return (
               <div
-                key={occurrenceId}
+                key={ocorrencia.id}
                 className={`ocorrencia-card ${isSelected ? "selected" : ""}`}
-                onClick={() => navigate(`/detalhes-ocorrencia/${occurrenceId}`, { state: { ocorrencia } })}
+                onClick={() => handleVerDetalhes(ocorrencia)}
               >
                 {/* Checkbox de seleção */}
                 <div className="selection-checkbox">
@@ -382,7 +378,7 @@ export default function ListarOcorrencias() {
                     checked={isSelected}
                     onChange={(e) => {
                       e.stopPropagation();
-                      toggleOccurrenceSelection(occurrenceId);
+                      toggleOccurrenceSelection(ocorrencia.id);
                     }}
                     onClick={(e) => e.stopPropagation()}
                   />
