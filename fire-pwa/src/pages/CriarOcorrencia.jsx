@@ -183,7 +183,7 @@ function CriarOcorrencia() {
           </div>
         </fieldset>
 
-        <fieldset>
+<fieldset>
           <legend>Dados da Ocorrência</legend>
 
           <div className="form-group">
@@ -280,27 +280,45 @@ function CriarOcorrencia() {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="motivo_nao_atendida">Ocorrência não atendida: (motivo)</label>
-            <textarea 
-              id="motivo_nao_atendida" 
-              name="motivo_nao_atendida" 
-              rows="3" 
-              value={formData.motivo_nao_atendida} 
-              onChange={handleChange}
-            ></textarea>
-          </div>
+          {/* 🔴 CAMPO CONDICIONAL: Aparece apenas se "Não Atendida" for selecionada */}
+          {(formData.situacao_ocorrencia === 'nao_atendida' || 
+            formData.situacao_ocorrencia === 'Não Atendida' ||
+            formData.situacao_ocorrencia === 'Não Atendidas') && (
+            <div className="form-group conditional-field nao-atendida">
+              <label htmlFor="motivo_nao_atendida">
+                ⚠️ Ocorrência não atendida: (motivo) *
+              </label>
+              <textarea 
+                id="motivo_nao_atendida" 
+                name="motivo_nao_atendida" 
+                rows="3" 
+                value={formData.motivo_nao_atendida} 
+                onChange={handleChange}
+                required
+                placeholder="Descreva o motivo da ocorrência não ter sido atendida..."
+              ></textarea>
+            </div>
+          )}
 
-          <div className="form-group">
-            <label htmlFor="motivo_sem_atuacao">Ocorrência sem atuação: (motivo)</label>
-            <textarea 
-              id="motivo_sem_atuacao" 
-              name="motivo_sem_atuacao" 
-              rows="3" 
-              value={formData.motivo_sem_atuacao} 
-              onChange={handleChange}
-            ></textarea>
-          </div>
+          {/* 🔴 CAMPO CONDICIONAL: Aparece apenas se "Sem Atuação" for selecionada */}
+          {(formData.situacao_ocorrencia === 'sem_atuacao' || 
+            formData.situacao_ocorrencia === 'Sem Atuação' ||
+            formData.situacao_ocorrencia === 'sem_atuação') && (
+            <div className="form-group conditional-field sem-atuacao">
+              <label htmlFor="motivo_sem_atuacao">
+                ⚠️ Ocorrência sem atuação: (motivo) *
+              </label>
+              <textarea 
+                id="motivo_sem_atuacao" 
+                name="motivo_sem_atuacao" 
+                rows="3" 
+                value={formData.motivo_sem_atuacao} 
+                onChange={handleChange}
+                required
+                placeholder="Descreva o motivo da ocorrência não ter tido atuação..."
+              ></textarea>
+            </div>
+          )}
 
           <div className="form-group">
             <label htmlFor="horario_saida_local">Horário de Saída do Local</label>
@@ -315,6 +333,7 @@ function CriarOcorrencia() {
         </fieldset>
 
         <fieldset>
+
           <legend>Informações da Vítima</legend>
 
 
@@ -526,17 +545,27 @@ function CriarOcorrencia() {
             </select>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="ais">AIS *</label>
-            <input 
-              type="text" 
-              id="ais" 
-              name="ais" 
-              value={formData.ais} 
-              onChange={handleChange} 
-              required 
-            />
-          </div>
+<div className="form-group">
+  <label htmlFor="ais">AIS *</label>
+  <select
+    id="ais"
+    name="ais"
+    value={formData.ais}
+    onChange={handleChange}
+    required
+  >
+    <option value="">Selecione o AIS</option>
+    {[...Array(10)].map((_, i) => {
+      const num = String(i + 1).padStart(2, "0"); // gera 01, 02, ..., 10
+      return (
+        <option key={num} value={num}>
+          {num}
+        </option>
+      );
+    })}
+  </select>
+</div>
+
 
           <div className="form-group">
             <label htmlFor="logradouro">Logradouro *</label>
