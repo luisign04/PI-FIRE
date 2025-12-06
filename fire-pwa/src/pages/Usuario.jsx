@@ -3,6 +3,7 @@ import React from 'react';
 import { AuthContext } from '../contexts/AuthContext.jsx';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 // Componente reutilizável para as linhas de informação
 const InfoRow = ({ label, value }) => (
@@ -14,6 +15,7 @@ const InfoRow = ({ label, value }) => (
 
 
 export default function Usuario() {
+  useScrollToTop();
   const { logout, user } = React.useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
