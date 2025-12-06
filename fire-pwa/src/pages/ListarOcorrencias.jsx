@@ -1,133 +1,522 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import '../styles/ListarOcorrencias.css';
+// src/pages/ListarOcorrencias.jsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  List,
+  Calendar,
+  X,
+  LayoutDashboard,
+  SearchX,
+  MapPin,
+  Clock,
+  Info,
+  CalendarDays,
+  CheckCircle,
+  Edit,
+  Trash2,
+  FileDown,
+  Table,
+  FileText,
+} from "lucide-react";
+import Header from "../components/Header";
+import { useOcorrenciasContext } from "../contexts/OcorrenciasContext";
+import "../styles/ListarOcorrencias.css";
 
-function ListarOcorrencias() {
+export default function ListarOcorrencias() {
   const navigate = useNavigate();
-  const [ocorrencias, setOcorrencias] = useState([]);
+  const { ocorrencias, loading, removerOcorrencia } = useOcorrenciasContext();
 
-  useEffect(() => {
-    // Mock de dados
-    const mock = [
-      {
-        id: 101,
-        titulo: "Incêndio em São José",
-        detalhe: "Próx ao galpão 02 do cais",
-        data: "20/10",
-        hora: "14:38",
-        tipo: "Incêndio",
-        registradoPor: "Sgt. Silva"
-      },
-      {
-        id: 102,
-        titulo: "Acidente em Getúlio Vargas",
-        detalhe: "Em frente à faculdade",
-        data: "19/10",
-        hora: "13:12",
-        tipo: "Resgate",
-        registradoPor: "Cb. Mendes"
-      },
-      {
-        id: 103,
-        titulo: "Rua do Caririños",
-        detalhe: "Cabo preso a árvore",
-        data: "18/10",
-        hora: "10:12",
-        tipo: "Prevenção",
-        registradoPor: "Ten. Costa"
-      }
-    ];
-    setOcorrencias(mock);
-  }, []);
+  const [dataFiltro, setDataFiltro] = useState("");
+  const [selectedOccurrences, setSelectedOccurrences] = useState([]);
+  const [exportModalVisible, setExportModalVisible] = useState(false);
 
-  const handleEdit = (id) => {
-    alert(`EDITAR OCORRÊNCIA: ID ${id}\nRedirecionando...`);
-    // navigate(`/editar-ocorrencia/${id}`);
+  // Verificar se usuário é admin (adapte conforme sua lógica)
+  const isAdmin = () => {
+    // Implemente sua lógica de verificação de admin
+    const role = localStorage.getItem('userRole');
+    return role === 'admin';
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm(`Tem certeza que deseja DELETAR a ocorrência ID ${id}?`)) {
+  const ocorrenciasFiltradas = ocorrencias.filter((ocorrencia) => {
+    if (!dataFiltro) return true;
+    if (ocorrencia.dataHora) {
+      return ocorrencia.dataHora.startsWith(dataFiltro);
+    }
+    if (ocorrencia.dataCriacao) {
+      return ocorrencia.dataCriacao.startsWith(dataFiltro);
+    }
+    return false;
+  });
+
+  // Navegação
+  const handleDashboard = () => navigate("/dashboard");
+  const handleNovaOcorrencia = () => navigate("/criar-ocorrencia");
+
+  // Deletar ocorrência
+  const handleDelete = async (ocorrencia) => {
+    if (window.confirm(`Deseja realmente excluir a ocorrência "${getTipoOcorrencia(ocorrencia)}"?\n\nEsta ação não pode ser desfeita.`)) {
+      const result = await removerOcorrencia(ocorrencia.id);
+      if (result.success) {
+        alert("Ocorrência excluída com sucesso!");
+      } else {
+        alert(result.message || "Falha ao excluir ocorrência");
+      }
+    }
+  };
+
+  // Editar ocorrência
+  const handleEdit = (ocorrencia) => {
+    navigate("/editar-ocorrencia", { state: { ocorrencia } });
+  };
+
+  // Seleção
+  const handleLongPress = (id) => {
+    toggleOccurrenceSelection(id);
+  };
+
+  const toggleOccurrenceSelection = (id) => {
+    setSelectedOccurrences((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedOccurrences.length === ocorrenciasFiltradas.length) {
+      setSelectedOccurrences([]);
+    } else {
+      setSelectedOccurrences(
+        ocorrenciasFiltradas.map(
+          (occ) => occ.id || `ocorrencia-${ocorrenciasFiltradas.indexOf(occ)}`
+        )
+      );
+    }
+  };
+
+  // Exportação
+  const handleExportCSV = async () => {
+    const selectedData =
+      selectedOccurrences.length > 0
+        ? ocorrenciasFiltradas.filter((occ) =>
+            selectedOccurrences.includes(
+              occ.id || `ocorrencia-${ocorrenciasFiltradas.indexOf(occ)}`
+            )
+          )
+        : ocorrenciasFiltradas;
+
+    if (selectedData.length === 0) {
+      alert("Não há ocorrências para exportar");
       return;
     }
-    setOcorrencias(prev => prev.filter(o => o.id !== id));
+
+    try {
+      // Implementar lógica de exportação CSV
+      console.log("Exportando CSV:", selectedData);
+      setExportModalVisible(false);
+      setSelectedOccurrences([]);
+      alert("CSV exportado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao exportar CSV:", error);
+      alert("Falha ao exportar CSV");
+    }
   };
 
+  const handleExportPDF = async () => {
+    const selectedData =
+      selectedOccurrences.length > 0
+        ? ocorrenciasFiltradas.filter((occ) =>
+            selectedOccurrences.includes(
+              occ.id || `ocorrencia-${ocorrenciasFiltradas.indexOf(occ)}`
+            )
+          )
+        : ocorrenciasFiltradas;
+
+    if (selectedData.length === 0) {
+      alert("Não há ocorrências para exportar");
+      return;
+    }
+
+    try {
+      // Implementar lógica de exportação PDF
+      console.log("Exportando PDF:", selectedData);
+      setExportModalVisible(false);
+      setSelectedOccurrences([]);
+      alert("PDF exportado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao exportar PDF:", error);
+      alert("Falha ao exportar PDF");
+    }
+  };
+
+  // Funções auxiliares
+  const getStatusColor = (status) => {
+    if (!status) return null;
+
+    const statusNormalizado = status
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    switch (statusNormalizado) {
+      case "atendida":
+      case "atendidas":
+        return "#4CAF50";
+      case "nao atendida":
+      case "não atendida":
+      case "nao atendidas":
+      case "não atendidas":
+        return "#F44336";
+      case "cancelada":
+        return "#757575";
+      case "sem atuacao":
+      case "sem atuação":
+        return "#FF9800";
+      default:
+        return null;
+    }
+  };
+
+  const formatarDataHora = (dataHoraString) => {
+    if (!dataHoraString) return "Data não informada";
+    try {
+      const data = new Date(dataHoraString);
+      return data.toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch (error) {
+      return "Data inválida";
+    }
+  };
+
+  const extrairHora = (dataHoraString) => {
+    if (!dataHoraString) return "";
+    try {
+      const data = new Date(dataHoraString);
+      return data.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch (error) {
+      return "";
+    }
+  };
+
+  const getStatusText = (ocorrencia) => {
+    const status = ocorrencia.status || ocorrencia.situacao || "";
+
+    const statusNormalizado = status
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    const statusPermitidos = [
+      "atendida",
+      "atendidas",
+      "nao atendida",
+      "nao atendidas",
+      "cancelada",
+      "sem atuacao",
+    ];
+
+    if (statusPermitidos.includes(statusNormalizado)) {
+      return status;
+    }
+
+    return null;
+  };
+
+  const getTipoOcorrencia = (ocorrencia) => {
+    if (ocorrencia.tipo) return ocorrencia.tipo;
+    if (ocorrencia.natureza) return ocorrencia.natureza;
+    if (ocorrencia.grupoOcorrencia) return ocorrencia.grupoOcorrencia;
+    return "Ocorrência";
+  };
+
+  const getLocalOcorrencia = (ocorrencia) => {
+    if (ocorrencia.localizacao) return ocorrencia.localizacao;
+    if (ocorrencia.logradouro) {
+      return `${ocorrencia.tipoLogradouro || ""} ${ocorrencia.logradouro}${
+        ocorrencia.numero ? `, ${ocorrencia.numero}` : ""
+      }`.trim();
+    }
+    if (ocorrencia.bairro) return ocorrencia.bairro;
+    if (ocorrencia.municipio) return ocorrencia.municipio;
+    return "Local não informado";
+  };
+
+  if (loading) {
+    return (
+      <div className="listar-container">
+        <Header />
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Carregando ocorrências...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="lista-ocorrencias-page">
-      <Header title="Listagem de Ocorrências" />
+    <div className="listar-container">
+      <Header />
 
-      <Link to="/criar-ocorrencia" className="fab-button" title="Registrar Nova Ocorrência">
-        <i className="fas fa-plus"></i>
-      </Link>
+      {/* Header de seleção */}
+      {selectedOccurrences.length > 0 && (
+        <div className="selection-header">
+          <p className="selection-text">
+            {selectedOccurrences.length} ocorrência(s) selecionada(s)
+          </p>
+          <div className="selection-actions">
+            <button onClick={toggleSelectAll} className="selection-button">
+              {selectedOccurrences.length === ocorrenciasFiltradas.length
+                ? "Desmarcar todas"
+                : "Selecionar todas"}
+            </button>
+            <button
+              onClick={() => setSelectedOccurrences([])}
+              className="selection-button cancel"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
 
-      <main className="layout">
-        <aside className="filtros">
-          <h3>Filtros Rápidos</h3>
-          <button className="chip">Data</button>
-          <button className="chip">Horário</button>
-          <button className="chip">Tipo</button>
-          <button className="chip">Região</button>
-          <button className="chip">Status</button>
-        </aside>
+      <div className="content">
+        {/* Placeholder Section */}
+        <div className="placeholder-section">
+          <List size={80} color="#bc010c" />
+          <h1 className="placeholder-title">Ocorrências</h1>
+          <p className="placeholder-text">
+            Lista de todas as ocorrências registradas no sistema
+          </p>
+          <p className="contador">
+            {ocorrenciasFiltradas.length} de {ocorrencias.length} ocorrências
+            {selectedOccurrences.length > 0 &&
+              ` • ${selectedOccurrences.length} selecionadas`}
+          </p>
 
-        <section className="lista">
-          <h2 className="titulo-lista">Todas as Ocorrências</h2>
+          {selectedOccurrences.length === 0 && (
+            <p className="export-hint">
+              Clique no checkbox para selecionar ocorrências para exportação
+            </p>
+          )}
+        </div>
 
-          {ocorrencias.length === 0 ? (
-            <div className="empty-message">Nenhuma ocorrência encontrada.</div>
-          ) : (
-            <ul className="ocorrencias">
-              {ocorrencias.map(ocorrencia => (
-                <li key={ocorrencia.id} className="item" data-id={ocorrencia.id}>
-                  <div className="icone">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="white" aria-hidden="true">
-                      <path d="M13 3s-1 2-3 3c0 0 2-1 3-1 0 0-4 3-4 7a5 5 0 1 0 10 0c0-3-2-5-2-5s.5 2.5-1 4c0 0 .5-2.5-1-5-.5-1-1-2-1-3z"/>
-                    </svg>
+        {/* Filtro por data */}
+        <div className="filtro-container">
+          <Calendar size={20} color="#bc010c" />
+          <input
+            type="text"
+            className="filtro-input"
+            placeholder="Filtrar por data (AAAA-MM-DD)"
+            value={dataFiltro}
+            onChange={(e) => setDataFiltro(e.target.value)}
+          />
+          {dataFiltro && (
+            <button
+              onClick={() => setDataFiltro("")}
+              className="limpar-filtro"
+            >
+              <X size={20} />
+            </button>
+          )}
+        </div>
+
+        {/* Botões de ação */}
+        <div className="action-buttons">
+          <button className="dashboard-button" onClick={handleDashboard}>
+            <LayoutDashboard size={20} />
+            <span>Ver Dashboard</span>
+          </button>
+
+          <button
+            className="export-button"
+            onClick={() => setExportModalVisible(true)}
+          >
+            <FileDown size={20} />
+            <span>Exportar</span>
+          </button>
+        </div>
+
+        {/* Lista de ocorrências */}
+        {ocorrenciasFiltradas.length === 0 ? (
+          <div className="sem-resultados">
+            <SearchX size={60} color="#ccc" />
+            <p className="sem-resultados-text">
+              {dataFiltro
+                ? `Nenhuma ocorrência encontrada para ${dataFiltro}`
+                : "Nenhuma ocorrência registrada"}
+            </p>
+            {ocorrencias.length === 0 && (
+              <button
+                className="nova-ocorrencia-button"
+                onClick={handleNovaOcorrencia}
+              >
+                Registrar Primeira Ocorrência
+              </button>
+            )}
+          </div>
+        ) : (
+          ocorrenciasFiltradas.map((ocorrencia, idx) => {
+            const occurrenceId = ocorrencia.id || `ocorrencia-${idx}`;
+            const isSelected = selectedOccurrences.includes(occurrenceId);
+            const statusText = getStatusText(ocorrencia);
+            const statusColor = getStatusColor(statusText);
+
+            return (
+              <div
+                key={occurrenceId}
+                className={`ocorrencia-card ${isSelected ? "selected" : ""}`}
+                onClick={() => navigate(`/detalhes-ocorrencia/${occurrenceId}`, { state: { ocorrencia } })}
+              >
+                {/* Checkbox de seleção */}
+                <div className="selection-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      toggleOccurrenceSelection(occurrenceId);
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </div>
+
+                <div className="ocorrencia-content">
+                  {/* Header */}
+                  <div className="ocorrencia-header">
+                    <h3 className="ocorrencia-tipo">
+                      {getTipoOcorrencia(ocorrencia)}
+                    </h3>
+
+                    {statusText && statusColor && (
+                      <span
+                        className="status-badge"
+                        style={{ backgroundColor: statusColor }}
+                      >
+                        {statusText}
+                      </span>
+                    )}
                   </div>
-                  <div className="texto">
-                    <div className="linha1">
-                      <strong className="titulo">{ocorrencia.titulo}</strong>
-                      <span className="hora">{ocorrencia.data} - {ocorrencia.hora}</span>
-                    </div>
-                    <div className="linha2">
-                      <span className="detalhe">{ocorrencia.detalhe}</span>
-                      <span className="badge">{ocorrencia.tipo}</span>
-                    </div>
-                    <div className="linha3">
-                      <span className="registrado-por">
-                        Registrado por: <strong>{ocorrencia.registradoPor}</strong>
+
+                  {ocorrencia.descricao && (
+                    <p className="ocorrencia-descricao">
+                      {ocorrencia.descricao}
+                    </p>
+                  )}
+
+                  <div className="ocorrencia-info">
+                    <MapPin size={16} />
+                    <span>{getLocalOcorrencia(ocorrencia)}</span>
+                  </div>
+
+                  <div className="ocorrencia-info">
+                    <Clock size={16} />
+                    <span>
+                      {extrairHora(
+                        ocorrencia.dataHora || ocorrencia.dataCriacao
+                      )}
+                    </span>
+                  </div>
+
+                  {(ocorrencia.regiao ||
+                    ocorrencia.numeroAviso ||
+                    ocorrencia.grupamento) && (
+                    <div className="ocorrencia-info">
+                      <Info size={16} />
+                      <span className="ocorrencia-detalhes">
+                        {[
+                          ocorrencia.regiao,
+                          ocorrencia.numeroAviso,
+                          ocorrencia.grupamento,
+                        ]
+                          .filter(Boolean)
+                          .join(" • ")}
                       </span>
                     </div>
+                  )}
+
+                  <div className="ocorrencia-info">
+                    <CalendarDays size={16} />
+                    <span className="ocorrencia-data">
+                      {formatarDataHora(
+                        ocorrencia.dataHora || ocorrencia.dataCriacao
+                      )}
+                    </span>
                   </div>
-                  <div className="acoes">
-                    <button
-                      className="botao-editar"
-                      onClick={() => handleEdit(ocorrencia.id)}
-                      title="Editar Ocorrência"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83l3.75 3.75l1.83-1.83z"/>
-                      </svg>
-                    </button>
-                    <button
-                      className="botao-deletar"
-                      onClick={() => handleDelete(ocorrencia.id)}
-                      title="Deletar Ocorrência"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12l1.41 1.41L13.41 14l2.12 2.12l-1.41 1.41L12 15.41l-2.12 2.12l-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/>
-                      </svg>
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </main>
+
+                  {/* Botões Admin */}
+                  {isAdmin() && (
+                    <div className="admin-actions">
+                      <button
+                        className="edit-button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEdit(ocorrencia);
+                        }}
+                      >
+                        <Edit size={18} />
+                        <span>Editar</span>
+                      </button>
+
+                      <button
+                        className="delete-button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(ocorrencia);
+                        }}
+                      >
+                        <Trash2 size={18} />
+                        <span>Excluir</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Modal de Exportação */}
+      {exportModalVisible && (
+        <div className="modal-overlay" onClick={() => setExportModalVisible(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title">Exportar Ocorrências</h2>
+            <p className="modal-subtitle">
+              {selectedOccurrences.length > 0
+                ? `Exportar ${selectedOccurrences.length} ocorrência(s) selecionada(s)`
+                : "Exportar todas as ocorrências visíveis"}
+            </p>
+            <p className="modal-info">
+              A exportação incluirá TODOS os dados detalhados das ocorrências
+            </p>
+
+            <div className="modal-buttons">
+              <button className="modal-button csv-button" onClick={handleExportCSV}>
+                <Table size={24} />
+                <span>Exportar CSV</span>
+              </button>
+
+              <button className="modal-button pdf-button" onClick={handleExportPDF}>
+                <FileText size={24} />
+                <span>Exportar PDF</span>
+              </button>
+            </div>
+
+            <button
+              className="cancel-button"
+              onClick={() => setExportModalVisible(false)}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
-export default ListarOcorrencias;
