@@ -1,5 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
 import "../styles/OcorrenciaSucesso.css";
 
 const OcorrenciaSucesso = () => {
@@ -53,5 +54,7 @@ const OcorrenciaSucesso = () => {
     </div>
   );
 };
+
+console.log("Render OcorrenciaSucesso");
 
 export default OcorrenciaSucesso;
