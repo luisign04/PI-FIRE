@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+// ✅ ADICIONAR ESTA LINHA
+import { OcorrenciasProvider } from './contexts/OcorrenciasContext';
+
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
@@ -30,75 +33,78 @@ function ProtectedRoute({ children }) {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        
-        <Route 
-          path="/home" 
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } 
-        />
-        
-        <Route 
-          path="/dashboard" 
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } 
-        />
-        
-        <Route 
-          path="/criar-ocorrencia" 
-          element={
-            <ProtectedRoute>
-              <CriarOcorrencia />
-            </ProtectedRoute>
-          } 
-        />
-        
-        <Route 
-          path="/listar-ocorrencias" 
-          element={
-            <ProtectedRoute>
-              <ListarOcorrencias />
-            </ProtectedRoute>
-          } 
-        />
-        
-        <Route 
-          path="/ocorrencia-sucesso" 
-          element={
-            <ProtectedRoute>
-              <OcorrenciaSucesso />
-            </ProtectedRoute>
-          } 
-        />
-        
-        <Route 
-          path="/fire" 
-          element={
-            <ProtectedRoute>
-              <Fire />
-            </ProtectedRoute>
-          } 
-        />
-        
-        <Route 
-          path="/localizacao" 
-          element={
-            <ProtectedRoute>
-              <Localizacao />
-            </ProtectedRoute>
-          } 
-        />
-      </Routes>
-    </Router>
+    // ✅ ENVOLVER TUDO COM O OcorrenciasProvider
+    <OcorrenciasProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          
+          <Route 
+            path="/home" 
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/criar-ocorrencia" 
+            element={
+              <ProtectedRoute>
+                <CriarOcorrencia />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/listar-ocorrencias" 
+            element={
+              <ProtectedRoute>
+                <ListarOcorrencias />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/ocorrencia-sucesso" 
+            element={
+              <ProtectedRoute>
+                <OcorrenciaSucesso />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/fire" 
+            element={
+              <ProtectedRoute>
+                <Fire />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/localizacao" 
+            element={
+              <ProtectedRoute>
+                <Localizacao />
+              </ProtectedRoute>
+            } 
+          />
+        </Routes>
+      </Router>
+    </OcorrenciasProvider>
   );
 }
 
