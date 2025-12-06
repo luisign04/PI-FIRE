@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { useOcorrenciasContext } from '../contexts/OcorrenciasContext';
 import {
   REGIOES,
   GRUPAMENTOS,
@@ -19,6 +20,7 @@ import '../styles/CriaOcorrencia.css';
 
 function CriarOcorrencia() {
   const navigate = useNavigate();
+  const { adicionarOcorrencia } = useOcorrenciasContext();
   const [formData, setFormData] = useState({
     numero_aviso: '',
     diretoria: '',
@@ -62,11 +64,59 @@ function CriarOcorrencia() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem('ultimaOcorrencia', JSON.stringify(formData));
-    alert('Ocorrência registrada com sucesso!');
-    navigate('/ocorrencia-sucesso');
+    
+    try {
+      // Criar objeto de ocorrência com os dados do formulário
+      const novaOcorrencia = {
+        numeroAviso: formData.numero_aviso,
+        diretoria: formData.diretoria,
+        grupamento: formData.grupamento,
+        pontoBase: formData.ponto_base,
+        dataHora: formData.data_acionamento,
+        natureza: formData.natureza_ocorrencia,
+        grupoOcorrencia: formData.grupo_ocorrencia,
+        subgrupoOcorrencia: formData.subgrupo_ocorrencia,
+        situacao: formData.situacao_ocorrencia,
+        status: formData.situacao_ocorrencia,
+        ocorrenciaNaoAtendida: formData.ocorrencia_nao_atendida,
+        horarioSaidaQuartel: formData.horario_saida_quartel,
+        horarioChegadaLocal: formData.horario_chegada_local,
+        motivoNaoAtendida: formData.motivo_nao_atendida,
+        motivoSemAtuacao: formData.motivo_sem_atuacao,
+        horarioSaidaLocal: formData.horario_saida_local,
+        vitimaEnvolvida: formData.vitima_envolvida,
+        sexoVitima: formData.sexo_vitima,
+        idadeVitima: formData.idade_vitima,
+        classificacaoVitima: formData.classificacao_vitima,
+        destinoVitima: formData.destino_vitima,
+        viaturaEmpregada: formData.viatura_empregada,
+        numeroViatura: formData.numero_viatura,
+        formaAcionamento: formData.forma_acionamento,
+        localAcionamento: formData.local_acionamento,
+        municipio: formData.municipio,
+        regiao: formData.regiao,
+        bairro: formData.bairro,
+        tipoLogradouro: formData.tipo_logradouro,
+        ais: formData.ais,
+        logradouro: formData.logradouro,
+        latitude: formData.latitude,
+        longitude: formData.longitude,
+        // Adicionar campos de localização consolidados
+        localizacao: `${formData.tipo_logradouro || ''} ${formData.logradouro || ''} ${formData.bairro ? ', ' + formData.bairro : ''} ${formData.municipio ? ', ' + formData.municipio : ''}`.trim(),
+        tipo: formData.natureza_ocorrencia || formData.grupo_ocorrencia
+      };
+
+      // Adicionar ocorrência ao contexto
+      await adicionarOcorrencia(novaOcorrencia);
+      
+      alert('Ocorrência registrada com sucesso!');
+      navigate('/ocorrencia-sucesso');
+    } catch (error) {
+      console.error('Erro ao registrar ocorrência:', error);
+      alert('Erro ao registrar ocorrência. Tente novamente.');
+    }
   };
 
   const handleReset = () => {
