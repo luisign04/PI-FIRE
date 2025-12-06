@@ -136,11 +136,7 @@ function CriarOcorrencia() {
               required
             >
               <option value="">Selecione a diretoria</option>
-              <option value="Norte">Norte</option>
-              <option value="Sul">Sul</option>
-              <option value="Leste">Leste</option>
-              <option value="Oeste">Oeste</option>
-              <option value="Central">Central</option>
+              <option value="DIM">DIM</option>
             </select>
           </div>
 
