@@ -256,7 +256,9 @@ export default function DetalhesOcorrencia() {
         .detalhes-container {
           min-height: 100vh;
           background-color: #f5f5f5;
-          padding: 20px 40px;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
         }
 
         .back-button {
@@ -286,9 +288,8 @@ export default function DetalhesOcorrencia() {
 
         .content {
           width: 100%;
-          max-width: 100%;
           margin: 0;
-          padding: 0 20px;
+          padding: 0;
         }
 
         .card {
@@ -297,8 +298,9 @@ export default function DetalhesOcorrencia() {
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
           overflow: hidden;
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+          grid-template-columns: repeat(2, 1fr);
           gap: 0;
+          width: 100%;
         }
 
         .section {
@@ -415,7 +417,7 @@ export default function DetalhesOcorrencia() {
         }
 
         /* Responsividade */
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
           .card {
             grid-template-columns: 1fr;
           }
