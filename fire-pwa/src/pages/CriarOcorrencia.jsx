@@ -258,19 +258,6 @@ function CriarOcorrencia() {
             </select>
           </div>
 
-          <div className="form-group checkbox-group">
-            <label>
-              <input 
-                type="checkbox" 
-                id="ocorrencia_nao_atendida" 
-                name="ocorrencia_nao_atendida" 
-                checked={formData.ocorrencia_nao_atendida} 
-                onChange={handleChange} 
-              />
-              Ocorrência não atendida
-            </label>
-          </div>
-
           <div className="form-group">
             <label htmlFor="horario_saida_quartel">Horário de Saída do Quartel</label>
             <input 
