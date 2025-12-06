@@ -74,4 +74,4 @@ const OcorrenciaRegistradaScreen = () => {
   );
 };
 
-export default OcorrenciaRegistradaScreen;
+export default OcorrenciaSucesso;
