@@ -1,67 +1,243 @@
-.ocorrencia-sucesso-page {
-    min-height: 100vh;
-    background-color: var(--color-background-app);
+.ocorrencia-sucesso-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-.conteudo {
-    text-align: center;
-    padding: 60px 20px;
+.ocorrencia-sucesso-content {
+  background-color: white;
+  border-radius: 16px;
+  padding: 48px 32px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: slideUp 0.5s ease-out;
 }
 
-.conteudo h2 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    color: #333;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.conteudo p {
-    font-size: 1rem;
-    margin-bottom: 30px;
-    color: #666;
+/* Ícone de sucesso */
+.success-icon {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 30px;
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+  animation: scaleIn 0.6s ease-out 0.2s both;
 }
 
-.botoes {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
+.checkmark {
+  color: white;
+  font-size: 60px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Mensagens */
+.success-title {
+  color: #333;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 0 16px 0;
+  animation: fadeIn 0.6s ease-out 0.3s both;
+}
+
+.success-message {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 40px 0;
+  animation: fadeIn 0.6s ease-out 0.4s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Container de botões */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeIn 0.6s ease-out 0.5s both;
+}
+
+/* Estilos dos botões */
 .btn {
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 1rem;
-    padding: 14px 24px;
-    cursor: pointer;
-    transition: 0.2s ease;
-    min-width: 220px;
+  width: 100%;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.btn.vermelho {
-    background: var(--vermelho);
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
 }
 
-.btn.vermelho:hover {
-    background: var(--vermelho-escuro);
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
-.btn.verde {
-    background: var(--verde);
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-.btn.verde:hover {
-    background: var(--verde-escuro);
+.btn:active {
+  transform: translateY(0);
 }
 
-@media (max-width: 600px) {
-    .botoes {
-        flex-direction: column;
-        align-items: center;
-    }
+/* Botão Primário (Início) */
+.btn-primary {
+  background: linear-gradient(135deg, #BC010C 0%, #a00109 100%);
+  color: white;
+}
 
-    .btn {
-        width: 100%;
-        max-width: 300px;
-    }
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(188, 1, 12, 0.4);
+}
+
+/* Botão Secundário (Listar Ocorrências) */
+.btn-secondary {
+  background: linear-gradient(135deg, #3E4095 0%, #2e3075 100%);
+  color: white;
+}
+
+.btn-secondary:hover {
+  box-shadow: 0 6px 20px rgba(62, 64, 149, 0.4);
+}
+
+/* Botão Accent (Nova Ocorrência) */
+.btn-accent {
+  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+  color: white;
+}
+
+.btn-accent:hover {
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+}
+
+/* Botão PDF */
+.btn-pdf {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+}
+
+.btn-pdf:hover {
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .ocorrencia-sucesso-content {
+    padding: 32px 24px;
+  }
+
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 24px;
+  }
+
+  .checkmark {
+    font-size: 48px;
+  }
+
+  .success-title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .success-message {
+    font-size: 15px;
+    margin-bottom: 32px;
+  }
+
+  .btn {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ocorrencia-sucesso-container {
+    padding: 15px;
+  }
+
+  .ocorrencia-sucesso-content {
+    padding: 24px 20px;
+  }
+
+  .success-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 20px;
+  }
+
+  .checkmark {
+    font-size: 42px;
+  }
+
+  .success-title {
+    font-size: 20px;
+  }
+
+  .success-message {
+    font-size: 14px;
+  }
+
+  .btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
 }

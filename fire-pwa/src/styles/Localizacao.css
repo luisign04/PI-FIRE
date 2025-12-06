@@ -1,101 +1,294 @@
-.localizacao-page {
-    min-height: 100vh;
-    background-color: var(--color-background-app);
+.localizacao-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
 }
 
-.instrucao {
-    text-align: center;
-    font-weight: 800;
-    margin: 8px 0 24px;
-    color: #333;
+.localizacao-content {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(220px, 1fr));
-    gap: 16px 24px;
-    align-items: start;
+/* Erro */
+.error-container {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
 }
 
-.campo {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.error-text {
+  color: #c33;
+  margin: 0;
+  font-size: 14px;
 }
 
-.campo label {
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #555;
+/* Mapa */
+.map-container {
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  background-color: #fff;
 }
 
-.campo input {
-    height: 34px;
-    border: 2px solid var(--cinza-borda);
-    border-radius: 4px;
-    padding: 0 10px;
-    font-size: 0.95rem;
+.map-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
-.acoes {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-    gap: 36px;
-    margin-top: 16px;
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
 }
 
-.btn {
-    min-width: 160px;
-    height: 44px;
-    border: none;
-    border-radius: 24px;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.05s ease, filter 0.15s ease;
+.map-placeholder p {
+  color: #666;
+  font-size: 16px;
+  text-align: center;
+  padding: 20px;
 }
 
-.btn:active {
-    transform: translateY(1px);
+/* Botão Obter Localização */
+.btn-obter-localizacao {
+  width: 100%;
+  padding: 18px;
+  background-color: #BC010C;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
 }
 
-.btn.voltar {
-    background: var(--vermelho);
+.btn-obter-localizacao:hover:not(:disabled) {
+  background-color: #a00109;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(188, 1, 12, 0.3);
 }
 
-.btn.voltar:hover {
-    background: var(--vermelho-escuro);
+.btn-obter-localizacao:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
-.btn.confirmar {
-    background: var(--verde);
+/* Loading */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
-.btn.confirmar:hover {
-    background: var(--verde-escuro);
+.loading-text {
+  color: #3E4095;
+  margin: 0;
+  font-size: 14px;
 }
 
-@media (max-width: 920px) {
-    .grid {
-        grid-template-columns: repeat(2, minmax(220px, 1fr));
-    }
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-@media (max-width: 640px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
+.loading-spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(62, 64, 149, 0.3);
+  border-top-color: #3E4095;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
 
-    .btn {
-        width: 48%;
-        min-width: auto;
-    }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
-    .acoes {
-        gap: 16px;
-    }
+/* Informações de Localização */
+.location-info {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.location-title {
+  color: #3E4095;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+/* Coordenadas */
+.coordinates-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.coordinate-box {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+}
+
+.coordinate-label {
+  display: block;
+  color: #666;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.coordinate-value {
+  display: block;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+}
+
+/* Endereço */
+.address-container {
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.address-label {
+  display: block;
+  color: #666;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.address-text {
+  color: #333;
+  font-size: 16px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Precisão */
+.accuracy-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.accuracy-text {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Botões de Ação */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-share,
+.btn-maps {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-share {
+  background-color: #3E4095;
+  color: white;
+}
+
+.btn-share:hover {
+  background-color: #2e3075;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(62, 64, 149, 0.3);
+}
+
+.btn-maps {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-maps:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .localizacao-container {
+    padding: 15px;
+  }
+
+  .map-container {
+    height: 300px;
+  }
+
+  .location-title {
+    font-size: 20px;
+  }
+
+  .coordinates-container {
+    grid-template-columns: 1fr;
+  }
+
+  .coordinate-value {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-container {
+    height: 250px;
+  }
+
+  .btn-obter-localizacao {
+    font-size: 16px;
+    padding: 15px;
+  }
+
+  .location-info {
+    padding: 16px;
+  }
 }
