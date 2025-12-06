@@ -1,7 +1,6 @@
-// contexts/AuthContext.js
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Troque AsyncStorage por localStorage
 export const AuthContext = React.createContext();
 
 // Usuários mockados para teste
@@ -13,7 +12,7 @@ const MOCK_USERS = [
     nome: 'Danilo',
     matricula: 'SB-2023-04567',
     telefone: '(11) 99999-9999',
-    role: 'admin', // ⭐ Usuário administrador
+    role: 'admin',
   },
   {
     id: 2,
@@ -22,7 +21,7 @@ const MOCK_USERS = [
     nome: 'João Santos',
     matricula: 'BM-2023-04568',
     telefone: '(11) 98888-8888',
-    role: 'user', // 👤 Usuário comum
+    role: 'user',
   },
 ];
 
@@ -35,10 +34,9 @@ export const AuthProvider = ({ children }) => {
     checkAuthStatus();
   }, []);
 
-  const checkAuthStatus = async () => {
+  const checkAuthStatus = () => {
     try {
-      const storedUser = await AsyncStorage.getItem('@user_data');
-      
+      const storedUser = localStorage.getItem('@user_data');
       if (storedUser) {
         setUser(JSON.parse(storedUser));
         setIsAuthenticated(true);
@@ -52,43 +50,27 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, senha) => {
     try {
-      // Simula delay de rede
       await new Promise(resolve => setTimeout(resolve, 800));
-
-      // Busca usuário nos dados mockados
       const foundUser = MOCK_USERS.find(
         u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha
       );
-
       if (foundUser) {
-        // Remove a senha antes de salvar
         const { senha: _, ...userWithoutPassword } = foundUser;
-        
-        // Salva os dados localmente
-        await AsyncStorage.setItem('@user_data', JSON.stringify(userWithoutPassword));
-        
+        localStorage.setItem('@user_data', JSON.stringify(userWithoutPassword));
         setUser(userWithoutPassword);
         setIsAuthenticated(true);
-        
         return { success: true, message: 'Login realizado com sucesso!' };
       }
-
-      return { 
-        success: false, 
-        message: 'Email ou senha incorretos' 
-      };
+      return { success: false, message: 'Email ou senha incorretos' };
     } catch (error) {
       console.error('Erro no login:', error);
-      return { 
-        success: false, 
-        message: 'Erro ao fazer login. Tente novamente.' 
-      };
+      return { success: false, message: 'Erro ao fazer login. Tente novamente.' };
     }
   };
 
-  const logout = async () => {
+  const logout = () => {
     try {
-      await AsyncStorage.removeItem('@user_data');
+      localStorage.removeItem('@user_data');
       setUser(null);
       setIsAuthenticated(false);
     } catch (error) {
@@ -96,10 +78,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateUser = async (newData) => {
+  const updateUser = (newData) => {
     try {
       const updatedUser = { ...user, ...newData };
-      await AsyncStorage.setItem('@user_data', JSON.stringify(updatedUser));
+      localStorage.setItem('@user_data', JSON.stringify(updatedUser));
       setUser(updatedUser);
       return { success: true };
     } catch (error) {
@@ -108,7 +90,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✨ Função helper para verificar se é admin
   const isAdmin = () => {
     return user?.role === 'admin';
   };
@@ -122,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     user,
     setUser,
     updateUser,
-    isAdmin, // Nova função exportada
+    isAdmin,
   };
 
   return (
