@@ -99,7 +99,7 @@ function Home() {
 
         <button className="nav-item" onClick={() => navigate('/criar-ocorrencia')}>
           <span className="material-icons">add_box</span>
-          <span className="nav-label">Nova</span>
+          <span className="nav-label">Nova Ocorrência</span>
         </button>
 
         <button className="nav-item" onClick={handleUsuario}>

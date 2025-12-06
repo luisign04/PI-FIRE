@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #ffffff;
 }
 
 .home-content {
@@ -85,22 +85,22 @@
 
 /* Cores específicas para cada tipo de botão */
 .modern-button.dashboard {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #BC010C;
   color: #ffffff;
 }
 
 .modern-button.listar {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background-color: #BC010C;
   color: #ffffff;
 }
 
 .modern-button.localizacao {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background-color: #BC010C;
   color: #ffffff;
 }
 
 .modern-button.registrar {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  background-color: #BC010C;
   color: #ffffff;
 }
 
@@ -135,11 +135,11 @@
 }
 
 .nav-item:hover {
-  color: #667eea;
+  color: #BC010C;
 }
 
 .nav-item.active {
-  color: #667eea;
+  color: #BC010C;
 }
 
 .nav-item .material-icons {
