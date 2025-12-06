@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/OcorrenciaSucesso.css";
 
-const OcorrenciaRegistradaScreen = () => {
+const OcorrenciaSucesso = () => {
   const navigate = useNavigate();
 
   const handleInicio = () => {
