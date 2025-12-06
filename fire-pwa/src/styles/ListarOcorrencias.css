@@ -3,6 +3,9 @@
 .listar-container {
   min-height: 100vh;
   background-color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .loading-container {
@@ -74,8 +77,8 @@
 /* Content */
 .content {
   padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Placeholder Section */
@@ -87,6 +90,8 @@
   background-color: #f8f8f8;
   border-radius: 12px;
   margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .placeholder-title {
@@ -128,6 +133,8 @@
   padding: 12px;
   border: 1px solid #ddd;
   gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .filtro-input {
@@ -161,13 +168,21 @@
 /* Action Buttons */
 .action-buttons {
   display: flex;
+  flex-direction: row;
   gap: 12px;
   margin-bottom: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
 .dashboard-button,
 .export-button {
-  flex: 1;
+  width: 200px;
+  min-width: 200px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -179,6 +194,7 @@
   font-size: 16px;
   cursor: pointer;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .dashboard-button {
@@ -248,6 +264,8 @@
   transition: all 0.2s;
   display: flex;
   gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .ocorrencia-card:hover {
