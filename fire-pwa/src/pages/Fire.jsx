@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useScrollToTop from '../hooks/useScrollToTop';
 import '../styles/Fire.css';
 
 function Fire() {
+  useScrollToTop();
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState('');
   const [mostrarPesquisa, setMostrarPesquisa] = useState(false);

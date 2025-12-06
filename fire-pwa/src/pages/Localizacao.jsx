@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import useScrollToTop from '../hooks/useScrollToTop';
 import '../styles/Localizacao.css';
 
 function Localizacao() {
+  useScrollToTop();
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);

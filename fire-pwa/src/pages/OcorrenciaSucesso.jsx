@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import useScrollToTop from '../hooks/useScrollToTop';
 import "../styles/OcorrenciaSucesso.css";
 
 const OcorrenciaSucesso = () => {
+  useScrollToTop();
   const navigate = useNavigate();
 
   const handleInicio = () => {

@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import useScrollToTop from '../hooks/useScrollToTop';
 import '../styles/Home.css';
 
 function Home() {
+  useScrollToTop();
   const navigate = useNavigate();
 
   // Funções de navegação

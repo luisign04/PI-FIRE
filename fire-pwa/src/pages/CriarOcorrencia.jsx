@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import useScrollToTop from '../hooks/useScrollToTop';
 import { useOcorrenciasContext } from '../contexts/OcorrenciasContext';
 import {
   REGIOES,
@@ -19,6 +20,7 @@ import {
 import '../styles/CriaOcorrencia.css';
 
 function CriarOcorrencia() {
+  useScrollToTop();
   const navigate = useNavigate();
   const { adicionarOcorrencia } = useOcorrenciasContext();
   const [formData, setFormData] = useState({

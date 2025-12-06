@@ -1,6 +1,7 @@
 // src/pages/ListarOcorrencias.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useScrollToTop from "../hooks/useScrollToTop";
 import {
   List,
   Calendar,
@@ -23,6 +24,7 @@ import { useOcorrenciasContext } from "../contexts/OcorrenciasContext";
 import "../styles/ListarOcorrencias.css";
 
 export default function ListarOcorrencias() {
+  useScrollToTop();
   const navigate = useNavigate();
   const { ocorrencias, loading, removerOcorrencia } = useOcorrenciasContext();
 

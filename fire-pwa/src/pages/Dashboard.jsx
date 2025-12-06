@@ -4,9 +4,11 @@ import { PieChart, Pie, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, Legend, Resp
 import { RefreshCw, Clock } from "lucide-react";
 import { useOcorrenciasContext } from "../contexts/OcorrenciasContext";
 import Header from "../components/Header";
+import useScrollToTop from "../hooks/useScrollToTop";
 import "../styles/Dashboard.css";
 
 const DashboardScreen = () => {
+  useScrollToTop();
   const {
     ocorrencias,
     loading,
