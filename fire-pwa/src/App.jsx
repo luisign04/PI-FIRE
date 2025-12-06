@@ -4,7 +4,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import CriarOcorrencia from './pages/CriarOcorrencia';
-import ListaOcorrencias from './pages/ListaOcorrencias';
+import ListarOcorrencias from './pages/ListarOcorrencias';
 import OcorrenciaSucesso from './pages/OcorrenciaSucesso';
 import Fire from './pages/Fire';
 import Localizacao from './pages/Localizacao';
@@ -63,10 +63,10 @@ function App() {
         />
         
         <Route 
-          path="/lista-ocorrencias" 
+          path="/listar-ocorrencias" 
           element={
             <ProtectedRoute>
-              <ListaOcorrencias />
+              <ListarOcorrencias />
             </ProtectedRoute>
           } 
         />

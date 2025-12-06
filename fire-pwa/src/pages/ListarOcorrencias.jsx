@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import '../styles/ListaOcorrencias.css';
+import '../styles/ListarOcorrencias.css';
 
-function ListaOcorrencias() {
+function ListarOcorrencias() {
   const navigate = useNavigate();
   const [ocorrencias, setOcorrencias] = useState([]);
 
@@ -130,4 +130,4 @@ function ListaOcorrencias() {
   );
 }
 
-export default ListaOcorrencias;
+export default ListarOcorrencias;
