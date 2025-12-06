@@ -11,6 +11,7 @@ import ListarOcorrencias from './pages/ListarOcorrencias';
 import OcorrenciaSucesso from './pages/OcorrenciaSucesso';
 import Fire from './pages/Fire';
 import Localizacao from './pages/Localizacao';
+import Usuario from './pages/Usuario';
 import './styles/App.css';
 
 // Componente de rota protegida
