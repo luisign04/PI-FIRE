@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 
 function Login() {
+    const [showRecovery, setShowRecovery] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -17,16 +18,16 @@ function Login() {
   };
 
   return (
-    <div className="login-page">
-      <div className="cabecalho">
-        <header>
-          <h1>Entrar</h1>
-        </header>
+    <div className="login-page" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <div style={{ width: '100%', maxWidth: 350, textAlign: 'center', marginBottom: 32 }}>
+        <h1 style={{ fontSize: 40, fontWeight: 900, letterSpacing: 2, color: '#bc010c', margin: 0 }}>FIRE</h1>
+        <p style={{ fontSize: 15, color: '#666', marginTop: 8, marginBottom: 0 }}>
+          Ferramenta Integrada de Resposta a Emergências
+        </p>
       </div>
-
-      <form className="login-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
+      <form className="login-form" onSubmit={handleSubmit} style={{ width: '100%', maxWidth: 350, background: '#fff', padding: 32, borderRadius: 16, boxShadow: '0 2px 16px rgba(0,0,0,0.08)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className="form-group" style={{ width: '100%' }}>
+          <label htmlFor="email" style={{ display: 'block', marginBottom: 8 }}>Email</label>
           <input
             type="text"
             id="email"
@@ -35,11 +36,11 @@ function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            style={{ width: '100%', padding: '12px 14px', borderRadius: 8, border: '1px solid #ccc', fontSize: 16 }}
           />
         </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Senha</label>
+        <div style={{ marginTop: '24px', width: '100%' }} className="form-group">
+          <label htmlFor="password" style={{ display: 'block', marginBottom: 8 }}>Senha</label>
           <input
             type="password"
             id="password"
@@ -48,12 +49,64 @@ function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{ width: '100%', padding: '12px 14px', borderRadius: 8, border: '1px solid #ccc', fontSize: 16 }}
           />
+          <div style={{ textAlign: 'right', marginTop: 8 }}>
+            <a
+              href="#"
+              style={{ color: '#bc010c', textDecoration: 'underline', fontSize: 14, fontWeight: 500 }}
+              onClick={e => {
+                e.preventDefault();
+                setShowRecovery(true);
+              }}
+            >
+              Recuperar Senha
+            </a>
+          </div>
+          {showRecovery && (
+            <div style={{ marginTop: 16, background: '#fff4f4', border: '1px solid #bc010c', borderRadius: 8, padding: 16, color: '#bc010c', fontSize: 15, textAlign: 'center' }}>
+              Para recuperar a sua senha, entre em contato com a equipe de suporte técnico de seu batalhão.
+            </div>
+          )}
         </div>
-
-        <button type="submit" className="login-button">
-          Entrar
-        </button>
+        <div style={{ marginTop: '24px', width: '100%' }}>
+          <button
+            type="submit"
+            className="login-button"
+            style={{
+              width: '100%',
+              padding: 14,
+              borderRadius: 8,
+              fontSize: 16,
+              background: email && password ? '#bc010c' : '#cccccc',
+              color: email && password ? '#fff' : '#888',
+              border: email && password ? '1px solid #a0010a' : '1px solid #bbbbbb',
+              cursor: email && password ? 'pointer' : 'not-allowed',
+              transition: 'all 0.3s',
+              boxShadow: email && password
+                ? '0 6px 10px rgba(188, 1, 12, 0.3)'
+                : '0 6px 10px rgba(204, 204, 204, 0.3)',
+              transform: email && password ? undefined : 'none',
+            }}
+            disabled={!(email && password)}
+            onMouseOver={e => {
+              if (email && password) {
+                e.currentTarget.style.background = '#a0010a';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 8px 15px rgba(188, 1, 12, 0.4)';
+              }
+            }}
+            onMouseOut={e => {
+              if (email && password) {
+                e.currentTarget.style.background = '#bc010c';
+                e.currentTarget.style.transform = 'none';
+                e.currentTarget.style.boxShadow = '0 6px 10px rgba(188, 1, 12, 0.3)';
+              }
+            }}
+          >
+            Entrar
+          </button>
+        </div>
       </form>
     </div>
   );
