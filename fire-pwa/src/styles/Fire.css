@@ -1,0 +1,31 @@
+/* Resetar estilos do body e html */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Previne scroll no body */
+}
+
+body {
+  overscroll-behavior: none; /* Previne bounce/rubber band em mobile */
+}
+
+/* Home.css */
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh; /* ALTERADO: de min-height para height */
+  max-height: 100dvh; /* ADICIONADO: limita a altura máxima */
+  background-color: #f7f7f7;
+  overflow: hidden; /* ADICIONADO: previne scroll na página */
+}
+
+.home-content {
+  flex: 1;
+  padding: 20px;
+  padding-bottom: 80px;
+  overflow-y: auto; /* Apenas o conteúdo rola, não a página inteira */
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth scroll em iOS */
+}

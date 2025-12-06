@@ -25,16 +25,26 @@
     padding: 0;
 }
 
+/* ADICIONADO: Correção para o problema de scroll */
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
 /* Estilo do Corpo da Aplicação */
 body {
     background-color: var(--color-background-app);
-    min-height: 100vh;
+    height: 100%; /* ALTERADO: de min-height para height */
+    overflow: hidden; /* ADICIONADO */
+    overscroll-behavior: none; /* ADICIONADO: previne bounce em mobile */
 }
 
 #root {
-    min-height: 100vh;
+    height: 100%; /* ALTERADO: de min-height para height */
+    max-height: 100vh; /* ADICIONADO */
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* ADICIONADO */
 }
 
 /* Topbar/header */
@@ -50,6 +60,7 @@ body {
     top: 0;
     z-index: 10;
     padding: 0 15px;
+    flex-shrink: 0; /* ADICIONADO: impede que o header encolha */
 }
 
 .topbar h1, .cabecalho h1, .top-navbar .app-title, header h1 {

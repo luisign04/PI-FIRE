@@ -3,15 +3,19 @@
 .home-page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh; /* ALTERADO */
+  max-height: 100vh; /* ADICIONADO */
   background-color: #f7f7f7;
+  overflow: hidden; /* ADICIONADO */
 }
 
 .home-content {
   flex: 1;
   padding: 20px;
-  padding-bottom: 80px; /* Espaço para a barra inferior */
-  overflow-y: auto;
+  padding-bottom: 80px;
+  overflow-y: auto; /* Apenas o conteúdo rola */
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .section-title {

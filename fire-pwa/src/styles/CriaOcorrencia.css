@@ -1,6 +1,9 @@
 .criar-ocorrencia-page {
     min-height: 100vh;
     background-color: var(--color-background-app);
+    overflow-y: auto; /* ADICIONADO: permite scroll vertical */
+    overflow-x: hidden; /* ADICIONADO: previne scroll horizontal */
+    padding-bottom: 40px; /* ADICIONADO: espaço no final da página */
 }
 
 #ocorrenciaForma {
@@ -106,6 +109,94 @@ legend {
     background-color: #888;
 }
 
+.conditional-field {
+    animation: slideDown 0.3s ease-out;
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 16px 0;
+}
+
+.conditional-field label {
+    color: #856404;
+    font-weight: 600;
+}
+
+.conditional-field textarea {
+    border-color: #ffc107;
+    background-color: #fff;
+}
+
+.conditional-field textarea:focus {
+    border-color: #ff9800;
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
+    outline: none;
+}
+
+.conditional-field textarea::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Animação de entrada suave */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 500px;
+    }
+}
+
+/* Destacar quando estiver preenchido */
+.conditional-field textarea:valid:not(:placeholder-shown) {
+    background-color: #d4edda;
+    border-color: #28a745;
+}
+
+/* Variação para "Não Atendida" (vermelho) */
+.conditional-field.nao-atendida {
+    background-color: #f8d7da;
+    border-left-color: #dc3545;
+}
+
+.conditional-field.nao-atendida label {
+    color: #721c24;
+}
+
+.conditional-field.nao-atendida textarea {
+    border-color: #dc3545;
+}
+
+.conditional-field.nao-atendida textarea:focus {
+    border-color: #c82333;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+/* Variação para "Sem Atuação" (laranja) */
+.conditional-field.sem-atuacao {
+    background-color: #fff3cd;
+    border-left-color: #ff9800;
+}
+
+.conditional-field.sem-atuacao label {
+    color: #856404;
+}
+
+.conditional-field.sem-atuacao textarea {
+    border-color: #ff9800;
+}
+
+.conditional-field.sem-atuacao textarea:focus {
+    border-color: #f57c00;
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
+}
+
 @media (max-width: 600px) {
     fieldset {
         grid-template-columns: 1fr;
@@ -118,93 +209,4 @@ legend {
     .form-actions button {
         width: 100%;
     }
-
-    .conditional-field {
-  animation: slideDown 0.3s ease-out;
-  background-color: #fff3cd;
-  border-left: 4px solid #ffc107;
-  padding: 12px;
-  border-radius: 8px;
-  margin: 16px 0;
-}
-
-.conditional-field label {
-  color: #856404;
-  font-weight: 600;
-}
-
-.conditional-field textarea {
-  border-color: #ffc107;
-  background-color: #fff;
-}
-
-.conditional-field textarea:focus {
-  border-color: #ff9800;
-  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
-  outline: none;
-}
-
-.conditional-field textarea::placeholder {
-  color: #999;
-  font-style: italic;
-}
-
-/* Animação de entrada suave */
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-    max-height: 0;
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    max-height: 500px;
-  }
-}
-
-/* Destacar quando estiver preenchido */
-.conditional-field textarea:valid:not(:placeholder-shown) {
-  background-color: #d4edda;
-  border-color: #28a745;
-}
-
-/* Variação para "Não Atendida" (vermelho) */
-.conditional-field.nao-atendida {
-  background-color: #f8d7da;
-  border-left-color: #dc3545;
-}
-
-.conditional-field.nao-atendida label {
-  color: #721c24;
-}
-
-.conditional-field.nao-atendida textarea {
-  border-color: #dc3545;
-}
-
-.conditional-field.nao-atendida textarea:focus {
-  border-color: #c82333;
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
-}
-
-/* Variação para "Sem Atuação" (laranja) */
-.conditional-field.sem-atuacao {
-  background-color: #fff3cd;
-  border-left-color: #ff9800;
-}
-
-.conditional-field.sem-atuacao label {
-  color: #856404;
-}
-
-.conditional-field.sem-atuacao textarea {
-  border-color: #ff9800;
-}
-
-.conditional-field.sem-atuacao textarea:focus {
-  border-color: #f57c00;
-  box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
-}
-
 }
