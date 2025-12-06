@@ -576,8 +576,8 @@ function CriarOcorrencia() {
         </fieldset>
 
         <div className="form-actions">
-          <button type="submit">Registrar Ocorrência</button>
           <button type="button" onClick={handleReset}>Limpar Formulário</button>
+          <button type="submit">Registrar Ocorrência</button>
         </div>
       </form>
     </div>
