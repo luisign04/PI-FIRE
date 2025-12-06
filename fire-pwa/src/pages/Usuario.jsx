@@ -1,5 +1,8 @@
+
 import React from 'react';
 import { AuthContext } from '../contexts/AuthContext.jsx';
+import Header from '../components/Header';
+import { useNavigate } from 'react-router-dom';
 
 // Componente reutilizável para as linhas de informação
 const InfoRow = ({ label, value }) => (
@@ -9,9 +12,10 @@ const InfoRow = ({ label, value }) => (
   </div>
 );
 
+
 export default function Usuario() {
   const { logout, user } = React.useContext(AuthContext);
-  
+  const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [userData, setUserData] = React.useState(null);
 
@@ -81,11 +85,9 @@ export default function Usuario() {
 
   return (
     <div className="usuario-container">
+      <Header title="Usuário" showBackButton={true} />
       <div className="scroll-content">
-        {/* Nome do Usuário */}
-        <div className="user-info-header">
-          <h1 className="user-name">{userData?.nome || "Usuário"}</h1>
-        </div>
+        {/* Nome do Usuário removido conforme solicitado */}
 
         {/* Informações do Usuário */}
         <div className="section">
@@ -120,11 +122,29 @@ export default function Usuario() {
         </div>
       </div>
 
+      {/* Barra de Navegação Inferior */}
+      <nav className="bottom-nav">
+        <button className="nav-item" onClick={() => navigate('/')}> 
+          <span className="material-icons">home</span>
+          <span className="nav-label">Início</span>
+        </button>
+        <button className="nav-item" onClick={() => navigate('/criar-ocorrencia')}>
+          <span className="material-icons">add_box</span>
+          <span className="nav-label">Nova Ocorrência</span>
+        </button>
+        <button className="nav-item active" onClick={() => navigate('/usuario')}>
+          <span className="material-icons">person</span>
+          <span className="nav-label">Usuário</span>
+        </button>
+      </nav>
+
       <style jsx>{`
         .usuario-container {
           min-height: 100vh;
           background-color: #f5f5f5;
-          padding: 20px;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
         }
 
         .loading-container {
@@ -155,8 +175,12 @@ export default function Usuario() {
         }
 
         .scroll-content {
-          max-width: 600px;
-          margin: 0 auto;
+          width: 100%;
+          margin: 0;
+          padding: 20px;
+          padding-bottom: 80px;
+          flex: 1;
+          overflow-y: auto;
         }
 
         .user-info-header {
