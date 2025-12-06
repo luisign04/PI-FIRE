@@ -1,243 +1,94 @@
-.ocorrencia-sucesso-container {
+.container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #f8f9fa;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+
+.scrollContent {
+  flex-grow: 1;
   justify-content: center;
+  display: flex;
   padding: 20px;
 }
 
-.ocorrencia-sucesso-content {
-  background-color: white;
-  border-radius: 16px;
-  padding: 48px 32px;
-  max-width: 600px;
-  width: 100%;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  animation: slideUp 0.5s ease-out;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Ícone de sucesso */
-.success-icon {
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  border-radius: 50%;
-  display: flex;
+.content {
   align-items: center;
-  justify-content: center;
-  margin: 0 auto 30px;
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-  animation: scaleIn 0.6s ease-out 0.2s both;
+  display: flex;
+  flex-direction: column;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  margin: auto;
 }
 
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.successIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background-color: #28a745;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .checkmark {
   color: white;
-  font-size: 60px;
+  font-size: 52px;
   font-weight: bold;
-  line-height: 1;
 }
 
-/* Mensagens */
-.success-title {
-  color: #333;
-  font-size: 28px;
+.successTitle {
+  font-size: 2.5rem;
   font-weight: bold;
-  margin: 0 0 16px 0;
-  animation: fadeIn 0.6s ease-out 0.3s both;
+  color: #28a745;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 0;
 }
 
-.success-message {
-  color: #666;
-  font-size: 16px;
-  line-height: 1.6;
-  margin: 0 0 40px 0;
-  animation: fadeIn 0.6s ease-out 0.4s both;
+.successMessage {
+  font-size: 1.125rem;
+  color: #6c757d;
+  text-align: center;
+  margin-bottom: 40px;
+  line-height: 22px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Container de botões */
-.button-container {
+.buttonContainer {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  animation: fadeIn 0.6s ease-out 0.5s both;
+  gap: 15px;
 }
 
-/* Estilos dos botões */
-.btn {
-  width: 100%;
-  padding: 16px 24px;
-  border: none;
+.button {
+  padding: 15px 20px;
   border-radius: 8px;
-  font-size: 16px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border: none;
+  font-size: 1.125rem;
   font-weight: 600;
+  color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+  transition: background 0.2s;
 }
 
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
+.primaryButton {
+  background-color: #6c757d;
 }
 
-.btn:hover::before {
-  width: 300px;
-  height: 300px;
+.secondaryButton {
+  background-color: #E6A400;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+.accentButton {
+  background-color: #BC010C;
 }
 
-.btn:active {
-  transform: translateY(0);
-}
-
-/* Botão Primário (Início) */
-.btn-primary {
-  background: linear-gradient(135deg, #BC010C 0%, #a00109 100%);
-  color: white;
-}
-
-.btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(188, 1, 12, 0.4);
-}
-
-/* Botão Secundário (Listar Ocorrências) */
-.btn-secondary {
-  background: linear-gradient(135deg, #3E4095 0%, #2e3075 100%);
-  color: white;
-}
-
-.btn-secondary:hover {
-  box-shadow: 0 6px 20px rgba(62, 64, 149, 0.4);
-}
-
-/* Botão Accent (Nova Ocorrência) */
-.btn-accent {
-  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
-  color: white;
-}
-
-.btn-accent:hover {
-  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
-}
-
-/* Botão PDF */
-.btn-pdf {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  color: white;
-}
-
-.btn-pdf:hover {
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .ocorrencia-sucesso-content {
-    padding: 32px 24px;
-  }
-
-  .success-icon {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 24px;
-  }
-
-  .checkmark {
-    font-size: 48px;
-  }
-
-  .success-title {
-    font-size: 24px;
-    margin-bottom: 12px;
-  }
-
-  .success-message {
-    font-size: 15px;
-    margin-bottom: 32px;
-  }
-
-  .btn {
-    padding: 14px 20px;
-    font-size: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .ocorrencia-sucesso-container {
-    padding: 15px;
-  }
-
-  .ocorrencia-sucesso-content {
-    padding: 24px 20px;
-  }
-
-  .success-icon {
-    width: 70px;
-    height: 70px;
-    margin-bottom: 20px;
-  }
-
-  .checkmark {
-    font-size: 42px;
-  }
-
-  .success-title {
-    font-size: 20px;
-  }
-
-  .success-message {
-    font-size: 14px;
-  }
-
-  .btn {
-    padding: 12px 16px;
-    font-size: 14px;
-  }
+.pdfButton {
+  background-color: #28a745;
 }

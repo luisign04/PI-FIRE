@@ -1,76 +1,77 @@
-import { useNavigate } from 'react-router-dom';
-import '../styles/OcorrenciaSucesso.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/OcorrenciaSucesso.css";
 
-function OcorrenciaSucesso() {
+const OcorrenciaRegistradaScreen = () => {
   const navigate = useNavigate();
 
   const handleInicio = () => {
-    navigate('/home');
+    navigate("/home");
   };
 
   const handleListarOcorrencias = () => {
-    navigate('/lista-ocorrencias');
+    navigate("/listar-ocorrencias");
   };
 
   const handleNovaOcorrencia = () => {
-    navigate('/criar-ocorrencia');
+    navigate("/nova-ocorrencia");
   };
 
   const handleExportarPDF = () => {
-    // Lógica para exportar PDF
-    alert('PDF Exportado - Ocorrência exportada em PDF com sucesso!');
-    // Aqui você pode implementar a lógica real de exportação de PDF
+    alert("PDF Exportado\nOcorrência exportada em PDF com sucesso!");
   };
 
   return (
-    <div className="ocorrencia-sucesso-container">
-      <div className="ocorrencia-sucesso-content">
-        {/* Ícone de sucesso */}
-        <div className="success-icon">
-          <span className="checkmark">✓</span>
-        </div>
+    <div className="container">
+      <div className="scrollContent">
+        <div className="content">
+          {/* Ícone de sucesso */}
+          <div className="successIcon">
+            <span className="checkmark">✓</span>
+          </div>
 
-        {/* Mensagem de sucesso */}
-        <h1 className="success-title">
-          Ocorrência Registrada com Sucesso!
-        </h1>
-        <p className="success-message">
-          A ocorrência foi salva no sistema e está disponível para consulta.
-        </p>
+          {/* Mensagem de sucesso */}
+          <h1 className="successTitle">
+            Ocorrência Registrada com Sucesso!
+          </h1>
+          <p className="successMessage">
+            A ocorrência foi salva no sistema e está disponível para consulta.
+          </p>
 
-        {/* Botões de ação */}
-        <div className="button-container">
-          <button
-            className="btn btn-primary"
-            onClick={handleInicio}
-          >
-            Início
-          </button>
+          {/* Botões de ação */}
+          <div className="buttonContainer">
+            <button
+              className="button primaryButton"
+              onClick={handleInicio}
+            >
+              Início
+            </button>
 
-          <button
-            className="btn btn-secondary"
-            onClick={handleListarOcorrencias}
-          >
-            Listar Ocorrências
-          </button>
+            <button
+              className="button secondaryButton"
+              onClick={handleListarOcorrencias}
+            >
+              Listar Ocorrências
+            </button>
 
-          <button
-            className="btn btn-accent"
-            onClick={handleNovaOcorrencia}
-          >
-            Registrar Nova Ocorrência
-          </button>
+            <button
+              className="button accentButton"
+              onClick={handleNovaOcorrencia}
+            >
+              Registrar Nova Ocorrência
+            </button>
 
-          <button
-            className="btn btn-pdf"
-            onClick={handleExportarPDF}
-          >
-            Exportar Ocorrência em PDF
-          </button>
+            <button
+              className="button pdfButton"
+              onClick={handleExportarPDF}
+            >
+              Exportar Ocorrência em PDF
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default OcorrenciaSucesso;
+export default OcorrenciaRegistradaScreen;
