@@ -256,7 +256,7 @@ export default function DetalhesOcorrencia() {
         .detalhes-container {
           min-height: 100vh;
           background-color: #f5f5f5;
-          padding: 20px;
+          padding: 20px 40px;
         }
 
         .back-button {
@@ -285,8 +285,10 @@ export default function DetalhesOcorrencia() {
         }
 
         .content {
-          max-width: 900px;
-          margin: 0 auto;
+          width: 100%;
+          max-width: 100%;
+          margin: 0;
+          padding: 0 20px;
         }
 
         .card {
@@ -294,15 +296,24 @@ export default function DetalhesOcorrencia() {
           border-radius: 12px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
           overflow: hidden;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+          gap: 0;
         }
 
         .section {
           padding: 24px;
           border-bottom: 1px solid #e0e0e0;
+          border-right: 1px solid #e0e0e0;
         }
 
-        .section:last-child {
+        .section:last-child,
+        .section:nth-last-child(-n+2) {
           border-bottom: none;
+        }
+
+        .section:nth-child(even) {
+          border-right: none;
         }
 
         .section-header {
@@ -404,9 +415,31 @@ export default function DetalhesOcorrencia() {
         }
 
         /* Responsividade */
+        @media (max-width: 1024px) {
+          .card {
+            grid-template-columns: 1fr;
+          }
+
+          .section {
+            border-right: none;
+          }
+
+          .section:nth-last-child(-n+2) {
+            border-bottom: 1px solid #e0e0e0;
+          }
+
+          .section:last-child {
+            border-bottom: none;
+          }
+        }
+
         @media (max-width: 768px) {
           .detalhes-container {
-            padding: 12px;
+            padding: 12px 16px;
+          }
+
+          .content {
+            padding: 0 8px;
           }
 
           .section {
