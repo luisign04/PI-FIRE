@@ -280,13 +280,13 @@ function CriarOcorrencia() {
             />
           </div>
 
-          {/* 🔴 CAMPO CONDICIONAL: Aparece apenas se "Não Atendida" for selecionada */}
+          {/*CAMPO CONDICIONAL: Aparece apenas se "Não Atendida" for selecionada */}
           {(formData.situacao_ocorrencia === 'nao_atendida' || 
             formData.situacao_ocorrencia === 'Não Atendida' ||
             formData.situacao_ocorrencia === 'Não Atendidas') && (
             <div className="form-group conditional-field nao-atendida">
               <label htmlFor="motivo_nao_atendida">
-                ⚠️ Ocorrência não atendida: (motivo) *
+                Ocorrência não atendida: (motivo) *
               </label>
               <textarea 
                 id="motivo_nao_atendida" 
@@ -300,13 +300,13 @@ function CriarOcorrencia() {
             </div>
           )}
 
-          {/* 🔴 CAMPO CONDICIONAL: Aparece apenas se "Sem Atuação" for selecionada */}
+          {/*CAMPO CONDICIONAL: Aparece apenas se "Sem Atuação" for selecionada */}
           {(formData.situacao_ocorrencia === 'sem_atuacao' || 
             formData.situacao_ocorrencia === 'Sem Atuação' ||
             formData.situacao_ocorrencia === 'sem_atuação') && (
             <div className="form-group conditional-field sem-atuacao">
               <label htmlFor="motivo_sem_atuacao">
-                ⚠️ Ocorrência sem atuação: (motivo) *
+                Ocorrência sem atuação: (motivo) *
               </label>
               <textarea 
                 id="motivo_sem_atuacao" 
