@@ -1,8 +1,9 @@
-// screens/DashboardScreen.jsx
+// src/pages/Dashboard.jsx
 import React, { useState, useMemo } from "react";
 import { PieChart, Pie, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { RefreshCw, Clock } from "lucide-react";
 import { useOcorrenciasContext } from "../contexts/OcorrenciasContext";
+import Header from "../components/Header";
 import "../styles/Dashboard.css";
 
 const DashboardScreen = () => {
@@ -266,6 +267,7 @@ const DashboardScreen = () => {
   if (loading && !refreshing) {
     return (
       <div className="dashboard-container">
+        <Header />
         <div className="loading-container">
           <div className="spinner"></div>
           <p className="loading-text">Carregando dados...</p>
@@ -276,8 +278,9 @@ const DashboardScreen = () => {
 
   return (
     <div className="dashboard-container">
+      <Header />
       <div className="dashboard-scroll">
-        {/* Header */}
+        {/* Header do Dashboard */}
         <div className="dashboard-header">
           <div className="header-row">
             <h1 className="dashboard-title">Dashboard Operacional</h1>
