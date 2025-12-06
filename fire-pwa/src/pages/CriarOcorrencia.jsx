@@ -317,18 +317,22 @@ function CriarOcorrencia() {
         <fieldset>
           <legend>Informações da Vítima</legend>
 
-          <div className="form-group checkbox-group">
-            <label>
-              <input 
-                type="checkbox" 
-                id="vitima_envolvida" 
-                name="vitima_envolvida" 
-                checked={formData.vitima_envolvida} 
-                onChange={handleChange} 
-              />
-              Vítima envolvida
-            </label>
-          </div>
+
+<div className="form-group">
+  <label htmlFor="vitima_envolvida">Vítima Envolvida *</label>
+  <select
+    id="vitima_envolvida"
+    name="vitima_envolvida"
+    value={formData.vitima_envolvida}
+    onChange={handleChange}
+    required
+  >
+    <option value="">Selecione "Sim" ou "Não"</option>
+    <option value="Sim">Sim</option>
+    <option value="Não">Não</option>
+  </select>
+</div>
+
 
           <div className="form-group">
             <label htmlFor="sexo_vitima">Sexo da Vítima</label>
