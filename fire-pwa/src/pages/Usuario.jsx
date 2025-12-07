@@ -5,6 +5,8 @@ import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import useScrollToTop from '../hooks/useScrollToTop';
 
+import '../styles/Usuario.css'
+
 // Componente reutilizável para as linhas de informação
 const InfoRow = ({ label, value }) => (
   <div className="info-row">
