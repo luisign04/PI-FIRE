@@ -146,6 +146,8 @@ export default function DetalhesOcorrencia() {
             <InfoRow label="Diretoria" value={ocorrencia.diretoria} />
             <InfoRow label="Grupamento" value={ocorrencia.grupamento} />
             <InfoRow label="Ponto Base" value={ocorrencia.pontoBase} />
+            <InfoRow label="Criado Por" value={ocorrencia.criadoPor} />
+            <InfoRow label="Matrícula do Usuário" value={ocorrencia.usuarioMatricula} />
           </div>
 
           {/* Seção: Ocorrência */}
@@ -160,8 +162,9 @@ export default function DetalhesOcorrencia() {
             <InfoRow label="Subgrupo da Ocorrência" value={ocorrencia.subgrupoOcorrencia} />
             <InfoRow label="Situação" value={ocorrencia.situacao} />
             <InfoRow label="Hora Saída Quartel" value={ocorrencia.horaSaidaQuartel} />
-            <InfoRow label="Hora Chegada Local" value={ocorrencia.horaLocal} />
+            <InfoRow label="Hora Chegada Local" value={ocorrencia.horaLocal || ocorrencia.horaChegadaLocal} />
             <InfoRow label="Hora Saída Local" value={ocorrencia.horaSaidaLocal} />
+            <InfoRow label="Tempo de Resposta" value={ocorrencia.tempoResposta ? `${ocorrencia.tempoResposta} minutos` : null} />
 
             {mostrarMotivoNaoAtendimento() && (
               <>
@@ -250,6 +253,9 @@ export default function DetalhesOcorrencia() {
 
             <InfoRow label="ID" value={ocorrencia.id} />
             <InfoRow label="Data de Registro" value={formatarDataHora(ocorrencia.dataRegistro)} />
+            <InfoRow label="Data de Criação" value={formatarDataHora(ocorrencia.dataCriacao)} />
+            <InfoRow label="Data de Atualização" value={formatarDataHora(ocorrencia.dataAtualizacao)} />
+            <InfoRow label="Sincronizado" value={formatarBooleano(ocorrencia.sincronizado)} />
           </div>
         </div>
       </div>
@@ -257,12 +263,15 @@ export default function DetalhesOcorrencia() {
       <style jsx>{`
         .detalhes-container {
           min-height: 100vh;
+          height: 100vh;
           background-color: #f5f5f5;
           padding: 20px;
           display: flex;
           flex-direction: column;
           width: 100%;
           box-sizing: border-box;
+          overflow-y: auto;
+          overflow-x: hidden;
         }
 
         .back-button {
@@ -297,19 +306,22 @@ export default function DetalhesOcorrencia() {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
+          flex: 1;
+          overflow-y: auto;
         }
 
         .card {
           background-color: white;
           border-radius: 12px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          overflow: hidden;
+          overflow: visible;
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 0;
           width: 100%;
           max-width: none;
           box-sizing: border-box;
+          margin-bottom: 20px;
         }
 
         .section {
