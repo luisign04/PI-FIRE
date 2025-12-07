@@ -72,6 +72,7 @@ export default function Usuario() {
     if (confirmLogout) {
       try {
         logout();
+        navigate('/login');
       } catch (e) {
         console.warn("Erro ao tentar deslogar:", e);
       }
