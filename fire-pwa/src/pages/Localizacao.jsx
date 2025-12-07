@@ -242,7 +242,7 @@ function Localizacao() {
 
   return (
     <div className="localizacao-container">
-      <Header />
+      <Header title="Geolocalização" />
       <div className="localizacao-content">
         {errorMsg && (
           <div className="error-container">

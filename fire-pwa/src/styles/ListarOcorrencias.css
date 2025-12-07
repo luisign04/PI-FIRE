@@ -306,12 +306,30 @@
   gap: 8px;
 }
 
+.ocorrencia-title-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .ocorrencia-tipo {
   font-size: 18px;
   font-weight: bold;
   color: #333;
   margin: 0;
-  flex: 1;
+}
+
+.ocorrencia-usuario-header {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  font-weight: 500;
+}
+
+.ocorrencia-usuario-header strong {
+  color: #bc010c;
+  font-weight: 600;
 }
 
 .status-badge {

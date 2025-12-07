@@ -594,9 +594,16 @@ export default function ListarOcorrencias() {
                 <div className="ocorrencia-content">
                   {/* Header */}
                   <div className="ocorrencia-header">
-                    <h3 className="ocorrencia-tipo">
-                      {getTipoOcorrencia(ocorrencia)}
-                    </h3>
+                    <div className="ocorrencia-title-section">
+                      <h3 className="ocorrencia-tipo">
+                        {getTipoOcorrencia(ocorrencia)}
+                      </h3>
+                      {ocorrencia.criadoPor && (
+                        <p className="ocorrencia-usuario-header">
+                          Por: <strong>{ocorrencia.criadoPor}</strong>
+                        </p>
+                      )}
+                    </div>
 
                     {statusText && statusColor && (
                       <span
@@ -627,14 +634,6 @@ export default function ListarOcorrencias() {
                       )}
                     </span>
                   </div>
-
-                  {/* ✨ EXIBIR USUÁRIO QUE CRIOU */}
-                  {ocorrencia.criadoPor && (
-                    <div className="ocorrencia-info usuario-info">
-                      <User size={16} />
-                      <span>Registrado por: {ocorrencia.criadoPor}</span>
-                    </div>
-                  )}
 
                   {(ocorrencia.regiao ||
                     ocorrencia.numeroAviso ||

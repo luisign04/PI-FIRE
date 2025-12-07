@@ -261,6 +261,8 @@ export default function DetalhesOcorrencia() {
           padding: 20px;
           display: flex;
           flex-direction: column;
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .back-button {
@@ -277,6 +279,7 @@ export default function DetalhesOcorrencia() {
           cursor: pointer;
           margin-bottom: 20px;
           transition: all 0.3s ease;
+          align-self: flex-start;
         }
 
         .back-button:hover {
@@ -290,8 +293,10 @@ export default function DetalhesOcorrencia() {
 
         .content {
           width: 100%;
+          max-width: none;
           margin: 0;
           padding: 0;
+          box-sizing: border-box;
         }
 
         .card {
@@ -303,6 +308,8 @@ export default function DetalhesOcorrencia() {
           grid-template-columns: repeat(2, 1fr);
           gap: 0;
           width: 100%;
+          max-width: none;
+          box-sizing: border-box;
         }
 
         .section {
