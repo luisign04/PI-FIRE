@@ -30,7 +30,7 @@ import {
   TIPOS_LOGRADOURO,
   MUNICIPIOS_PERNAMBUCO,
   REGIOES,
-} from "../../constants/pickerData";
+} from "../constants/pickerData";
 
 const MOTIVOS_NAO_ATENDIMENTO = [
   { label: "Selecione o motivo de não atendimento", value: "" },
