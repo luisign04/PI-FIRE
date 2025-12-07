@@ -9,22 +9,26 @@ function Header({ title, showBackButton = true }) {
       {showBackButton ? (
         <button 
           className="menu" 
-          aria-label="Abrir menu"
+          aria-label="Ir para início"
           onClick={() => navigate('/')}
         >
-          <i className="fas fa-bars" aria-hidden="true"></i>
+          <i className="fas fa-home" aria-hidden="true"></i>
         </button>
       ) : (
-        <button className="menu" aria-label="Menu">
-          <i className="fas fa-bars" aria-hidden="true"></i>
+        <button className="menu" aria-label="Início">
+          <i className="fas fa-home" aria-hidden="true"></i>
         </button>
       )}
 
       <h1>{title}</h1>
 
-      <div className="usuario" aria-hidden="false" aria-label="Área do usuário">
+      <button 
+        className="usuario" 
+        aria-label="Área do usuário"
+        onClick={() => navigate('/usuario')}
+      >
         <i className="fas fa-user-circle" aria-hidden="true"></i>
-      </div>
+      </button>
     </header>
   );
 }
