@@ -243,7 +243,7 @@ const handleExportPDF = async () => {
   if (loading) {
     return (
       <div className="listar-container">
-        <Header />
+        <Header title="Listar Ocorrências" />
         <div className="loading-container">
           <div className="spinner"></div>
           <p>Carregando ocorrências...</p>
@@ -254,7 +254,7 @@ const handleExportPDF = async () => {
 
   return (
     <div className="listar-container">
-      <Header />
+      <Header title="Listar Ocorrências" />
 
       {/* Header de seleção */}
       {selectedOccurrences.length > 0 && (

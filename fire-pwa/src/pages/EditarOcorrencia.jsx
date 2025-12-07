@@ -246,7 +246,7 @@ export default function EditarOcorrencias() {
 
   return (
     <div className="editar-container">
-      <Header />
+      <Header title="Editar Ocorrência" />
 
       <div className="content">
         <div className="page-header">
