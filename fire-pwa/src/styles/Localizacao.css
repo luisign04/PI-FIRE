@@ -1,12 +1,13 @@
 .localizacao-container {
   min-height: 100vh;
   background-color: #f7f7f7;
-  padding: 20px;
+  /* Removido o padding geral */
 }
 
 .localizacao-content {
   max-width: 800px;
   margin: 0 auto;
+  padding: 20px; /* Padding movido para cá */
 }
 
 /* Erro */
@@ -255,9 +256,26 @@
   box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
+.btn-retry {
+  background-color: #3E4095;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-retry:hover {
+  background-color: #2e3075;
+  transform: translateY(-1px);
+}
+
 /* Responsivo */
 @media (max-width: 768px) {
-  .localizacao-container {
+  .localizacao-content {
     padding: 15px;
   }
 
@@ -291,18 +309,9 @@
   .location-info {
     padding: 16px;
   }
-
-  .map-container {
-  height: 400px;
-  width: 100%;
-  margin: 20px 0;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .leaflet-container {
   height: 100%;
   width: 100%;
-}
 }
