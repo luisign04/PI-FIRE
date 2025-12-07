@@ -1,4 +1,4 @@
-# 🚒 FIRE - FERRAMENTA INTEGRADA DE RESPOSTA A EMERGÊNCIAS
+# FIRE - FERRAMENTA INTEGRADA DE RESPOSTA A EMERGÊNCIAS
 
 Projeto Integrador do 3º Período do curso de Análise e Desenvolvimento de Sistemas da Faculdade SENAC Pernambuco, Polo Recife.
 
@@ -11,12 +11,12 @@ Projeto Integrador do 3º Período do curso de Análise e Desenvolvimento de Sis
 - Eduardo Soares
 - Marlio Ramos
 
-## 📋 Índice
+## Índice
 
 - [Sobre](#-sobre)
 - [Uso](#-uso)
 
-## 💬 Sobre
+## Sobre
 
 O FIRE é um software produzido para que bombeiros posssam registrar, listar e gerenciar ocorrências de modo mais eficaz, seguro e transparente, evitando a perca de informações valiosas para o corpo de bombeiros e tornando mais ágil o procedimento de registro de ocorrências.
 
@@ -30,7 +30,7 @@ Pretendemos com este aplicativo substituir o registro de ocorrências via planil
 - Auditoria das ocorrências registradas;
 - Dificuldade em monitorar os dados adquiridos por meio do registro de ocorrências.
 
-## 💻 Uso
+## Uso
 
 O FIRE é um software que suporta tanto uso web via navegador quanto o uso mobile (atualmente Android e futuramente IOS). Abaixo há um breve tutorial de como acessar nossa aplicação tanto pelo seu navegador quanto pelo seu aparelho celular.
 
