@@ -18,10 +18,20 @@ import {
   FileDown,
   Table,
   FileText,
+  Filter,
+  User,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import Header from "../components/Header";
 import { useOcorrenciasContext } from "../contexts/OcorrenciasContext";
 import { AuthContext } from "../contexts/AuthContext";
+import {
+  NATUREZAS,
+  SITUACOES,
+  REGIOES,
+  GRUPAMENTOS,
+} from "../constants/pickerData";
 import "../styles/ListarOcorrencias.css";
 
 export default function ListarOcorrencias() {
@@ -30,20 +40,100 @@ export default function ListarOcorrencias() {
   const { ocorrencias, loading, removerOcorrencia } = useOcorrenciasContext();
   const { isAdmin } = useContext(AuthContext);
 
-  const [dataFiltro, setDataFiltro] = useState("");
+  // Estados de filtros
+  const [filtros, setFiltros] = useState({
+    data: "",
+    situacao: "",
+    natureza: "",
+    regiao: "",
+    grupamento: "",
+    usuario: "",
+  });
+  const [mostrarFiltros, setMostrarFiltros] = useState(false);
   const [selectedOccurrences, setSelectedOccurrences] = useState([]);
   const [exportModalVisible, setExportModalVisible] = useState(false);
 
+  // Função para atualizar filtros
+  const updateFiltro = (campo, valor) => {
+    setFiltros((prev) => ({ ...prev, [campo]: valor }));
+  };
+
+  // Função para limpar todos os filtros
+  const limparFiltros = () => {
+    setFiltros({
+      data: "",
+      situacao: "",
+      natureza: "",
+      regiao: "",
+      grupamento: "",
+      usuario: "",
+    });
+  };
+
+  // Verificar se há filtros ativos
+  const hasFiltrosAtivos = Object.values(filtros).some((valor) => valor !== "");
+
+  // Filtrar ocorrências
   const ocorrenciasFiltradas = ocorrencias.filter((ocorrencia) => {
-    if (!dataFiltro) return true;
-    if (ocorrencia.dataHora) {
-      return ocorrencia.dataHora.startsWith(dataFiltro);
+    // Filtro por data
+    if (filtros.data) {
+      const dataOcorrencia = ocorrencia.dataHora || ocorrencia.dataCriacao;
+      if (!dataOcorrencia || !dataOcorrencia.startsWith(filtros.data)) {
+        return false;
+      }
     }
-    if (ocorrencia.dataCriacao) {
-      return ocorrencia.dataCriacao.startsWith(dataFiltro);
+
+    // Filtro por situação
+    if (filtros.situacao) {
+      const situacao = (ocorrencia.situacao || ocorrencia.status || "").toLowerCase();
+      if (situacao !== filtros.situacao.toLowerCase()) {
+        return false;
+      }
     }
-    return false;
+
+    // Filtro por natureza
+    if (filtros.natureza) {
+      const natureza = (ocorrencia.natureza || ocorrencia.tipo || "").toLowerCase();
+      if (natureza !== filtros.natureza.toLowerCase()) {
+        return false;
+      }
+    }
+
+    // Filtro por região
+    if (filtros.regiao) {
+      const regiao = (ocorrencia.regiao || "").toLowerCase();
+      if (regiao !== filtros.regiao.toLowerCase()) {
+        return false;
+      }
+    }
+
+    // Filtro por grupamento
+    if (filtros.grupamento) {
+      const grupamento = (ocorrencia.grupamento || "").toLowerCase();
+      if (grupamento !== filtros.grupamento.toLowerCase()) {
+        return false;
+      }
+    }
+
+    // Filtro por usuário
+    if (filtros.usuario) {
+      const usuario = (ocorrencia.criadoPor || "").toLowerCase();
+      if (!usuario.includes(filtros.usuario.toLowerCase())) {
+        return false;
+      }
+    }
+
+    return true;
   });
+
+  // Obter lista única de usuários
+  const usuariosUnicos = [
+    ...new Set(
+      ocorrencias
+        .map((occ) => occ.criadoPor)
+        .filter(Boolean)
+    ),
+  ].sort();
 
   // Navegação
   const handleDashboard = () => navigate("/dashboard");
@@ -86,59 +176,58 @@ export default function ListarOcorrencias() {
     }
   };
 
-const handleExportCSV = async () => {
-  const selectedData =
-    selectedOccurrences.length > 0
-      ? ocorrenciasFiltradas.filter((occ) => selectedOccurrences.includes(occ.id))
-      : ocorrenciasFiltradas;
+  const handleExportCSV = async () => {
+    const selectedData =
+      selectedOccurrences.length > 0
+        ? ocorrenciasFiltradas.filter((occ) => selectedOccurrences.includes(occ.id))
+        : ocorrenciasFiltradas;
 
-  if (selectedData.length === 0) {
-    alert("Não há ocorrências para exportar");
-    return;
-  }
+    if (selectedData.length === 0) {
+      alert("Não há ocorrências para exportar");
+      return;
+    }
 
-  try {
-    exportToCSV(selectedData);
-    setExportModalVisible(false);
-    setSelectedOccurrences([]);
-    alert(`${selectedData.length} ocorrência(s) exportada(s) com sucesso em CSV!`);
-  } catch (error) {
-    console.error("Erro ao exportar CSV:", error);
-    alert("Falha ao exportar CSV. Tente novamente.");
-  }
-};
+    try {
+      exportToCSV(selectedData);
+      setExportModalVisible(false);
+      setSelectedOccurrences([]);
+      alert(`${selectedData.length} ocorrência(s) exportada(s) com sucesso em CSV!`);
+    } catch (error) {
+      console.error("Erro ao exportar CSV:", error);
+      alert("Falha ao exportar CSV. Tente novamente.");
+    }
+  };
 
-const handleExportPDF = async () => {
-  const selectedData =
-    selectedOccurrences.length > 0
-      ? ocorrenciasFiltradas.filter((occ) => selectedOccurrences.includes(occ.id))
-      : ocorrenciasFiltradas;
+  const handleExportPDF = async () => {
+    const selectedData =
+      selectedOccurrences.length > 0
+        ? ocorrenciasFiltradas.filter((occ) => selectedOccurrences.includes(occ.id))
+        : ocorrenciasFiltradas;
 
-  if (selectedData.length === 0) {
-    alert("Não há ocorrências para exportar");
-    return;
-  }
+    if (selectedData.length === 0) {
+      alert("Não há ocorrências para exportar");
+      return;
+    }
 
-  try {
-    exportToPDF(selectedData);
-    setExportModalVisible(false);
-    setSelectedOccurrences([]);
-    
-    // Mensagem informativa
-    setTimeout(() => {
-      alert(
-        `Gerando PDF com ${selectedData.length} ocorrência(s)...\n\n` +
-        `Uma janela de impressão será aberta.\n` +
-        `Para salvar como PDF:\n` +
-        `• Selecione "Salvar como PDF" no destino\n` +
-        `• Clique em "Salvar"`
-      );
-    }, 300);
-  } catch (error) {
-    console.error("Erro ao exportar PDF:", error);
-    alert("Falha ao exportar PDF. Tente novamente.");
-  }
-};
+    try {
+      exportToPDF(selectedData);
+      setExportModalVisible(false);
+      setSelectedOccurrences([]);
+      
+      setTimeout(() => {
+        alert(
+          `Gerando PDF com ${selectedData.length} ocorrência(s)...\n\n` +
+          `Uma janela de impressão será aberta.\n` +
+          `Para salvar como PDF:\n` +
+          `• Selecione "Salvar como PDF" no destino\n` +
+          `• Clique em "Salvar"`
+        );
+      }, 300);
+    } catch (error) {
+      console.error("Erro ao exportar PDF:", error);
+      alert("Falha ao exportar PDF. Tente novamente.");
+    }
+  };
 
   // Funções auxiliares
   const getStatusColor = (status) => {
@@ -299,25 +388,147 @@ const handleExportPDF = async () => {
           )}
         </div>
 
-        {/* Filtro por data */}
-        <div className="filtro-container">
-          <Calendar size={20} color="#bc010c" />
-          <input
-            type="text"
-            className="filtro-input"
-            placeholder="Filtrar por data (AAAA-MM-DD)"
-            value={dataFiltro}
-            onChange={(e) => setDataFiltro(e.target.value)}
-          />
-          {dataFiltro && (
-            <button
-              onClick={() => setDataFiltro("")}
-              className="limpar-filtro"
-            >
-              <X size={20} />
-            </button>
-          )}
-        </div>
+        {/* Botão de Filtros */}
+        <button
+          className="filtros-toggle-button"
+          onClick={() => setMostrarFiltros(!mostrarFiltros)}
+        >
+          <Filter size={20} />
+          <span>Filtros Avançados</span>
+          {mostrarFiltros ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          {hasFiltrosAtivos && <span className="filtros-badge">●</span>}
+        </button>
+
+        {/* Painel de Filtros Avançados */}
+        {mostrarFiltros && (
+          <div className="filtros-panel">
+            <div className="filtros-header">
+              <h3>Filtrar Ocorrências</h3>
+              {hasFiltrosAtivos && (
+                <button className="limpar-filtros-button" onClick={limparFiltros}>
+                  <X size={16} />
+                  <span>Limpar Filtros</span>
+                </button>
+              )}
+            </div>
+
+            <div className="filtros-grid">
+              {/* Filtro por Data */}
+              <div className="filtro-group">
+                <label className="filtro-label">
+                  <Calendar size={16} />
+                  <span>Data</span>
+                </label>
+                <input
+                  type="date"
+                  className="filtro-input-field"
+                  value={filtros.data}
+                  onChange={(e) => updateFiltro("data", e.target.value)}
+                />
+              </div>
+
+              {/* Filtro por Situação */}
+              <div className="filtro-group">
+                <label className="filtro-label">
+                  <Info size={16} />
+                  <span>Situação</span>
+                </label>
+                <select
+                  className="filtro-select"
+                  value={filtros.situacao}
+                  onChange={(e) => updateFiltro("situacao", e.target.value)}
+                >
+                  <option value="">Todas</option>
+                  {SITUACOES.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Filtro por Natureza */}
+              <div className="filtro-group">
+                <label className="filtro-label">
+                  <List size={16} />
+                  <span>Natureza</span>
+                </label>
+                <select
+                  className="filtro-select"
+                  value={filtros.natureza}
+                  onChange={(e) => updateFiltro("natureza", e.target.value)}
+                >
+                  <option value="">Todas</option>
+                  {NATUREZAS.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Filtro por Região */}
+              <div className="filtro-group">
+                <label className="filtro-label">
+                  <MapPin size={16} />
+                  <span>Região</span>
+                </label>
+                <select
+                  className="filtro-select"
+                  value={filtros.regiao}
+                  onChange={(e) => updateFiltro("regiao", e.target.value)}
+                >
+                  <option value="">Todas</option>
+                  {REGIOES.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Filtro por Grupamento */}
+              <div className="filtro-group">
+                <label className="filtro-label">
+                  <LayoutDashboard size={16} />
+                  <span>Grupamento</span>
+                </label>
+                <select
+                  className="filtro-select"
+                  value={filtros.grupamento}
+                  onChange={(e) => updateFiltro("grupamento", e.target.value)}
+                >
+                  <option value="">Todos</option>
+                  {GRUPAMENTOS.map((item) => (
+                    <option key={item.value} value={item.value}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Filtro por Usuário */}
+              <div className="filtro-group">
+                <label className="filtro-label">
+                  <User size={16} />
+                  <span>Registrado por</span>
+                </label>
+                <select
+                  className="filtro-select"
+                  value={filtros.usuario}
+                  onChange={(e) => updateFiltro("usuario", e.target.value)}
+                >
+                  <option value="">Todos</option>
+                  {usuariosUnicos.map((usuario) => (
+                    <option key={usuario} value={usuario}>
+                      {usuario}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Botões de ação */}
         <div className="action-buttons">
@@ -340,9 +551,11 @@ const handleExportPDF = async () => {
           <div className="sem-resultados">
             <SearchX size={60} color="#ccc" />
             <p className="sem-resultados-text">
-              {dataFiltro
-                ? `Nenhuma ocorrência encontrada para ${dataFiltro}`
-                : "Nenhuma ocorrência registrada"}
+              {hasFiltrosAtivos
+                ? "Nenhuma ocorrência encontrada com os filtros aplicados"
+                : ocorrencias.length === 0
+                ? "Nenhuma ocorrência registrada"
+                : "Nenhuma ocorrência encontrada"}
             </p>
             {ocorrencias.length === 0 && (
               <button
@@ -414,6 +627,14 @@ const handleExportPDF = async () => {
                       )}
                     </span>
                   </div>
+
+                  {/* ✨ EXIBIR USUÁRIO QUE CRIOU */}
+                  {ocorrencia.criadoPor && (
+                    <div className="ocorrencia-info usuario-info">
+                      <User size={16} />
+                      <span>Registrado por: {ocorrencia.criadoPor}</span>
+                    </div>
+                  )}
 
                   {(ocorrencia.regiao ||
                     ocorrencia.numeroAviso ||

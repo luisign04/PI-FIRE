@@ -6,6 +6,8 @@ import { useOcorrenciasContext } from "../contexts/OcorrenciasContext";
 import useScrollToTop from "../hooks/useScrollToTop";
 import { useNavigate } from "react-router-dom";
 import "../styles/CriaOcorrencia.css";
+import { AuthContext } from "../contexts/AuthContext";
+import React, { useState, useEffect, useContext } from "react";
 
 // Importar constantes (você precisará adaptar o caminho conforme sua estrutura)
 import {
@@ -89,6 +91,7 @@ const CriarOcorrenciaScreen = () => {
   useScrollToTop();
   const navigate = useNavigate();
   const { adicionarOcorrencia } = useOcorrenciasContext();
+  const { user } = useContext(AuthContext);
 
   // Estado principal do formulário
   const [formData, setFormData] = useState({
@@ -357,36 +360,40 @@ const CriarOcorrenciaScreen = () => {
       }
 
       // Montar objeto da ocorrência
-      const ocorrenciaData = {
-        id: `ocorrencia_${Date.now()}_${Math.random()
-          .toString(36)
-          .substr(2, 9)}`,
-        tipo: formData.natureza,
-        descricao: `${formData.natureza} - ${
-          formData.grupoOcorrencia || ""
-        }`.trim(),
-        localizacao:
-          formData.logradouro ||
-          formData.bairro ||
-          formData.municipio ||
-          "Local não informado",
-        regiao: formData.regiao,
-        status: formData.situacao,
-        situacao: formData.situacao,
-        dataHora: new Date(dataHora).toISOString(),
-        dataCriacao: new Date().toISOString(),
-        tempoResposta: Math.round(tempoResposta),
-        horaSaidaQuartel: formatHoraToString(horaSaidaQuartel),
-        horaChegadaLocal: formatHoraToString(horaLocal),
-        horaSaidaLocal: formatHoraToString(horaSaidaLocal),
-        fotos: fotoOcorrencia ? [fotoOcorrencia.uri] : [],
-        ...formData,
-        ais: aisToSave,
-        numeroAviso: formData.numeroAviso,
-        grupamento: formData.grupamento,
-        natureza: formData.natureza,
-        grupoOcorrencia: formData.grupoOcorrencia,
-        subgrupoOcorrencia: formData.subgrupoOcorrencia,
+const ocorrenciaData = {
+  id: `ocorrencia_${Date.now()}_${Math.random()
+    .toString(36)
+    .substr(2, 9)}`,
+  tipo: formData.natureza,
+  descricao: `${formData.natureza} - ${
+    formData.grupoOcorrencia || ""
+  }`.trim(),
+  localizacao:
+    formData.logradouro ||
+    formData.bairro ||
+    formData.municipio ||
+    "Local não informado",
+  regiao: formData.regiao,
+  status: formData.situacao,
+  situacao: formData.situacao,
+  dataHora: new Date(dataHora).toISOString(),
+  dataCriacao: new Date().toISOString(),
+  tempoResposta: Math.round(tempoResposta),
+  horaSaidaQuartel: formatHoraToString(horaSaidaQuartel),
+  horaChegadaLocal: formatHoraToString(horaLocal),
+  horaSaidaLocal: formatHoraToString(horaSaidaLocal),
+  fotos: fotoOcorrencia ? [fotoOcorrencia.uri] : [],
+  // ✨ ADICIONAR INFORMAÇÕES DO USUÁRIO
+  criadoPor: user?.nome || 'Usuário não identificado',
+  usuarioId: user?.id || null,
+  usuarioMatricula: user?.matricula || null,
+  ...formData,
+  ais: aisToSave,
+  numeroAviso: formData.numeroAviso,
+  grupamento: formData.grupamento,
+  natureza: formData.natureza,
+  grupoOcorrencia: formData.grupoOcorrencia,
+  subgrupoOcorrencia: formData.subgrupoOcorrencia,
       };
 
       console.log("Salvando ocorrência:", ocorrenciaData);
