@@ -1,4 +1,5 @@
 // src/pages/ListarOcorrencias.jsx
+import { exportToCSV, exportToPDF } from '../services/exportService';
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import useScrollToTop from "../hooks/useScrollToTop";
@@ -85,66 +86,59 @@ export default function ListarOcorrencias() {
     }
   };
 
-  // Exportação
-  const handleExportCSV = async () => {
-    const selectedData =
-      selectedOccurrences.length > 0
-        ? ocorrenciasFiltradas.filter((occ) => selectedOccurrences.includes(occ.id))
-        : ocorrenciasFiltradas;
+const handleExportCSV = async () => {
+  const selectedData =
+    selectedOccurrences.length > 0
+      ? ocorrenciasFiltradas.filter((occ) => selectedOccurrences.includes(occ.id))
+      : ocorrenciasFiltradas;
 
-    if (selectedData.length === 0) {
-      alert("Não há ocorrências para exportar");
-      return;
-    }
+  if (selectedData.length === 0) {
+    alert("Não há ocorrências para exportar");
+    return;
+  }
 
-    try {
-      // Criar CSV
-      const headers = [
-        'ID', 'Data/Hora', 'Tipo', 'Local', 'Status', 'Região', 
-        'Número Aviso', 'Grupamento', 'Município', 'Bairro'
-      ];
-      
-      const csvRows = [
-        headers.join(','),
-        ...selectedData.map(occ => [
-          occ.id,
-          occ.dataHora || occ.dataCriacao,
-          getTipoOcorrencia(occ),
-          getLocalOcorrencia(occ).replace(/,/g, ';'),
-          getStatusText(occ) || '',
-          occ.regiao || '',
-          occ.numeroAviso || '',
-          occ.grupamento || '',
-          occ.municipio || '',
-          occ.bairro || ''
-        ].join(','))
-      ];
-
-      const csvContent = csvRows.join('\n');
-      const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      
-      link.setAttribute('href', url);
-      link.setAttribute('download', `ocorrencias_${new Date().toISOString().split('T')[0]}.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      setExportModalVisible(false);
-      setSelectedOccurrences([]);
-      alert("CSV exportado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao exportar CSV:", error);
-      alert("Falha ao exportar CSV");
-    }
-  };
-
-  const handleExportPDF = async () => {
-    alert("Funcionalidade de exportação PDF em desenvolvimento");
+  try {
+    exportToCSV(selectedData);
     setExportModalVisible(false);
-  };
+    setSelectedOccurrences([]);
+    alert(`${selectedData.length} ocorrência(s) exportada(s) com sucesso em CSV!`);
+  } catch (error) {
+    console.error("Erro ao exportar CSV:", error);
+    alert("Falha ao exportar CSV. Tente novamente.");
+  }
+};
+
+const handleExportPDF = async () => {
+  const selectedData =
+    selectedOccurrences.length > 0
+      ? ocorrenciasFiltradas.filter((occ) => selectedOccurrences.includes(occ.id))
+      : ocorrenciasFiltradas;
+
+  if (selectedData.length === 0) {
+    alert("Não há ocorrências para exportar");
+    return;
+  }
+
+  try {
+    exportToPDF(selectedData);
+    setExportModalVisible(false);
+    setSelectedOccurrences([]);
+    
+    // Mensagem informativa
+    setTimeout(() => {
+      alert(
+        `Gerando PDF com ${selectedData.length} ocorrência(s)...\n\n` +
+        `Uma janela de impressão será aberta.\n` +
+        `Para salvar como PDF:\n` +
+        `• Selecione "Salvar como PDF" no destino\n` +
+        `• Clique em "Salvar"`
+      );
+    }, 300);
+  } catch (error) {
+    console.error("Erro ao exportar PDF:", error);
+    alert("Falha ao exportar PDF. Tente novamente.");
+  }
+};
 
   // Funções auxiliares
   const getStatusColor = (status) => {
