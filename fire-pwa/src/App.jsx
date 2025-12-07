@@ -14,7 +14,9 @@ import Fire from './pages/Fire';
 import Localizacao from './pages/Localizacao';
 import Usuario from './pages/Usuario';
 import DetalhesOcorrencia from './pages/DetalhesOcorrencia';
+import EditarOcorrencias from './pages/EditarOcorrencia';
 import './styles/App.css';
+
 
 // Componente de rota protegida
 function ProtectedRoute({ children }) {
@@ -79,6 +81,15 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+
+            <Route 
+     path="/editar-ocorrencia" 
+     element={
+       <ProtectedRoute>
+         <EditarOcorrencias />
+       </ProtectedRoute>
+     } 
+   />
             
             <Route 
               path="/ocorrencia-sucesso" 
