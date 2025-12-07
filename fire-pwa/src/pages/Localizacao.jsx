@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from 'react-le
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useScrollToTop from '../hooks/useScrollToTop';
+import Header from "../components/Header";
 import '../styles/Localizacao.css';
 
 // Fix para o ícone do marcador do Leaflet
@@ -294,7 +295,7 @@ function Localizacao() {
             </MapContainer>
           ) : (
             <div className="map-placeholder">
-              <p>📍 Clique em "Obter Minha Localização" para visualizar o mapa</p>
+              <p>Clique em "Obter Minha Localização" para visualizar o mapa</p>
             </div>
           )}
         </div>
