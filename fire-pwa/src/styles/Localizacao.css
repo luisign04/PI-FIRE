@@ -291,4 +291,18 @@
   .location-info {
     padding: 16px;
   }
+
+  .map-container {
+  height: 400px;
+  width: 100%;
+  margin: 20px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
 }
