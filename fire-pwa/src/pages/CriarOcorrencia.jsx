@@ -1,5 +1,5 @@
 // src/pages/CriarOcorrencia.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Camera, MapPin, Trash2, Upload, X, Loader } from "lucide-react";
 import Header from "../components/Header";
 import { useOcorrenciasContext } from "../contexts/OcorrenciasContext";
@@ -7,7 +7,6 @@ import useScrollToTop from "../hooks/useScrollToTop";
 import { useNavigate } from "react-router-dom";
 import "../styles/CriaOcorrencia.css";
 import { AuthContext } from "../contexts/AuthContext";
-import React, { useState, useEffect, useContext } from "react";
 
 // Importar constantes (você precisará adaptar o caminho conforme sua estrutura)
 import {
