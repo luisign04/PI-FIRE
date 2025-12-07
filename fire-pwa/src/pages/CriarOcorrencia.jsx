@@ -685,140 +685,92 @@ const CriarOcorrenciaScreen = () => {
             </div>
           </section>
 
-          {/* Informações da Vítima */}
-          <section className="form-section">
-            <h2 className="section-title">Informações da Vítima</h2>
+{/* Informações da Vítima */}
+<section className="form-section">
+  <h2 className="section-title">Informações da Vítima</h2>
 
-            <div className="input-group">
-              <label className="input-label">Vítima Envolvida</label>
-              <div className="button-group">
-                <button
-                  type="button"
-                  className={`option-button ${formData.envolvida ? "selected" : ""}`}
-                  onClick={() => updateFormData("envolvida", true)}
-                >
-                  SIM
-                </button>
-                <button
-                  type="button"
-                  className={`option-button ${!formData.envolvida ? "selected" : ""}`}
-                  onClick={() => updateFormData("envolvida", false)}
-                >
-                  NÃO
-                </button>
-              </div>
-            </div>
+  <div className="input-group">
+    <label className="input-label">Vítima Envolvida</label>
+    <div className="button-group">
+      <button
+        type="button"
+        className={`option-button ${formData.envolvida ? "selected" : ""}`}
+        onClick={() => updateFormData("envolvida", true)}
+      >
+        SIM
+      </button>
+      <button
+        type="button"
+        className={`option-button ${!formData.envolvida ? "selected" : ""}`}
+        onClick={() => updateFormData("envolvida", false)}
+      >
+        NÃO
+      </button>
+    </div>
+  </div>
 
-            <div className="input-group">
-              <label className="input-label">Sexo da Vítima</label>
-              <select
-                className="form-select"
-                value={formData.sexo}
-                onChange={(e) => updateFormData("sexo", e.target.value)}
-              >
-                {SEXOS.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+  {/* Mostrar os campos abaixo apenas se envolvida === true */}
+  {formData.envolvida && (
+    <>
+      <div className="input-group">
+        <label className="input-label">Sexo da Vítima</label>
+        <select
+          className="form-select"
+          value={formData.sexo}
+          onChange={(e) => updateFormData("sexo", e.target.value)}
+        >
+          {SEXOS.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-            <div className="input-group">
-              <label className="input-label">Idade da Vítima</label>
-              <input
-                type="text"
-                className="form-input"
-                value={formData.idade}
-                onChange={(e) => handleIdadeChange(e.target.value)}
-                placeholder="Digite a idade (0-125)"
-                maxLength={3}
-              />
-              <span className="helper-text">Idade limitada a 125 anos</span>
-            </div>
+      <div className="input-group">
+        <label className="input-label">Idade da Vítima</label>
+        <input
+          type="text"
+          className="form-input"
+          value={formData.idade}
+          onChange={(e) => handleIdadeChange(e.target.value)}
+          placeholder="Digite a idade (0-125)"
+          maxLength={3}
+        />
+        <span className="helper-text">Idade limitada a 125 anos</span>
+      </div>
 
-            <div className="input-group">
-              <label className="input-label">Classificação da Vítima</label>
-              <select
-                className="form-select"
-                value={formData.classificacao}
-                onChange={(e) => updateFormData("classificacao", e.target.value)}
-              >
-                {CLASSIFICACOES.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+      <div className="input-group">
+        <label className="input-label">Classificação da Vítima</label>
+        <select
+          className="form-select"
+          value={formData.classificacao}
+          onChange={(e) => updateFormData("classificacao", e.target.value)}
+        >
+          {CLASSIFICACOES.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-            <div className="input-group">
-              <label className="input-label">Destino da Vítima</label>
-              <select
-                className="form-select"
-                value={formData.destino}
-                onChange={(e) => updateFormData("destino", e.target.value)}
-              >
-                {DESTINOS.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </section>
-
-          {/* Viatura e Acionamento */}
-          <section className="form-section">
-            <h2 className="section-title">Viatura e Acionamento</h2>
-
-            <div className="input-group">
-              <label className="input-label">Viatura Empregada</label>
-              <input
-                type="text"
-                className="form-input"
-                value={formData.viatura}
-                onChange={(e) => updateFormData("viatura", e.target.value)}
-                placeholder="Digite a viatura empregada"
-              />
-            </div>
-
-            <div className="input-group">
-              <label className="input-label">Número da Viatura</label>
-              <input
-                type="text"
-                className="form-input"
-                value={formData.numeroViatura}
-                onChange={(e) => updateFormData("numeroViatura", e.target.value)}
-                placeholder="Digite o número da viatura"
-              />
-            </div>
-
-            <div className="input-group">
-              <label className="input-label">Forma de Acionamento</label>
-              <select
-                className="form-select"
-                value={formData.acionamento}
-                onChange={(e) => updateFormData("acionamento", e.target.value)}
-              >
-                {ACIONAMENTOS.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="input-group">
-              <label className="input-label">Local do Acionamento</label>
-              <input
-                type="text"
-                className="form-input"
-                value={formData.localAcionamento}
-                onChange={(e) => updateFormData("localAcionamento", e.target.value)}
-placeholder="Digite o local do acionamento"
-/>
-</div>
+      <div className="input-group">
+        <label className="input-label">Destino da Vítima</label>
+        <select
+          className="form-select"
+          value={formData.destino}
+          onChange={(e) => updateFormData("destino", e.target.value)}
+        >
+          {DESTINOS.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    </>
+  )}
 </section>
 
 {/* Endereço da Ocorrência */}
