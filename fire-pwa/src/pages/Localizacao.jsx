@@ -108,21 +108,21 @@ function Localizacao() {
       
       // Estratégia 1: Tentar com alta precisão
       try {
-        console.log('🎯 Tentativa 1: Alta precisão (GPS)...');
+        console.log('Tentativa 1: Alta precisão (GPS)...');
         position = await attemptGeolocation(true, 10000);
       } catch (error1) {
-        console.warn('⚠️ Tentativa 1 falhou:', error1.message);
+        console.warn('Tentativa 1 falhou:', error1.message);
         
         // Estratégia 2: Tentar com precisão média e timeout maior
         try {
-          console.log('🎯 Tentativa 2: Precisão média (Wi-Fi/Rede)...');
+          console.log('Tentativa 2: Precisão média (Wi-Fi/Rede)...');
           position = await attemptGeolocation(false, 15000);
         } catch (error2) {
-          console.warn('⚠️ Tentativa 2 falhou:', error2.message);
+          console.warn('Tentativa 2 falhou:', error2.message);
           
           // Estratégia 3: Última tentativa com configurações mais permissivas
           try {
-            console.log('🎯 Tentativa 3: Modo permissivo...');
+            console.log('Tentativa 3: Modo permissivo...');
             position = await attemptGeolocation(false, 20000);
           } catch (error3) {
             // Todas as tentativas falharam
@@ -311,7 +311,7 @@ function Localizacao() {
               <span style={{ marginLeft: '10px' }}>Localizando...</span>
             </>
           ) : (
-            '📍 Obter Minha Localização'
+            'Obter Minha Localização'
           )}
         </button>
 
@@ -319,7 +319,7 @@ function Localizacao() {
           <div className="loading-container">
             <div className="loading-spinner-small"></div>
             <p className="loading-text">
-              🔍 Buscando sua localização...<br />
+              Buscando sua localização...<br />
               <small>Isso pode levar alguns segundos</small>
             </p>
           </div>
@@ -327,7 +327,7 @@ function Localizacao() {
 
         {location && (
           <div className="location-info">
-            <h2 className="location-title">✅ Localização Encontrada</h2>
+            <h2 className="location-title">Localização Encontrada!</h2>
 
             <div className="coordinates-container">
               <div className="coordinate-box">
@@ -354,7 +354,7 @@ function Localizacao() {
             {location.accuracy && (
               <div className="accuracy-container">
                 <p className="accuracy-text">
-                  🎯 Precisão: ±{location.accuracy.toFixed(1)} metros
+                  Precisão: ±{location.accuracy.toFixed(1)} metros
                   {location.accuracy > 100 && ' (Baixa precisão - considere ativar GPS)'}
                 </p>
               </div>
@@ -384,7 +384,7 @@ function Localizacao() {
               marginTop: '15px',
               textAlign: 'center' 
             }}>
-              ⏰ Atualizado em: {location.timestamp}
+              Atualizado em: {location.timestamp}
             </p>
           </div>
         )}
