@@ -1,452 +1,557 @@
 /* src/styles/CriaOcorrencia.css */
 
+/* ========================================
+   CONTAINER PRINCIPAL
+   ======================================== */
+/* Container principal que ocupa toda a altura da viewport */
 .criar-ocorrencia-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  min-height: 100vh; /* Altura mínima de 100% da viewport */
+  background-color: #f5f5f5; /* Fundo cinza claro */
 }
 
+/* Área de rolagem do formulário */
 .criar-ocorrencia-scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px 16px 30px;
+  flex: 1; /* Ocupa todo o espaço disponível */
+  overflow-y: auto; /* Permite rolagem vertical quando necessário */
+  padding: 24px 16px 30px; /* Espaçamento interno */
 }
 
+/* Container que centraliza e limita a largura do formulário */
 .form-container {
-  max-width: 900px;
-  margin: 0 auto;
-  width: 100%;
+  max-width: 900px; /* Largura máxima de 900px */
+  margin: 0 auto; /* Centraliza horizontalmente */
+  width: 100%; /* Ocupa 100% até o max-width */
 }
 
-/* Seções do Formulário */
+
+/* ========================================
+   SEÇÕES DO FORMULÁRIO
+   ======================================== */
+/* Card branco que contém cada seção do formulário */
 .form-section {
-  background-color: white;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white; /* Fundo branco */
+  border-radius: 16px; /* Cantos mais arredondados */
+  padding: 28px; /* Mais espaçamento interno */
+  margin-bottom: 24px; /* Mais espaço entre seções */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra mais pronunciada */
+  border: 1px solid #e0e0e0; /* Borda sutil para destacar */
 }
 
+/* Título de cada seção (ex: "Dados Internos", "Informações da Ocorrência") */
 .section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 20px 0;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #bc010c;
+  font-size: 1.5rem; /* Tamanho maior */
+  font-weight: 700; /* Mais negrito */
+  color: #bc010c; /* Cor vermelha do tema */
+  margin: 0 0 24px 0; /* Mais espaço embaixo */
+  padding-bottom: 0;
+  border: none !important; /* Force remover qualquer borda */
+  border-bottom: none !important; /* Force remover borda inferior */
+  box-shadow: none !important; /* Remove qualquer sombra */
 }
 
-/* Input Groups */
+
+/* ========================================
+   GRUPOS DE INPUTS
+   ======================================== */
+/* Grupo que envolve cada campo (label + input) */
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 20px; /* Espaço entre campos */
 }
 
+/* Label de cada campo */
 .input-label {
-  display: block;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 8px;
+  display: block; /* Ocupa toda a largura */
+  font-size: 0.95rem; /* Tamanho da fonte */
+  font-weight: 500; /* Peso médio */
+  color: #333; /* Cor cinza escuro */
+  margin-bottom: 12px; /* Espaço entre label e input */
 }
 
+/* Adiciona asterisco vermelho nos campos obrigatórios */
 .input-label.required::after {
-  content: " *";
-  color: #bc010c;
+  content: " *"; /* Adiciona o caractere asterisco */
+  color: #bc010c; /* Cor vermelha (padrão bombeiros) */
 }
 
-/* Inputs e Selects */
+
+/* ========================================
+   INPUTS E CAMPOS DE TEXTO
+   ======================================== */
+/* Estilo base para inputs de texto e selects */
 .form-input,
 .form-select {
-  width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%; /* Largura total */
+  padding: 12px; /* Espaçamento interno */
+  font-size: 1rem; /* Tamanho da fonte */
+  color: #333; /* Cor do texto */
+  border: none; /* Remove borda completa */
+  border-bottom: 1px solid #ccc; /* Apenas linha embaixo (estilo Material) */
+  border-radius: 0; /* Sem cantos arredondados */
+  background-color: transparent; /* Fundo transparente */
+  transition: border-color 0.3s ease; /* Animação suave ao focar */
 }
 
+/* Efeito ao focar no input ou select */
 .form-input:focus,
 .form-select:focus {
-  outline: none;
-  border-color: #bc010c;
-  box-shadow: 0 0 0 3px rgba(188, 1, 12, 0.1);
+  outline: none; /* Remove contorno padrão do navegador */
+  border-bottom-color: #bc010c; /* Linha vermelha ao focar */
 }
 
+/* Estilo do texto placeholder (texto de exemplo no input) */
 .form-input::placeholder {
-  color: #999;
+  color: #999; /* Cor cinza clara */
 }
 
+/* Cursor de ponteiro nos selects */
 .form-select {
   cursor: pointer;
 }
 
+/* Campo de texto longo (textarea) */
 .form-textarea {
-  width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
-  resize: vertical;
-  min-height: 80px;
-  font-family: inherit;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%; /* Largura total */
+  padding: 12px; /* Espaçamento interno */
+  font-size: 1rem; /* Tamanho da fonte */
+  color: #333; /* Cor do texto */
+  border: none; /* Remove borda completa */
+  border-bottom: 1px solid #ccc; /* Apenas linha embaixo */
+  border-radius: 0; /* Sem cantos arredondados */
+  background-color: transparent; /* Fundo transparente */
+  resize: vertical; /* Permite redimensionar apenas verticalmente */
+  min-height: 80px; /* Altura mínima */
+  font-family: inherit; /* Usa a mesma fonte do documento */
+  transition: border-color 0.3s ease; /* Animação suave */
 }
 
+/* Efeito ao focar no textarea */
 .form-textarea:focus {
-  outline: none;
-  border-color: #bc010c;
-  box-shadow: 0 0 0 3px rgba(188, 1, 12, 0.1);
+  outline: none; /* Remove contorno padrão */
+  border-bottom-color: #bc010c; /* Linha vermelha ao focar */
 }
 
+/* Campos gerados automaticamente (ex: número da ocorrência) */
 .auto-generated {
-  background-color: #f9f9f9;
+  background-color: #f9f9f9; /* Fundo cinza claro para indicar que é auto-gerado */
 }
 
-/* Helper Text e Char Counter */
+
+/* ========================================
+   TEXTOS AUXILIARES
+   ======================================== */
+/* Texto de ajuda abaixo dos campos */
 .helper-text {
   display: block;
-  font-size: 0.8rem;
-  color: #666;
-  font-style: italic;
-  margin-top: 4px;
+  font-size: 0.8rem; /* Fonte pequena */
+  color: #666; /* Cor cinza média */
+  font-style: italic; /* Texto em itálico */
+  margin-top: 4px; /* Espaço acima */
 }
 
+/* Contador de caracteres (ex: "45/200") */
 .char-counter {
   display: block;
-  font-size: 0.85rem;
-  color: #666;
-  text-align: right;
-  margin-top: 4px;
+  font-size: 0.85rem; /* Fonte pequena */
+  color: #666; /* Cor cinza média */
+  text-align: right; /* Alinhado à direita */
+  margin-top: 4px; /* Espaço acima */
 }
 
-/* Input Row (para campos lado a lado) */
+
+/* ========================================
+   LAYOUT DE CAMPOS LADO A LADO
+   ======================================== */
+/* Container para colocar campos lado a lado (ex: data e hora) */
 .input-row {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
+  display: flex; /* Layout flexível */
+  gap: 16px; /* Espaço entre os campos */
+  margin-bottom: 20px; /* Espaço embaixo */
 }
 
+/* Remove margem dos input-groups dentro de input-row */
 .input-row .input-group {
   margin-bottom: 0;
 }
 
+/* Faz o campo ocupar todo o espaço disponível */
 .flex-1 {
   flex: 1;
 }
 
-/* Button Group (Sim/Não) */
+
+/* ========================================
+   BOTÕES DE OPÇÃO (SIM/NÃO)
+   ======================================== */
+/* Container dos botões Sim/Não */
 .button-group {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 8px; /* Espaço entre botões */
+  margin-top: 8px; /* Espaço acima */
 }
 
+/* Estilo de cada botão de opção */
 .option-button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 8px;
-  border: 2px solid #ccc;
-  background-color: #f8f8f8;
-  color: #666;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  flex: 1; /* Cada botão ocupa metade do espaço */
+  padding: 12px; /* Espaçamento interno */
+  border-radius: 8px; /* Cantos arredondados */
+  border: 2px solid #ccc; /* Borda cinza */
+  background-color: #f8f8f8; /* Fundo cinza claro */
+  color: #666; /* Texto cinza */
+  font-size: 1rem; /* Tamanho da fonte */
+  font-weight: bold; /* Negrito */
+  cursor: pointer; /* Cursor de ponteiro */
+  transition: all 0.3s ease; /* Animação suave */
 }
 
+/* Efeito hover nos botões de opção */
 .option-button:hover {
-  opacity: 0.9;
+  opacity: 0.9; /* Leve transparência */
 }
 
+/* Botão quando está selecionado */
 .option-button.selected {
-  background-color: #bc010c;
-  border-color: #bc010c;
-  color: white;
+  background-color: #bc010c; /* Fundo vermelho */
+  border-color: #bc010c; /* Borda vermelha */
+  color: white; /* Texto branco */
 }
 
-/* Location Button */
+
+/* ========================================
+   BOTÃO DE LOCALIZAÇÃO
+   ======================================== */
+/* Botão para obter localização GPS */
 .location-button {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: #bc010c;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 20px;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  max-width: 300px;
-  margin-left: auto;
-  margin-right: auto;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  gap: 8px; /* Espaço entre ícone e texto */
+  background-color: #bc010c; /* Fundo vermelho */
+  color: white; /* Texto branco */
+  padding: 12px 20px; /* Espaçamento interno */
+  border: none; /* Sem borda */
+  border-radius: 8px; /* Cantos arredondados */
+  font-size: 1rem; /* Tamanho da fonte */
+  font-weight: 600; /* Semi-negrito */
+  cursor: pointer; /* Cursor de ponteiro */
+  margin-bottom: 20px; /* Espaço embaixo */
+  transition: background-color 0.3s ease; /* Animação suave */
+  width: 100%; /* Largura total */
+  max-width: 300px; /* Largura máxima */
+  margin-left: auto; /* Centraliza horizontalmente */
+  margin-right: auto; /* Centraliza horizontalmente */
 }
 
+/* Efeito hover no botão de localização */
 .location-button:hover:not(:disabled) {
-  background-color: #a00109;
+  background-color: #a00109; /* Vermelho mais escuro */
 }
 
+/* Botão desabilitado */
 .location-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
+  background-color: #cccccc; /* Cinza */
+  cursor: not-allowed; /* Cursor de "não permitido" */
 }
 
+/* Animação de rotação para o ícone de loading */
 .location-button .spinning {
-  animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite; /* Rotação contínua */
 }
 
+/* Definição da animação de rotação */
 @keyframes spin {
   from {
-    transform: rotate(0deg);
+    transform: rotate(0deg); /* Começa em 0 graus */
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(360deg); /* Termina em 360 graus */
   }
 }
 
-/* Photo Section */
+
+/* ========================================
+   SEÇÃO DE FOTO
+   ======================================== */
+/* Container da prévia da foto */
 .photo-preview-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #f8f8f8;
-  border-radius: 12px;
-  padding: 20px;
+  flex-direction: column; /* Layout em coluna */
+  align-items: center; /* Centraliza itens */
+  background-color: #f8f8f8; /* Fundo cinza claro */
+  border-radius: 12px; /* Cantos arredondados */
+  padding: 20px; /* Espaçamento interno */
 }
 
+/* Imagem de prévia da foto */
 .photo-preview {
-  width: 100%;
-  max-width: 500px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  background-color: #e0e0e0;
+  width: 100%; /* Largura total */
+  max-width: 500px; /* Largura máxima */
+  height: 300px; /* Altura fixa */
+  object-fit: cover; /* Cobre toda a área sem distorcer */
+  border-radius: 8px; /* Cantos arredondados */
+  margin-bottom: 12px; /* Espaço embaixo */
+  background-color: #e0e0e0; /* Fundo cinza como placeholder */
 }
 
+/* Informações sobre a foto (ex: tamanho, data) */
 .photo-info {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 16px;
-  text-align: center;
+  font-size: 0.9rem; /* Fonte pequena */
+  color: #666; /* Cor cinza */
+  margin-bottom: 16px; /* Espaço embaixo */
+  text-align: center; /* Texto centralizado */
 }
 
+/* Container dos botões de ação da foto */
 .photo-actions {
   display: flex;
-  gap: 12px;
-  width: 100%;
-  justify-content: center;
+  gap: 12px; /* Espaço entre botões */
+  width: 100%; /* Largura total */
+  justify-content: center; /* Centraliza botões */
 }
 
+/* Botões de ação da foto (Trocar, Remover) */
 .photo-button {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 12px 24px;
-  border-radius: 8px;
-  border: none;
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  gap: 6px; /* Espaço entre ícone e texto */
+  padding: 12px 24px; /* Espaçamento interno */
+  border-radius: 8px; /* Cantos arredondados */
+  border: none; /* Sem borda */
+  color: white; /* Texto branco */
+  font-size: 0.95rem; /* Tamanho da fonte */
+  font-weight: 600; /* Semi-negrito */
+  cursor: pointer; /* Cursor de ponteiro */
+  transition: opacity 0.3s ease; /* Animação suave */
 }
 
+/* Efeito hover nos botões de foto */
 .photo-button:hover {
-  opacity: 0.9;
+  opacity: 0.9; /* Leve transparência */
 }
 
+/* Botão "Trocar Foto" */
 .change-button {
-  background-color: #bc010c;
+  background-color: #bc010c; /* Fundo vermelho */
 }
 
+/* Botão "Remover Foto" */
 .remove-button {
-  background-color: #6c757d;
+  background-color: #6c757d; /* Fundo cinza */
 }
 
-/* Upload Button */
+
+/* ========================================
+   BOTÃO DE UPLOAD
+   ======================================== */
+/* Botão para fazer upload de foto */
 .upload-button {
   display: block;
-  width: 100%;
-  border: 2px dashed #bc010c;
-  border-radius: 12px;
-  background-color: #f9f9f9;
-  padding: 40px 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  width: 100%; /* Largura total */
+  border: 2px dashed #bc010c; /* Borda tracejada vermelha */
+  border-radius: 12px; /* Cantos arredondados */
+  background-color: #f9f9f9; /* Fundo cinza muito claro */
+  padding: 40px 20px; /* Espaçamento interno generoso */
+  cursor: pointer; /* Cursor de ponteiro */
+  transition: background-color 0.3s ease; /* Animação suave */
 }
 
+/* Efeito hover no botão de upload */
 .upload-button:hover {
-  background-color: #fff0f0;
+  background-color: #fff0f0; /* Fundo levemente rosado */
 }
 
+/* Conteúdo interno do botão de upload */
 .upload-content {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column; /* Layout em coluna */
+  align-items: center; /* Centraliza itens */
+  gap: 12px; /* Espaço entre elementos */
 }
 
+/* Ícone dentro do botão de upload */
 .upload-content svg {
-  color: #bc010c;
+  color: #bc010c; /* Cor vermelha */
 }
 
+/* Texto principal do upload */
 .upload-text {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #bc010c;
-  text-align: center;
+  font-size: 1rem; /* Tamanho da fonte */
+  font-weight: 600; /* Semi-negrito */
+  color: #bc010c; /* Cor vermelha */
+  text-align: center; /* Centralizado */
 }
 
+/* Texto secundário do upload (instruções) */
 .upload-subtext {
-  font-size: 0.9rem;
-  color: #666;
-  text-align: center;
+  font-size: 0.9rem; /* Fonte pequena */
+  color: #666; /* Cor cinza */
+  text-align: center; /* Centralizado */
 }
 
-/* Action Buttons */
+
+/* ========================================
+   BOTÕES DE AÇÃO (LIMPAR/SALVAR)
+   ======================================== */
+/* Container dos botões finais do formulário */
 .button-container {
   display: flex;
-  gap: 16px;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  gap: 16px; /* Espaço entre botões */
+  margin-top: 30px; /* Espaço acima */
+  margin-bottom: 20px; /* Espaço embaixo */
 }
 
+/* Estilo base dos botões de ação */
 .action-button {
-  flex: 1;
-  padding: 15px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
+  flex: 1; /* Cada botão ocupa metade do espaço */
+  padding: 15px; /* Espaçamento interno */
+  border: none; /* Sem borda */
+  border-radius: 8px; /* Cantos arredondados */
+  font-size: 1rem; /* Tamanho da fonte */
+  font-weight: bold; /* Negrito */
+  color: white; /* Texto branco */
+  cursor: pointer; /* Cursor de ponteiro */
+  transition: opacity 0.3s ease; /* Animação suave */
 }
 
+/* Efeito hover nos botões de ação */
 .action-button:hover:not(:disabled) {
-  opacity: 0.9;
+  opacity: 0.9; /* Leve transparência */
 }
 
+/* Botão desabilitado */
 .action-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
+  background-color: #cccccc; /* Fundo cinza */
+  cursor: not-allowed; /* Cursor de "não permitido" */
 }
 
+/* Botão "Limpar Formulário" */
 .clear-button {
-  background-color: #6c757d;
+  background-color: #6c757d; /* Fundo cinza */
 }
 
+/* Botão "Salvar Ocorrência" */
 .save-button {
-  background-color: #bc010c;
+  background-color: #bc010c; /* Fundo vermelho */
 }
 
-/* Footer Note */
+
+/* ========================================
+   RODAPÉ DO FORMULÁRIO
+   ======================================== */
+/* Nota no rodapé */
 .footer-note {
-  text-align: center;
-  margin-bottom: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #ddd;
+  text-align: center; /* Texto centralizado */
+  margin-bottom: 30px; /* Espaço embaixo */
+  padding-top: 20px; /* Espaço acima */
 }
 
+/* Texto sobre campos obrigatórios */
 .required-note {
-  font-size: 0.9rem;
-  color: #666;
-  font-style: italic;
-  margin-bottom: 8px;
+  font-size: 0.9rem; /* Fonte pequena */
+  color: #666; /* Cor cinza */
+  font-style: italic; /* Texto em itálico */
+  margin-bottom: 8px; /* Espaço embaixo */
 }
 
+/* Nome do app no rodapé */
 .app-name {
-  font-size: 0.85rem;
-  color: #999;
-  font-weight: 600;
-  letter-spacing: 1px;
+  font-size: 0.85rem; /* Fonte pequena */
+  color: #999; /* Cor cinza clara */
+  font-weight: 600; /* Semi-negrito */
+  letter-spacing: 1px; /* Espaçamento entre letras */
 }
 
-/* Responsive Design */
+
+/* ========================================
+   DESIGN RESPONSIVO
+   ======================================== */
+/* Ajustes para tablets e celulares */
 @media (max-width: 768px) {
   .criar-ocorrencia-scroll {
-    padding: 16px 12px 20px;
+    padding: 16px 12px 20px; /* Reduz padding em telas menores */
   }
 
   .form-section {
-    padding: 20px 16px;
+    padding: 24px 20px; /* Reduz padding das seções */
+    margin-bottom: 20px; /* Menos espaço entre seções em mobile */
   }
 
   .section-title {
-    font-size: 1.1rem;
+    font-size: 1.3rem; /* Reduz um pouco o tamanho em mobile */
   }
 
+  /* Campos lado a lado viram coluna em mobile */
   .input-row {
-    flex-direction: column;
-    gap: 0;
+    flex-direction: column; /* Muda para layout vertical */
+    gap: 0; /* Remove gap */
   }
 
   .input-row .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Adiciona margem entre campos */
   }
 
+  /* Botões em coluna no mobile */
   .button-container {
-    flex-direction: column;
+    flex-direction: column; /* Layout vertical */
   }
 
   .action-button {
-    width: 100%;
+    width: 100%; /* Botões ocupam largura total */
   }
 
+  /* Botões de foto em coluna */
   .photo-actions {
-    flex-direction: column;
+    flex-direction: column; /* Layout vertical */
   }
 
   .photo-button {
-    width: 100%;
+    width: 100%; /* Botões ocupam largura total */
   }
 
   .location-button {
-    max-width: 100%;
+    max-width: 100%; /* Botão de localização ocupa largura total */
   }
 }
 
+/* Ajustes para telas grandes */
 @media (min-width: 1200px) {
   .form-container {
-    max-width: 1000px;
+    max-width: 1000px; /* Aumenta largura máxima */
   }
 
   .criar-ocorrencia-scroll {
-    padding: 32px 24px 40px;
+    padding: 32px 24px 40px; /* Aumenta padding */
   }
 }
 
-/* Loading State */
+
+/* ========================================
+   ESTADO DE CARREGAMENTO
+   ======================================== */
+/* Container de loading/carregamento */
 .criar-ocorrencia-container .loading-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-  gap: 16px;
+  flex-direction: column; /* Layout em coluna */
+  align-items: center; /* Centraliza horizontalmente */
+  justify-content: center; /* Centraliza verticalmente */
+  min-height: 50vh; /* Altura mínima de 50% da viewport */
+  gap: 16px; /* Espaço entre elementos */
 }
 
+/* Spinner de loading (círculo girando) */
 .loading-container .spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #bc010c;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+  width: 48px; /* Largura */
+  height: 48px; /* Altura */
+  border: 4px solid #f3f3f3; /* Borda cinza clara */
+  border-top: 4px solid #bc010c; /* Topo vermelho (cria efeito de rotação) */
+  border-radius: 50%; /* Faz um círculo */
+  animation: spin 1s linear infinite; /* Animação de rotação infinita */
 }
 
+/* Texto de loading */
 .loading-text {
-  font-size: 1rem;
-  color: #666;
+  font-size: 1rem; /* Tamanho da fonte */
+  color: #666; /* Cor cinza */
 }
