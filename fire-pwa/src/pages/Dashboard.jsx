@@ -269,7 +269,7 @@ const DashboardScreen = () => {
   if (loading && !refreshing) {
     return (
       <div className="dashboard-container">
-        <Header />
+        <Header title="Dashboard" />
         <div className="loading-container">
           <div className="spinner"></div>
           <p className="loading-text">Carregando dados...</p>
@@ -280,7 +280,7 @@ const DashboardScreen = () => {
 
   return (
     <div className="dashboard-container">
-      <Header />
+      <Header title="Dashboard" />
       <div className="dashboard-scroll">
         {/* Header do Dashboard */}
         <div className="dashboard-header">
@@ -290,6 +290,7 @@ const DashboardScreen = () => {
               onClick={recarregarDados}
               className="sync-button"
               disabled={refreshing}
+              title="Atualizar dados"
             >
               <RefreshCw className={refreshing ? "spinning" : ""} size={24} />
             </button>
@@ -439,15 +440,15 @@ const DashboardScreen = () => {
           {/* Ocorrências por Turno */}
           <div className="chart-section">
             <h3 className="chart-title">Ocorrências por Turno</h3>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={400}>
               <PieChart>
                 <Pie
                   data={turnoData}
                   cx="50%"
-                  cy="50%"
+                  cy="40%"
                   labelLine={false}
-                  label={(entry) => entry.name}
-                  outerRadius={80}
+                  label={false}
+                  outerRadius={100}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -456,7 +457,11 @@ const DashboardScreen = () => {
                   ))}
                 </Pie>
                 <Tooltip />
-                <Legend />
+                <Legend 
+                  verticalAlign="bottom" 
+                  height={60}
+                  wrapperStyle={{ paddingTop: '30px' }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
