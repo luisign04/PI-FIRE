@@ -12,16 +12,16 @@ const MOCK_USERS = [
     nome: 'Danilo',
     matricula: 'SB-2023-04567',
     telefone: '(11) 99999-9999',
-    role: 'admin', // ⭐ Usuário administrador
+    role: 'admin', //Usuário administrador
   },
   {
     id: 2,
-    email: 'teste@bombeiros.gov.br',
+    email: 'usuario@email.com',
     senha: 'teste123',
     nome: 'João Santos',
     matricula: 'BM-2023-04568',
     telefone: '(11) 98888-8888',
-    role: 'user', // 👤 Usuário comum
+    role: 'user', //Usuário comum
   },
 ];
 
