@@ -399,14 +399,8 @@ const ocorrenciaData = {
 
       await adicionarOcorrencia(ocorrenciaData);
 
-      alert(
-        `Ocorrência registrada com sucesso${
-          fotoOcorrencia ? " incluindo a foto" : ""
-        }!`
-      );
-
-      // Navegar para a lista ou detalhes
-      navigate("/ocorrencias");
+      // Navegar para a tela de sucesso
+      navigate("/ocorrencia-sucesso");
     } catch (error) {
       console.error("Erro ao salvar ocorrência:", error);
       alert("Não foi possível salvar a ocorrência: " + error.message);
@@ -514,6 +508,7 @@ const ocorrenciaData = {
                 value={formData.grupamento}
                 onChange={(e) => updateFormData("grupamento", e.target.value)}
               >
+                <option value="">Selecione o grupamento</option>
                 {GRUPAMENTOS.map((item) => (
                   <option key={item.value} value={item.value}>
                     {item.label}
@@ -545,6 +540,7 @@ const ocorrenciaData = {
                 value={formData.natureza}
                 onChange={(e) => updateFormData("natureza", e.target.value)}
               >
+                <option value="">Selecione a natureza</option>
                 {NATUREZAS.map((item) => (
                   <option key={item.value} value={item.value}>
                     {item.label}
@@ -560,6 +556,7 @@ const ocorrenciaData = {
                 value={formData.grupoOcorrencia}
                 onChange={(e) => updateFormData("grupoOcorrencia", e.target.value)}
               >
+                <option value="">Selecione o grupo</option>
                 {GRUPOS_OCORRENCIA.map((item) => (
                   <option key={item.value} value={item.value}>
                     {item.label}
@@ -575,6 +572,7 @@ const ocorrenciaData = {
                 value={formData.subgrupoOcorrencia}
                 onChange={(e) => updateFormData("subgrupoOcorrencia", e.target.value)}
               >
+                <option value="">Selecione o subgrupo</option>
                 {SUBGRUPOS_OCORRENCIA.map((item) => (
                   <option key={item.value} value={item.value}>
                     {item.label}
@@ -590,6 +588,7 @@ const ocorrenciaData = {
                 value={formData.situacao}
                 onChange={(e) => updateFormData("situacao", e.target.value)}
               >
+                <option value="">Selecione a situação</option>
                 {SITUACOES.map((item) => (
                   <option key={item.value} value={item.value}>
                     {item.label}
@@ -802,37 +801,35 @@ const ocorrenciaData = {
           )}
         </button>
 
-        <div className="input-group">
-          <label className="input-label required">Município</label>
-          <select
-            className="form-select"
-            value={formData.municipio}
-            onChange={(e) => updateFormData("municipio", e.target.value)}
-          >
-            {MUNICIPIOS_PERNAMBUCO.map((item) => (
-              <option key={item.value} value={item.value}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="input-group">
-          <label className="input-label required">Região</label>
-          <select
-            className="form-select"
-            value={formData.regiao}
-            onChange={(e) => updateFormData("regiao", e.target.value)}
-          >
-            {REGIOES.map((item) => (
-              <option key={item.value} value={item.value}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="input-group">
+          <div className="input-group">
+            <label className="input-label required">Município</label>
+            <select
+              className="form-select"
+              value={formData.municipio}
+              onChange={(e) => updateFormData("municipio", e.target.value)}
+            >
+              <option value="">Selecione o município</option>
+              {MUNICIPIOS_PERNAMBUCO.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </div>          <div className="input-group">
+            <label className="input-label required">Região</label>
+            <select
+              className="form-select"
+              value={formData.regiao}
+              onChange={(e) => updateFormData("regiao", e.target.value)}
+            >
+              <option value="">Selecione a região</option>
+              {REGIOES.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </div>        <div className="input-group">
           <label className="input-label">Bairro</label>
           <input
             type="text"
@@ -843,22 +840,21 @@ const ocorrenciaData = {
           />
         </div>
 
-        <div className="input-group">
-          <label className="input-label required">Tipo de Logradouro</label>
-          <select
-            className="form-select"
-            value={formData.tipoLogradouro}
-            onChange={(e) => updateFormData("tipoLogradouro", e.target.value)}
-          >
-            {TIPOS_LOGRADOURO.map((item) => (
-              <option key={item.value} value={item.value}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="input-group">
+          <div className="input-group">
+            <label className="input-label required">Tipo de Logradouro</label>
+            <select
+              className="form-select"
+              value={formData.tipoLogradouro}
+              onChange={(e) => updateFormData("tipoLogradouro", e.target.value)}
+            >
+              <option value="">Selecione o tipo</option>
+              {TIPOS_LOGRADOURO.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </div>        <div className="input-group">
           <label className="input-label">AIS</label>
           <input
             type="text"

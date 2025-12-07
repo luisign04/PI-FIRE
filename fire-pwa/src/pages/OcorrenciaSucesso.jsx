@@ -17,7 +17,7 @@ const OcorrenciaSucesso = () => {
   };
 
   const handleNovaOcorrencia = () => {
-    navigate("/nova-ocorrencia");
+    navigate("/criar-ocorrencia");
   };
 
   const handleExportarPDF = () => {
