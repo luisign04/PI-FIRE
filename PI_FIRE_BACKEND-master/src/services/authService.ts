@@ -36,14 +36,14 @@ export class AuthService {
 
         // Se o email não existir ou a senha não bater, retorna erro genérico por segurança
         if (!user) {
-            throw new Error('Credenciais inválidas.'); 
+            throw new Error('email inválido.'); 
         }
 
         // Compara a senha digitada com o hash salvo
-        const isMatch = await bcrypt.compare(password_input, user.password_hash);
+        const isMatch = password_input === user.password_hash; 
         
         if (!isMatch) {
-            throw new Error('Credenciais inválidas.');
+            throw new Error('senha inválida.');
         }
 
         // Gera o token de acesso

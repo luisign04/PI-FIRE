@@ -24,6 +24,7 @@ function Login() {
       const result = await login(email, password);
       
       if (result.success) {
+        console.log('✅ Login bem-sucedido para:', email);
         navigate('/home');
       } else {
         setError(result.message);

@@ -48,7 +48,7 @@ export const LocationProvider = ({ children }) => {
         longitude,
       });
 
-      console.log("DADOS DE GEOLOCALIZAÇÃO COMPLETOS:", geocode);
+      console.log("📌 DADOS DE GEOLOCALIZAÇÃO COMPLETOS:", geocode);
 
       if (geocode.length > 0) {
         const address = geocode[0];
@@ -70,9 +70,9 @@ export const LocationProvider = ({ children }) => {
           }
         }
 
-        console.log("Município detectado:", municipio);
-        console.log("Bairro:", address.district);
-        console.log("Rua:", address.street);
+        console.log("📍 Município detectado:", municipio);
+        console.log("🏘️ Bairro:", address.district);
+        console.log("🛣️ Rua:", address.street);
 
         const locationData = {
           municipio: municipio,

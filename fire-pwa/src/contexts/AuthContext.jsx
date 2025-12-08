@@ -51,41 +51,54 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, senha) => {
-    try {
-      // Simula delay de rede
-      await new Promise(resolve => setTimeout(resolve, 800));
+        try {
+      // Tenta fazer login no backend
+      const response = await fetch('http://localhost:3333/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: senha })
+      });
 
-      // Busca usuário nos dados mockados
-      const foundUser = MOCK_USERS.find(
-        u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha
-      );
-
-      if (foundUser) {
-        // Remove a senha antes de salvar
-        const { senha: _, ...userWithoutPassword } = foundUser;
+      if (response.ok) {
+        const data = await response.json();
         
-        // Salva os dados localmente usando localStorage
-        localStorage.setItem('@user_data', JSON.stringify(userWithoutPassword));
+        const userData = {
+          id: data.user.id,
+          email: data.user.email,
+          nome: data.user.nome,
+          matricula: data.user.matricula,
+          role: data.user.role
+        };
         
-        setUser(userWithoutPassword);
+        localStorage.setItem('@user_data', JSON.stringify(userData));
+        if (data.token) localStorage.setItem('@auth_token', data.token);
+        console.log('✅ Login bem-sucedido:', userData);
+        setUser(userData);
         setIsAuthenticated(true);
-        
         return { success: true, message: 'Login realizado com sucesso!' };
-      }
+      } else {
+        // Se o backend falhar, usa os mock users como fallback
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        const foundUser = MOCK_USERS.find(
+          u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha
+        );
 
-      return { 
-        success: false, 
-        message: 'Email ou senha incorretos' 
-      };
+        if (foundUser) {
+          const { senha: _, ...userWithoutPassword } = foundUser;
+          localStorage.setItem('@user_data', JSON.stringify(userWithoutPassword));
+          setUser(userWithoutPassword);
+          setIsAuthenticated(true);
+          return { success: true, message: 'Login realizado com sucesso!' };
+        }
+
+        return { success: false, message: 'Email ou senha incorretos' };
+      }
     } catch (error) {
       console.error('Erro no login:', error);
-      return { 
-        success: false, 
-        message: 'Erro ao fazer login. Tente novamente.' 
-      };
+      return { success: false, message: 'Erro ao conectar com o servidor' };
     }
-  };
-
+ };
   const logout = async () => {
     try {
       localStorage.removeItem('@user_data');
@@ -129,5 +142,8 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
+    
   );
+  
 };
+
