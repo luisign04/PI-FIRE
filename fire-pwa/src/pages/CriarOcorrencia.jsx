@@ -94,7 +94,7 @@ const CriarOcorrenciaScreen = () => {
 
   // Estado principal do formulário
   const [formData, setFormData] = useState({
-    numeroAviso: gerarNumeroAviso(),
+    numero_aviso: gerarNumeroAviso(),
     diretoria: "DIM",
     grupamento: "",
     pontoBase: "",
@@ -359,41 +359,63 @@ const CriarOcorrenciaScreen = () => {
       }
 
       // Montar objeto da ocorrência
-const ocorrenciaData = {
-  id: `ocorrencia_${Date.now()}_${Math.random()
-    .toString(36)
-    .substr(2, 9)}`,
-  tipo: formData.natureza,
-  descricao: `${formData.natureza} - ${
-    formData.grupoOcorrencia || ""
-  }`.trim(),
-  localizacao:
-    formData.logradouro ||
-    formData.bairro ||
-    formData.municipio ||
-    "Local não informado",
-  regiao: formData.regiao,
-  status: formData.situacao,
-  situacao: formData.situacao,
-  dataHora: new Date(dataHora).toISOString(),
-  dataCriacao: new Date().toISOString(),
-  tempoResposta: Math.round(tempoResposta),
-  horaSaidaQuartel: formatHoraToString(horaSaidaQuartel),
-  horaChegadaLocal: formatHoraToString(horaLocal),
-  horaSaidaLocal: formatHoraToString(horaSaidaLocal),
-  fotos: fotoOcorrencia ? [fotoOcorrencia.uri] : [],
-  // ✨ ADICIONAR INFORMAÇÕES DO USUÁRIO
-  criadoPor: user?.nome || 'Usuário não identificado',
-  usuarioId: user?.id || null,
-  usuarioMatricula: user?.matricula || null,
-  ...formData,
-  ais: aisToSave,
-  numeroAviso: formData.numeroAviso,
-  grupamento: formData.grupamento,
-  natureza: formData.natureza,
-  grupoOcorrencia: formData.grupoOcorrencia,
-  subgrupoOcorrencia: formData.subgrupoOcorrencia,
+            // Montar objeto da ocorrência no formato do backend
+      const ocorrenciaData = {
+        // Dados Internos
+        numero_aviso: formData.numero_aviso || gerarNumeroAviso(),
+        diretoria: formData.diretoria || "DIM",
+        grupamento: formData.grupamento,
+        ponto_base: formData.pontoBase,
+        data_acionamento: new Date(dataHora).toISOString(),
+        
+        // Ocorrência
+        natureza_ocorrencia: formData.natureza,
+        grupo_ocorrencia: formData.grupoOcorrencia,
+        subgrupo_ocorrencia: formData.subgrupoOcorrencia,
+        situacao_ocorrencia: formData.situacao,
+        horario_saida_quartel: horaSaidaQuartel ? `${horaSaidaQuartel}:00` : null,
+        horario_chegada_local: horaLocal ? `${horaLocal}:00` : null,
+        horario_saida_local: horaSaidaLocal ? `${horaSaidaLocal}:00` : null,
+        
+        // Informações da Vítima
+        vitima_envolvida: formData.envolvida,
+        sexo_vitima: formData.sexo,
+        idade_vitima: formData.idade ? parseInt(formData.idade) : null,
+        classificacao_vitima: formData.classificacao,
+        destino_vitima: formData.destino,
+        
+        // Viatura
+        viatura_empregada: formData.viatura,
+        numero_viatura: formData.numeroViatura,
+        forma_acionamento: formData.acionamento,
+        local_acionamento: formData.localAcionamento,
+        
+        // Endereço
+        municipio: formData.municipio,
+        regiao: formData.regiao,
+        bairro: formData.bairro,
+        tipo_logradouro: formData.tipoLogradouro,
+        ais: aisToSave,
+        logradouro: formData.logradouro,
+        // Dentro do objeto ocorrenciaData, adicione:
+        viatura_empregada: formData.viatura || "Não informada",
+        numero_viatura: formData.numeroViatura || "Não informado",
+        forma_acionamento: formData.acionamento || "Não informada",
+        local_acionamento: formData.localAcionamento || "Não informado",
+        latitude: formData.latitude ? parseFloat(formData.latitude) : null,
+        longitude: formData.longitude ? parseFloat(formData.longitude) : null,
+        
+        // Campos adicionais para compatibilidade
+        criado_por: user?.nome || 'Usuário não identificado',
+        usuario_id: user?.id || null,
+        usuario_matricula: user?.matricula || null,
+        
+        // Foto (se houver)
+        foto: fotoOcorrencia ? fotoOcorrencia.uri : null
       };
+
+      console.log("Enviando ocorrência para o backend:", ocorrenciaData);
+
 
       console.log("Salvando ocorrência:", ocorrenciaData);
 

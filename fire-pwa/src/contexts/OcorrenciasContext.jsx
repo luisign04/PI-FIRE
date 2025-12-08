@@ -70,10 +70,13 @@ const adicionarOcorrencia = async (ocorrencia) => {
     
     // 🚀 ENVIAR PARA O BACKEND
     try {
+      const token = localStorage.getItem('@auth_token');
+      
       const response = await fetch('http://localhost:3333/api/ocorrencias', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
         },
         body: JSON.stringify(novaOcorrencia)
       });

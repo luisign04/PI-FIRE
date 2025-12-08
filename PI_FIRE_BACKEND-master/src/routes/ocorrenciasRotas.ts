@@ -7,7 +7,8 @@ import { protect } from "../middleware/auth";
 const router = Router();
 
 // ✅ ROTAS PROTEGIDAS
-router.post("/ocorrencias", protect, upload.single("foto"), ocorrenciaController.create);
+router.post("/ocorrencias/public", upload.single("foto"), ocorrenciaController.create);
+router.post("/ocorrencias", upload.single("foto"), ocorrenciaController.create);
 router.get("/ocorrencias", protect, ocorrenciaController.list);
 router.get("/ocorrencias/filter", protect, ocorrenciaController.filter);
 router.get("/ocorrencias/:id", protect, ocorrenciaController.getById);
