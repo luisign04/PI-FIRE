@@ -7,9 +7,9 @@ export const AuthContext = React.createContext();
 const MOCK_USERS = [
   {
     id: 1,
-    email: 'danilo87@sport.com',
-    senha: 'sportseriea',
-    nome: 'Danilo',
+    email: 'admin@admin.com',
+    senha: 'admin',
+    nome: 'Ademar',
     matricula: 'SB-2023-04567',
     telefone: '(11) 99999-9999',
     role: 'admin', //Usuário administrador
