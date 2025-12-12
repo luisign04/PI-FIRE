@@ -1,7 +1,8 @@
+
 // src/pages/Dashboard.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { PieChart, Pie, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { RefreshCw, Clock } from "lucide-react";
+import { RefreshCw, Clock, Brain, Ambulance, AlertTriangle, TrendingUp } from "lucide-react";
 import { useOcorrenciasContext } from "../contexts/OcorrenciasContext";
 import Header from "../components/Header";
 import useScrollToTop from "../hooks/useScrollToTop";
@@ -17,6 +18,104 @@ const DashboardScreen = () => {
 
   const [lastSync, setLastSync] = useState(new Date().toISOString());
   const [refreshing, setRefreshing] = useState(false);
+  
+  // Estados do ML
+  const [mlApiStatus, setMlApiStatus] = useState('checking');
+  const [mlPredicting, setMlPredicting] = useState(false);
+  const [mlFeatureImportance, setMlFeatureImportance] = useState([]);
+  const [mlValoresPossiveis, setMlValoresPossiveis] = useState(null);
+  const [mlResultado, setMlResultado] = useState(null);
+  const [showMLSection, setShowMLSection] = useState(false);
+  
+  const [mlFormData, setMlFormData] = useState({
+    natureza: 'APH',
+    regiao: 'RMR',
+    turno: 1,
+    complexidade: 5,
+    idade: 30,
+    sexo: 'Masculino'
+  });
+
+  const ML_API_URL = 'http://localhost:5000';
+
+  // Verificar status da API ML ao carregar
+  useEffect(() => {
+    checkMLAPIStatus();
+  }, []);
+
+  const checkMLAPIStatus = async () => {
+    try {
+      const response = await fetch(`${ML_API_URL}/health`);
+      if (response.ok) {
+        setMlApiStatus('connected');
+        loadMLValoresPossiveis();
+        loadMLFeatureImportance();
+      } else {
+        setMlApiStatus('error');
+      }
+    } catch (error) {
+      setMlApiStatus('disconnected');
+    }
+  };
+
+  const loadMLValoresPossiveis = async () => {
+    try {
+      const response = await fetch(`${ML_API_URL}/valores-possiveis`);
+      const data = await response.json();
+      setMlValoresPossiveis(data);
+    } catch (error) {
+      console.error('Erro ao carregar valores possíveis:', error);
+    }
+  };
+
+  const loadMLFeatureImportance = async () => {
+    try {
+      const response = await fetch(`${ML_API_URL}/feature-importance`);
+      const data = await response.json();
+      setMlFeatureImportance(data.importance);
+    } catch (error) {
+      console.error('Erro ao carregar importância das features:', error);
+    }
+  };
+
+  const fazerPredicaoML = async () => {
+    setMlPredicting(true);
+    try {
+      const response = await fetch(`${ML_API_URL}/predict/completo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(mlFormData)
+      });
+      
+      const data = await response.json();
+      setMlResultado(data);
+    } catch (error) {
+      console.error('Erro ao fazer predição:', error);
+      alert('Erro ao conectar com a API ML. Certifique-se de que o servidor Python está rodando.');
+    } finally {
+      setMlPredicting(false);
+    }
+  };
+
+  const getClassificacaoColor = (classificacao) => {
+    const colors = {
+      'Ferida grave': '#F44336',
+      'Ferida leve': '#FFC107',
+      'Óbito': '#424242',
+      'Vítima ilesa': '#4CAF50'
+    };
+    return colors[classificacao] || '#9E9E9E';
+  };
+
+  const getClassificacaoIcon = (classificacao) => {
+    const icons = {
+      'Ferida grave': '🔴',
+      'Ferida leve': '🟡',
+      'Óbito': '⚫',
+      'Vítima ilesa': '🟢'
+    };
+    return icons[classificacao] || '⚪';
+  };
 
   // Função para atualizar dados
   const atualizarDados = async () => {
@@ -374,108 +473,364 @@ const DashboardScreen = () => {
           </div>
         </div>
 
+        {/* SEÇÃO ML - Machine Learning */}
+        {mlApiStatus === 'connected' && (
+          <div className="dashboard-section" style={{ backgroundColor: '#f0f4ff', padding: '24px', borderRadius: '8px', border: '2px solid #1976d2' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Brain size={28} color="#1976d2" />
+                <h2 className="section-title" style={{ margin: 0 }}>
+                  Machine Learning - Predições XGBoost
+                </h2>
+              </div>
+              <button
+                onClick={() => setShowMLSection(!showMLSection)}
+                style={{
+                  backgroundColor: '#1976d2',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '4px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500'
+                }}
+              >
+                {showMLSection ? 'Ocultar' : 'Mostrar'} Predições
+              </button>
+            </div>
+
+            {showMLSection && (
+              <>
+                {/* Formulário de Predição ML */}
+                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', marginBottom: '20px' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '16px' }}>
+                    🔮 Simular Nova Ocorrência
+                  </h3>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginBottom: '16px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', marginBottom: '6px' }}>
+                        Natureza
+                      </label>
+                      <select
+                        value={mlFormData.natureza}
+                        onChange={(e) => setMlFormData({...mlFormData, natureza: e.target.value})}
+                        style={{ width: '100%', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '4px', fontSize: '13px' }}
+                      >
+                        {mlValoresPossiveis?.naturezas.map(nat => (
+                          <option key={nat} value={nat}>{nat}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', marginBottom: '6px' }}>
+                        Região
+                      </label>
+                      <select
+                        value={mlFormData.regiao}
+                        onChange={(e) => setMlFormData({...mlFormData, regiao: e.target.value})}
+                        style={{ width: '100%', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '4px', fontSize: '13px' }}
+                      >
+                        {mlValoresPossiveis?.regioes.map(reg => (
+                          <option key={reg} value={reg}>{reg}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', marginBottom: '6px' }}>
+                        Turno
+                      </label>
+                      <select
+                        value={mlFormData.turno}
+                        onChange={(e) => setMlFormData({...mlFormData, turno: parseInt(e.target.value)})}
+                        style={{ width: '100%', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '4px', fontSize: '13px' }}
+                      >
+                        <option value={0}>Madrugada</option>
+                        <option value={1}>Manhã</option>
+                        <option value={2}>Tarde</option>
+                        <option value={3}>Noite</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', marginBottom: '6px' }}>
+                        Complexidade (1-10)
+                      </label>
+                      <input
+                        type="number"
+                        value={mlFormData.complexidade}
+                        onChange={(e) => setMlFormData({...mlFormData, complexidade: parseInt(e.target.value)})}
+                        min="1"
+                        max="10"
+                        style={{ width: '100%', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '4px', fontSize: '13px' }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', marginBottom: '6px' }}>
+                        Idade da Vítima
+                      </label>
+                      <input
+                        type="number"
+                        value={mlFormData.idade}
+                        onChange={(e) => setMlFormData({...mlFormData, idade: parseInt(e.target.value)})}
+                        min="0"
+                        max="120"
+                        style={{ width: '100%', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '4px', fontSize: '13px' }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', marginBottom: '6px' }}>
+                        Sexo
+                      </label>
+                      <select
+                        value={mlFormData.sexo}
+                        onChange={(e) => setMlFormData({...mlFormData, sexo: e.target.value})}
+                        style={{ width: '100%', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '4px', fontSize: '13px' }}
+                      >
+                        {mlValoresPossiveis?.sexos.map(sex => (
+                          <option key={sex} value={sex}>{sex}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={fazerPredicaoML}
+                    disabled={mlPredicting}
+                    style={{
+                      width: '100%',
+                      backgroundColor: mlPredicting ? '#9e9e9e' : '#1976d2',
+                      color: 'white',
+                      padding: '12px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      fontSize: '15px',
+                      fontWeight: '500',
+                      cursor: mlPredicting ? 'not-allowed' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                  >
+                    {mlPredicting ? (
+                      <>
+                        <RefreshCw size={18} className="spinning" />
+                        Processando...
+                      </>
+                    ) : (
+                      <>
+                        <TrendingUp size={18} />
+                        Fazer Predição com XGBoost
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Resultados ML */}
+                {mlResultado && (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px', marginBottom: '20px' }}>
+                    {/* Tempo de Resposta */}
+                    <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                        <Clock size={20} color="#1976d2" />
+                        <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>Tempo de Resposta</h4>
+                      </div>
+                      <div style={{ textAlign: 'center', padding: '16px 0' }}>
+                        <div style={{ fontSize: '40px', fontWeight: 'bold', color: '#1976d2' }}>
+                          {mlResultado.tempo_resposta_estimado}
+                        </div>
+                        <div style={{ fontSize: '14px', color: '#757575', marginTop: '6px' }}>minutos estimados</div>
+                      </div>
+                    </div>
+
+                    {/* Necessidade SAMU */}
+                    <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                        <Ambulance size={20} color="#f44336" />
+                        <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>Necessidade SAMU</h4>
+                      </div>
+                      <div style={{ textAlign: 'center', padding: '16px 0' }}>
+                        <div style={{ fontSize: '40px', fontWeight: 'bold', color: mlResultado.necessita_samu ? '#f44336' : '#4caf50' }}>
+                          {mlResultado.necessita_samu ? 'SIM' : 'NÃO'}
+                        </div>
+                        <div style={{ fontSize: '14px', color: '#757575', marginTop: '6px' }}>
+                          Probabilidade: {mlResultado.probabilidade_samu}%
+                        </div>
+                        <div style={{
+                          marginTop: '12px',
+                          padding: '8px',
+                          backgroundColor: mlResultado.necessita_samu ? '#ffebee' : '#e8f5e9',
+                          borderRadius: '4px',
+                          fontSize: '13px',
+                          color: mlResultado.necessita_samu ? '#c62828' : '#2e7d32',
+                          fontWeight: '500'
+                        }}>
+                          {mlResultado.necessita_samu ? '🚨 Acionar SAMU' : '✓ SAMU não necessário'}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Classificação */}
+                    <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                        <AlertTriangle size={20} color="#ff9800" />
+                        <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>Classificação</h4>
+                      </div>
+                      <div style={{ textAlign: 'center', padding: '16px 0' }}>
+                        <div 
+                          style={{ 
+                            display: 'inline-block',
+                            padding: '12px 24px', 
+                            borderRadius: '8px', 
+                            backgroundColor: getClassificacaoColor(mlResultado.classificacao_prevista),
+                            color: 'white',
+                            fontSize: '20px',
+                            fontWeight: 'bold',
+                            marginBottom: '6px'
+                          }}
+                        >
+                          {getClassificacaoIcon(mlResultado.classificacao_prevista)} {mlResultado.classificacao_prevista}
+                        </div>
+                        <div style={{ fontSize: '13px', color: '#757575', marginTop: '10px' }}>
+                          Classificação da vítima
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Feature Importance */}
+                {mlFeatureImportance.length > 0 && (
+                  <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px' }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px' }}>
+                      📊 Importância dos Fatores
+                    </h3>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <BarChart data={mlFeatureImportance} layout="vertical">
+                        <XAxis type="number" />
+                        <YAxis type="category" dataKey="feature" width={100} />
+                        <Tooltip formatter={(value) => value.toFixed(3)} />
+                        <Bar dataKey="importance" radius={[0, 8, 8, 0]}>
+                          {mlFeatureImportance.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={['#1e88e5', '#43a047', '#fb8c00', '#8e24aa', '#3949ab'][index % 5]} />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
         {/* Análises */}
         <div className="dashboard-section">
           <h2 className="section-title">Análises</h2>
-
           {/* Ocorrências por Natureza */}
-          <div className="chart-section">
-            <h3 className="chart-title">Ocorrências por Natureza</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={(entry) => entry.name}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+      <div className="chart-section">
+        <h3 className="chart-title">Ocorrências por Natureza</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={pieData}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={(entry) => entry.name}
+              outerRadius={80}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {pieData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
 
-          {/* Ocorrências por Região */}
-          <div className="chart-section">
-            <h3 className="chart-title">Ocorrências por Região</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={barData}>
-                <XAxis dataKey="name" angle={-30} textAnchor="end" height={80} />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" fill="#1e88e5">
-                  {barData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+      {/* Ocorrências por Região */}
+      <div className="chart-section">
+        <h3 className="chart-title">Ocorrências por Região</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={barData}>
+            <XAxis dataKey="name" angle={-30} textAnchor="end" height={80} />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="value" fill="#1e88e5">
+              {barData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
 
-          {/* Ocorrências por Dia da Semana */}
-          <div className="chart-section">
-            <h3 className="chart-title">Ocorrências por dia da Semana</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={diasSemanaData}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" fill="#1e88e5">
-                  {diasSemanaData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+      {/* Ocorrências por Dia da Semana */}
+      <div className="chart-section">
+        <h3 className="chart-title">Ocorrências por dia da Semana</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={diasSemanaData}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="value" fill="#1e88e5">
+              {diasSemanaData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
 
-          {/* Ocorrências por Turno */}
-          <div className="chart-section">
-            <h3 className="chart-title">Ocorrências por Turno</h3>
-            <ResponsiveContainer width="100%" height={400}>
-              <PieChart>
-                <Pie
-                  data={turnoData}
-                  cx="50%"
-                  cy="40%"
-                  labelLine={false}
-                  label={false}
-                  outerRadius={100}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {turnoData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend 
-                  verticalAlign="bottom" 
-                  height={60}
-                  wrapperStyle={{ paddingTop: '30px' }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Info Section */}
-        <div className="info-section">
-          <p className="info-text">
-            Dados atualizados automaticamente. Clique no botão de atualizar para recarregar.
-          </p>
-        </div>
+      {/* Ocorrências por Turno */}
+      <div className="chart-section">
+        <h3 className="chart-title">Ocorrências por Turno</h3>
+        <ResponsiveContainer width="100%" height={400}>
+          <PieChart>
+            <Pie
+              data={turnoData}
+              cx="50%"
+              cy="40%"
+              labelLine={false}
+              label={false}
+              outerRadius={100}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {turnoData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend 
+              verticalAlign="bottom" 
+              height={60}
+              wrapperStyle={{ paddingTop: '30px' }}
+            />
+          </PieChart>
+        </ResponsiveContainer>
       </div>
     </div>
-  );
+
+    {/* Info Section */}
+    <div className="info-section">
+      <p className="info-text">
+        Dados atualizados automaticamente. Clique no botão de atualizar para recarregar.
+      </p>
+    </div>
+  </div>
+</div>
+);
 };
 
 export default DashboardScreen;
