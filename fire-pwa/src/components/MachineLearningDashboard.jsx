@@ -439,7 +439,7 @@ const MLDashboard = () => {
                 </div>
                 <div style={{ marginTop: '16px', padding: '12px', backgroundColor: resultado.necessita_samu ? '#ffebee' : '#e8f5e9', borderRadius: '4px' }}>
                   <span style={{ fontSize: '14px', color: resultado.necessita_samu ? '#c62828' : '#2e7d32', fontWeight: '500' }}>
-                    {resultado.necessita_samu ? '🚨 Acionar SAMU' : '✓ SAMU pode não ser necessário'}
+                    {resultado.necessita_samu ? 'Acionar SAMU' : '✓ SAMU pode não ser necessário'}
                   </span>
                 </div>
               </div>
@@ -478,7 +478,7 @@ const MLDashboard = () => {
         {featureImportance.length > 0 && (
           <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '24px' }}>
             <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#212121', marginBottom: '20px' }}>
-              📊 Importância dos Fatores (Feature Importance)
+              Importância dos Fatores (Feature Importance)
             </h2>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={featureImportance} layout="vertical">
