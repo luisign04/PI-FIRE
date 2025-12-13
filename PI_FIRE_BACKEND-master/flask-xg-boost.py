@@ -27,10 +27,12 @@ modelo_tempo_resposta = None
 modelo_necessita_samu = None
 modelo_classificacao = None
 label_encoders = {}
+
+# ✅ CORRIGIDO: Features corretas para cada modelo
 feature_names_tempo = [
-    "complexidade_encoded",
+    "complexidade",  # ✅ Já é numérica, não precisa de _encoded
     "turno",
-    "dia_semana",
+    "dia_semana_encoded",  # ✅ Adicionado _encoded
     "regiao_encoded",
     "natureza_encoded",
 ]
@@ -139,11 +141,13 @@ def preparar_encoders(df):
     label_encoders["regiao"] = LabelEncoder()
     label_encoders["sexo"] = LabelEncoder()
     label_encoders["classificacao"] = LabelEncoder()
+    label_encoders["dia_semana"] = LabelEncoder()  # ✅ ADICIONADO
 
     label_encoders["natureza"].fit(df["natureza"])
     label_encoders["regiao"].fit(df["regiao"])
     label_encoders["sexo"].fit(df["sexo"])
     label_encoders["classificacao"].fit(df["classificacao"])
+    label_encoders["dia_semana"].fit(df["dia_semana"])  # ✅ ADICIONADO
 
 
 def treinar_modelos():
@@ -156,13 +160,16 @@ def treinar_modelos():
     print("🔧 Preparando encoders...")
     preparar_encoders(df)
 
-    # Preparar features encodadas
+    # ✅ CORRIGIDO: Preparar features encodadas (incluindo dia_semana)
     df["natureza_encoded"] = label_encoders["natureza"].transform(df["natureza"])
     df["regiao_encoded"] = label_encoders["regiao"].transform(df["regiao"])
     df["sexo_encoded"] = label_encoders["sexo"].transform(df["sexo"])
     df["classificacao_encoded"] = label_encoders["classificacao"].transform(
         df["classificacao"]
     )
+    df["dia_semana_encoded"] = label_encoders["dia_semana"].transform(
+        df["dia_semana"]
+    )  # ✅ ADICIONADO
 
     # ========== MODELO 1: Predição de Tempo de Resposta ==========
     print("\n🚀 Treinando Modelo 1: Tempo de Resposta")
@@ -245,7 +252,7 @@ def predict_tempo_resposta():
 
         natureza = data.get("natureza", "APH")
         regiao = data.get("regiao", "RMR")
-        turno = data.get("turno", 1)  # 0=Madrugada, 1=Manhã, 2=Tarde, 3=Noite
+        turno = data.get("turno", 1)
         dia_semana = data.get("dia_semana", "Segunda")
         complexidade = data.get("complexidade", 5)
 
@@ -254,13 +261,16 @@ def predict_tempo_resposta():
             natureza = label_encoders["natureza"].classes_[0]
         if regiao not in label_encoders["regiao"].classes_:
             regiao = label_encoders["regiao"].classes_[0]
+        if dia_semana not in label_encoders["dia_semana"].classes_:
+            dia_semana = label_encoders["dia_semana"].classes_[0]
 
         # Encodar
         natureza_enc = label_encoders["natureza"].transform([natureza])[0]
         regiao_enc = label_encoders["regiao"].transform([regiao])[0]
+        dia_semana_enc = label_encoders["dia_semana"].transform([dia_semana])[0]
 
-        # Fazer predição
-        X = np.array([[complexidade, turno, 0, regiao_enc, natureza_enc]])
+        # ✅ CORRIGIDO: Ordem correta das features
+        X = np.array([[complexidade, turno, dia_semana_enc, regiao_enc, natureza_enc]])
         tempo_previsto = float(modelo_tempo_resposta.predict(X)[0])
 
         return jsonify(
@@ -270,6 +280,7 @@ def predict_tempo_resposta():
                     "natureza": natureza,
                     "regiao": regiao,
                     "turno": turno,
+                    "dia_semana": dia_semana,
                     "complexidade": complexidade,
                 },
             }
@@ -389,23 +400,31 @@ def predict_completo():
         natureza = data.get("natureza", "APH")
         regiao = data.get("regiao", "RMR")
         turno = data.get("turno", 1)
+        dia_semana = data.get("dia_semana", "Segunda")
         complexidade = data.get("complexidade", 5)
         idade = data.get("idade", 30)
         sexo = data.get("sexo", "Masculino")
 
-        # Predição 1: Tempo de resposta
+        # Validação e ajustes
         if natureza not in label_encoders["natureza"].classes_:
             natureza = label_encoders["natureza"].classes_[0]
         if regiao not in label_encoders["regiao"].classes_:
             regiao = label_encoders["regiao"].classes_[0]
         if sexo not in label_encoders["sexo"].classes_:
             sexo = label_encoders["sexo"].classes_[0]
+        if dia_semana not in label_encoders["dia_semana"].classes_:
+            dia_semana = label_encoders["dia_semana"].classes_[0]
 
+        # Encoding
         natureza_enc = label_encoders["natureza"].transform([natureza])[0]
         regiao_enc = label_encoders["regiao"].transform([regiao])[0]
         sexo_enc = label_encoders["sexo"].transform([sexo])[0]
+        dia_semana_enc = label_encoders["dia_semana"].transform([dia_semana])[0]
 
-        X_tempo = np.array([[complexidade, turno, 0, regiao_enc, natureza_enc]])
+        # Predição 1: Tempo de resposta
+        X_tempo = np.array(
+            [[complexidade, turno, dia_semana_enc, regiao_enc, natureza_enc]]
+        )
         tempo_previsto = float(modelo_tempo_resposta.predict(X_tempo)[0])
 
         # Predição 2: Necessita SAMU
@@ -469,7 +488,13 @@ def modelos_info():
                     "nome": "Tempo de Resposta",
                     "endpoint": "/predict/tempo-resposta",
                     "descricao": "Prevê o tempo estimado de resposta em minutos",
-                    "inputs": ["natureza", "regiao", "turno", "complexidade"],
+                    "inputs": [
+                        "natureza",
+                        "regiao",
+                        "turno",
+                        "dia_semana",
+                        "complexidade",
+                    ],
                 },
                 {
                     "nome": "Necessidade de SAMU",
@@ -491,6 +516,7 @@ def modelos_info():
                         "natureza",
                         "regiao",
                         "turno",
+                        "dia_semana",
                         "complexidade",
                         "idade",
                         "sexo",
@@ -510,6 +536,7 @@ def valores_possiveis():
             "regioes": label_encoders["regiao"].classes_.tolist(),
             "sexos": label_encoders["sexo"].classes_.tolist(),
             "classificacoes": label_encoders["classificacao"].classes_.tolist(),
+            "dias_semana": label_encoders["dia_semana"].classes_.tolist(),
             "turnos": {
                 0: "Madrugada (00:00 - 05:59)",
                 1: "Manhã (06:00 - 11:59)",
