@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
-import { Brain, Clock, Ambulance, AlertTriangle, RefreshCw, TrendingUp } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
+import { Brain, Clock, Ambulance, AlertTriangle, RefreshCw, TrendingUp, Activity, Calendar, MapPin } from 'lucide-react';
 
 const MLDashboard = () => {
   const [apiStatus, setApiStatus] = useState('checking');
@@ -9,6 +9,7 @@ const MLDashboard = () => {
   const [featureImportance, setFeatureImportance] = useState([]);
   const [valoresPossiveis, setValoresPossiveis] = useState(null);
   const [resultado, setResultado] = useState(null);
+  const [dashboardData, setDashboardData] = useState(null);
   
   const [formData, setFormData] = useState({
     natureza: 'APH',
@@ -20,6 +21,7 @@ const MLDashboard = () => {
   });
 
   const API_URL = 'http://localhost:5000';
+  const COLORS = ['#1976d2', '#43a047', '#fb8c00', '#e53935', '#8e24aa'];
 
   useEffect(() => {
     checkAPIStatus();
@@ -32,6 +34,7 @@ const MLDashboard = () => {
         setApiStatus('connected');
         loadValoresPossiveis();
         loadFeatureImportance();
+        loadDashboardData();
         setLoading(false);
       } else {
         setApiStatus('error');
@@ -60,6 +63,16 @@ const MLDashboard = () => {
       setFeatureImportance(data.importance);
     } catch (error) {
       console.error('Erro ao carregar importância das features:', error);
+    }
+  };
+
+  const loadDashboardData = async () => {
+    try {
+      const response = await fetch(`${API_URL}/analytics/dashboard`);
+      const data = await response.json();
+      setDashboardData(data);
+    } catch (error) {
+      console.error('Erro ao carregar dados do dashboard:', error);
     }
   };
 
@@ -110,6 +123,19 @@ const MLDashboard = () => {
       3: 'Noite'
     };
     return labels[turno] || 'Não informado';
+  };
+
+  const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontWeight="bold" fontSize="14">
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
   };
 
   if (loading) {
@@ -192,6 +218,78 @@ const MLDashboard = () => {
             Modelo XGBoost para predição de tempo de resposta, necessidade de SAMU e classificação de vítimas
           </p>
         </div>
+
+        {/* Gráficos Analíticos */}
+        {dashboardData && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '24px', marginBottom: '24px' }}>
+            
+            {/* Gráfico Donut - Natureza da Ocorrência */}
+            <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <Activity size={24} color="#1976d2" />
+                <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#212121' }}>Natureza da Ocorrência</h3>
+              </div>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={dashboardData.natureza_ocorrencia}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={renderCustomLabel}
+                    outerRadius={100}
+                    innerRadius={60}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {dashboardData.natureza_ocorrencia.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Gráfico Vertical - Dias da Semana */}
+            <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <Calendar size={24} color="#43a047" />
+                <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#212121' }}>Incidentes por Dia da Semana</h3>
+              </div>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={dashboardData.dias_semana}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="dia" angle={-45} textAnchor="end" height={80} />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="quantidade" fill="#43a047" radius={[8, 8, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Gráfico Horizontal - Óbitos por Região */}
+            <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <MapPin size={24} color="#e53935" />
+                <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#212121' }}>Óbitos por Região</h3>
+              </div>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={dashboardData.obitos_regiao} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis type="category" dataKey="regiao" width={100} />
+                  <Tooltip />
+                  <Bar dataKey="obitos" fill="#e53935" radius={[0, 8, 8, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+              <p style={{ fontSize: '14px', color: '#757575', marginTop: '12px', textAlign: 'center' }}>
+                Total de óbitos: {dashboardData.total_obitos}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Formulário de Predição */}
         <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '24px' }}>

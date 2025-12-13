@@ -30,9 +30,9 @@ label_encoders = {}
 
 # ✅ CORRIGIDO: Features corretas para cada modelo
 feature_names_tempo = [
-    "complexidade",  # ✅ Já é numérica, não precisa de _encoded
+    "complexidade",
     "turno",
-    "dia_semana_encoded",  # ✅ Adicionado _encoded
+    "dia_semana_encoded",
     "regiao_encoded",
     "natureza_encoded",
 ]
@@ -141,13 +141,13 @@ def preparar_encoders(df):
     label_encoders["regiao"] = LabelEncoder()
     label_encoders["sexo"] = LabelEncoder()
     label_encoders["classificacao"] = LabelEncoder()
-    label_encoders["dia_semana"] = LabelEncoder()  # ✅ ADICIONADO
+    label_encoders["dia_semana"] = LabelEncoder()
 
     label_encoders["natureza"].fit(df["natureza"])
     label_encoders["regiao"].fit(df["regiao"])
     label_encoders["sexo"].fit(df["sexo"])
     label_encoders["classificacao"].fit(df["classificacao"])
-    label_encoders["dia_semana"].fit(df["dia_semana"])  # ✅ ADICIONADO
+    label_encoders["dia_semana"].fit(df["dia_semana"])
 
 
 def treinar_modelos():
@@ -167,9 +167,7 @@ def treinar_modelos():
     df["classificacao_encoded"] = label_encoders["classificacao"].transform(
         df["classificacao"]
     )
-    df["dia_semana_encoded"] = label_encoders["dia_semana"].transform(
-        df["dia_semana"]
-    )  # ✅ ADICIONADO
+    df["dia_semana_encoded"] = label_encoders["dia_semana"].transform(df["dia_semana"])
 
     # ========== MODELO 1: Predição de Tempo de Resposta ==========
     print("\n🚀 Treinando Modelo 1: Tempo de Resposta")
@@ -547,6 +545,61 @@ def valores_possiveis():
     )
 
 
+@app.route("/analytics/dashboard", methods=["GET"])
+def analytics_dashboard():
+    """Retorna dados agregados para o dashboard"""
+    try:
+        # Gerar novos dados sintéticos para análise
+        df = criar_dados_sinteticos()
+
+        # Preparar encoders se necessário
+        preparar_encoders(df)
+
+        # 1. Natureza da Ocorrência (para gráfico donut)
+        natureza_counts = df["natureza"].value_counts().to_dict()
+        natureza_data = [
+            {"name": k, "value": int(v)} for k, v in natureza_counts.items()
+        ]
+
+        # 2. Dias da semana com mais incidentes
+        dias_ordem = [
+            "Segunda",
+            "Terça",
+            "Quarta",
+            "Quinta",
+            "Sexta",
+            "Sábado",
+            "Domingo",
+        ]
+        dia_counts = df["dia_semana"].value_counts()
+        dias_data = [
+            {"dia": dia, "quantidade": int(dia_counts.get(dia, 0))}
+            for dia in dias_ordem
+        ]
+
+        # 3. Óbitos por região
+        obitos_df = df[df["classificacao"] == "Óbito"]
+        obitos_por_regiao = obitos_df["regiao"].value_counts().to_dict()
+        obitos_data = [
+            {"regiao": k, "obitos": int(v)} for k, v in obitos_por_regiao.items()
+        ]
+        # Ordenar por quantidade de óbitos
+        obitos_data.sort(key=lambda x: x["obitos"], reverse=True)
+
+        return jsonify(
+            {
+                "natureza_ocorrencia": natureza_data,
+                "dias_semana": dias_data,
+                "obitos_regiao": obitos_data,
+                "total_registros": len(df),
+                "total_obitos": len(obitos_df),
+            }
+        )
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 # ==================== INICIAR SERVIDOR ====================
 
 if __name__ == "__main__":
@@ -561,6 +614,7 @@ if __name__ == "__main__":
     print("  GET  /feature-importance          - Importância das features")
     print("  GET  /modelos/info                - Info dos modelos")
     print("  GET  /valores-possiveis           - Valores válidos")
+    print("  GET  /analytics/dashboard         - Dados agregados dashboard")
     print("\n" + "=" * 50 + "\n")
 
     app.run(debug=True, port=5000, host="0.0.0.0")
