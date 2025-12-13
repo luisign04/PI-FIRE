@@ -1,8 +1,7 @@
 import React from "react";
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { OcorrenciasProvider } from './contexts/OcorrenciasContext';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, AuthContext } from './contexts/AuthContext';
 
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -17,20 +16,23 @@ import DetalhesOcorrencia from './pages/DetalhesOcorrencia';
 import EditarOcorrencias from './pages/EditarOcorrencia';
 import './styles/App.css';
 
-
-// Componente de rota protegida
+// ✅ COMPONENTE DE ROTA PROTEGIDA CORRIGIDO
 function ProtectedRoute({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
+  const { isAuthenticated, isLoading } = React.useContext(AuthContext);
 
-  React.useEffect(() => {
-    const userEmail = localStorage.getItem('usuarioEmail');
-    setIsAuthenticated(!!userEmail);
-    setLoading(false);
-  }, []);
-
-  if (loading) {
-    return <div>Carregando...</div>;
+  if (isLoading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        fontSize: '18px',
+        color: '#666'
+      }}>
+        Carregando...
+      </div>
+    );
   }
 
   return isAuthenticated ? children : <Navigate to="/login" replace />;
@@ -38,7 +40,6 @@ function ProtectedRoute({ children }) {
 
 function App() {
   return (
-    // 🆕 ADICIONAR AuthProvider envolvendo tudo
     <AuthProvider>
       <OcorrenciasProvider>
         <Router>
@@ -83,13 +84,13 @@ function App() {
             />
 
             <Route 
-     path="/editar-ocorrencia" 
-     element={
-       <ProtectedRoute>
-         <EditarOcorrencias />
-       </ProtectedRoute>
-     } 
-   />
+              path="/editar-ocorrencia" 
+              element={
+                <ProtectedRoute>
+                  <EditarOcorrencias />
+                </ProtectedRoute>
+              } 
+            />
             
             <Route 
               path="/ocorrencia-sucesso" 
@@ -119,15 +120,14 @@ function App() {
             />
 
             <Route 
-  path="/detalhes-ocorrencia/:id" 
-  element={
-    <ProtectedRoute>
-      <DetalhesOcorrencia />
-    </ProtectedRoute>
-  } 
-/>
+              path="/detalhes-ocorrencia/:id" 
+              element={
+                <ProtectedRoute>
+                  <DetalhesOcorrencia />
+                </ProtectedRoute>
+              } 
+            />
 
-            {/* 🆕 ADICIONAR ROTA DO USUÁRIO */}
             <Route 
               path="/usuario" 
               element={
