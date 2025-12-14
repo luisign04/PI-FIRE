@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, PieChart, Pie, ScatterChart, Scatter, ZAxis } from 'recharts';
 import { Brain, Clock, Ambulance, AlertTriangle, RefreshCw, TrendingUp, Activity, Calendar, MapPin } from 'lucide-react';
 
 const MLDashboard = () => {
   const [apiStatus, setApiStatus] = useState('checking');
   const [loading, setLoading] = useState(true);
   const [predicting, setPredicting] = useState(false);
+  const [retraining, setRetraining] = useState(false);
   const [featureImportance, setFeatureImportance] = useState([]);
   const [valoresPossiveis, setValoresPossiveis] = useState(null);
   const [resultado, setResultado] = useState(null);
@@ -22,6 +23,23 @@ const MLDashboard = () => {
 
   const API_URL = 'http://localhost:5000';
   const COLORS = ['#1976d2', '#43a047', '#fb8c00', '#e53935', '#8e24aa'];
+  const NATUREZA_COLORS = {
+    'APH': '#1976d2',
+    'Incêndio': '#e53935',
+    'Prevenção': '#43a047',
+    'Produtos perigosos': '#fb8c00',
+    'Resgate': '#8e24aa'
+  };
+
+  const scatterSeries = dashboardData?.scatter_tempo_complexidade
+    ? Object.entries(
+        dashboardData.scatter_tempo_complexidade.reduce((acc, item) => {
+          if (!acc[item.natureza]) acc[item.natureza] = [];
+          acc[item.natureza].push(item);
+          return acc;
+        }, {})
+      ).map(([natureza, pontos]) => ({ natureza, pontos }))
+    : [];
 
   useEffect(() => {
     checkAPIStatus();
@@ -60,7 +78,15 @@ const MLDashboard = () => {
     try {
       const response = await fetch(`${API_URL}/feature-importance`);
       const data = await response.json();
-      setFeatureImportance(data.importance);
+      const items = Array.isArray(data?.importance) ? data.importance : [];
+      const sum = items.reduce((acc, cur) => acc + (cur.importance || 0), 0);
+      // Se todos forem zero (dados homogêneos), mostrar pesos iguais para não sumir o gráfico
+      if (items.length && sum === 0) {
+        const equal = 1 / items.length;
+        setFeatureImportance(items.map(i => ({ ...i, importance: equal })));
+      } else {
+        setFeatureImportance(items);
+      }
     } catch (error) {
       console.error('Erro ao carregar importância das features:', error);
     }
@@ -92,6 +118,35 @@ const MLDashboard = () => {
       alert('Erro ao conectar com a API. Certifique-se de que o servidor Python está rodando.');
     } finally {
       setPredicting(false);
+    }
+  };
+
+  const retreinarModelos = async () => {
+    if (!confirm('Deseja retreinar os modelos de ML com os dados mais recentes do banco de dados?')) {
+      return;
+    }
+
+    setRetraining(true);
+    try {
+      const response = await fetch(`${API_URL}/retrain`, {
+        method: 'POST'
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        alert('✅ Modelos retreinados com sucesso!');
+        // Recarregar dados
+        loadFeatureImportance();
+        loadDashboardData();
+      } else {
+        alert('❌ Erro ao retreinar modelos: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Erro ao retreinar modelos:', error);
+      alert('❌ Erro ao conectar com a API de ML.');
+    } finally {
+      setRetraining(false);
     }
   };
 
@@ -209,9 +264,32 @@ const MLDashboard = () => {
                 Machine Learning - Predições
               </h1>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#e8f5e9', padding: '8px 16px', borderRadius: '999px' }}>
-              <div style={{ width: '8px', height: '8px', backgroundColor: '#4caf50', borderRadius: '50%', animation: 'pulse 2s infinite' }}></div>
-              <span style={{ fontSize: '14px', fontWeight: '500', color: '#2e7d32' }}>API Conectada</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <button
+                onClick={retreinarModelos}
+                disabled={retraining}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  backgroundColor: retraining ? '#9e9e9e' : '#ff9800',
+                  color: 'white',
+                  padding: '10px 20px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: retraining ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.3s'
+                }}
+              >
+                <RefreshCw size={18} style={{ animation: retraining ? 'spin 1s linear infinite' : 'none' }} />
+                {retraining ? 'Retreinando...' : 'Retreinar com Dados do Banco'}
+              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#e8f5e9', padding: '8px 16px', borderRadius: '999px' }}>
+                <div style={{ width: '8px', height: '8px', backgroundColor: '#4caf50', borderRadius: '50%', animation: 'pulse 2s infinite' }}></div>
+                <span style={{ fontSize: '14px', fontWeight: '500', color: '#2e7d32' }}>API Conectada</span>
+              </div>
             </div>
           </div>
           <p style={{ color: '#757575', fontSize: '16px' }}>
@@ -288,6 +366,69 @@ const MLDashboard = () => {
                 Total de óbitos: {dashboardData.total_obitos}
               </p>
             </div>
+
+            {/* Gráfico Scatter - Tempo x Complexidade */}
+            {scatterSeries.length > 0 && (
+              <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                  <TrendingUp size={24} color="#8e24aa" />
+                  <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#212121' }}>Tempo x Complexidade (amostra)</h3>
+                </div>
+                <ResponsiveContainer width="100%" height={320}>
+                  <ScatterChart margin={{ top: 8, right: 12, bottom: 12, left: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" dataKey="complexidade" name="Complexidade" domain={[0, 10]} />
+                    <YAxis type="number" dataKey="tempo_resposta" name="Tempo de resposta (min)" />
+                    <ZAxis type="category" dataKey="turno" name="Turno" />
+                    <Tooltip 
+                      formatter={(value, name) => {
+                        if (name === 'tempo_resposta') return [`${value} min`, 'Tempo']
+                        if (name === 'complexidade') return [value, 'Complexidade']
+                        return [value, name]
+                      }}
+                      labelFormatter={() => 'Ponto da amostra'}
+                    />
+                    <Legend />
+                    {scatterSeries.map((serie, index) => (
+                      <Scatter
+                        key={serie.natureza}
+                        name={serie.natureza}
+                        data={serie.pontos}
+                        fill={NATUREZA_COLORS[serie.natureza] || COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </ScatterChart>
+                </ResponsiveContainer>
+                <p style={{ fontSize: '14px', color: '#757575', marginTop: '12px', textAlign: 'center' }}>
+                  Relação entre complexidade e tempo estimado, colorido por natureza da ocorrência
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Feature Importance */}
+        {featureImportance.length > 0 && (
+          <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#212121', marginBottom: '20px' }}>
+              Importância dos Fatores (Feature Importance)
+            </h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={featureImportance} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="feature" width={100} />
+                <Tooltip formatter={(value) => value.toFixed(3)} />
+                <Bar dataKey="importance" radius={[0, 8, 8, 0]}>
+                  {featureImportance.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={['#1e88e5', '#43a047', '#fb8c00', '#8e24aa', '#3949ab'][index % 5]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+            <p style={{ fontSize: '14px', color: '#757575', marginTop: '16px', textAlign: 'center' }}>
+              Fatores que mais influenciam na predição do tempo de resposta
+            </p>
           </div>
         )}
 
@@ -474,30 +615,7 @@ const MLDashboard = () => {
           </div>
         )}
 
-        {/* Feature Importance */}
-        {featureImportance.length > 0 && (
-          <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '24px' }}>
-            <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#212121', marginBottom: '20px' }}>
-              Importância dos Fatores (Feature Importance)
-            </h2>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={featureImportance} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis type="category" dataKey="feature" width={100} />
-                <Tooltip formatter={(value) => value.toFixed(3)} />
-                <Bar dataKey="importance" radius={[0, 8, 8, 0]}>
-                  {featureImportance.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={['#1e88e5', '#43a047', '#fb8c00', '#8e24aa', '#3949ab'][index % 5]} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-            <p style={{ fontSize: '14px', color: '#757575', marginTop: '16px', textAlign: 'center' }}>
-              Fatores que mais influenciam na predição do tempo de resposta
-            </p>
-          </div>
-        )}
+        
 
         {/* Informações dos Modelos */}
         <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px' }}>
@@ -529,6 +647,10 @@ const MLDashboard = () => {
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.5; }
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
       `}</style>
     </div>

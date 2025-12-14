@@ -19,6 +19,9 @@ router.delete("/ocorrencias/:id", protect, ocorrenciaController.delete);
 router.get("/stats/dashboard", ocorrenciaController.getStats); // SEM protect
 router.get("/filter/advanced", ocorrenciaController.advancedFilter);
 
+// ✅ ROTA PARA MACHINE LEARNING
+router.get("/ml/training-data", ocorrenciaController.getMLTrainingData); // Dados para treinar ML
+
 // ✅ ROTA DE TESTE PÚBLICA
 router.get("/teste-publico", (req, res) => {
   res.json({ mensagem: "Rota pública funcionando!", data: new Date() });

@@ -136,6 +136,14 @@ const CriarOcorrenciaScreen = () => {
   const [fotoOcorrencia, setFotoOcorrencia] = useState(null);
   const [locationLoading, setLocationLoading] = useState(false);
 
+  // Função auxiliar para combinar data e hora
+  const combinarDataHora = (dataISO, horaString) => {
+    const data = new Date(dataISO);
+    const [hora, minuto] = horaString.split(':');
+    data.setHours(parseInt(hora), parseInt(minuto), 0, 0);
+    return data.toISOString();
+  };
+
   // Atualiza número do aviso quando data/hora mudar
   useEffect(() => {
     if (dataHora) {
@@ -373,9 +381,9 @@ const CriarOcorrenciaScreen = () => {
         grupo_ocorrencia: formData.grupoOcorrencia,
         subgrupo_ocorrencia: formData.subgrupoOcorrencia,
         situacao_ocorrencia: formData.situacao,
-        horario_saida_quartel: horaSaidaQuartel ? `${horaSaidaQuartel}:00` : null,
-        horario_chegada_local: horaLocal ? `${horaLocal}:00` : null,
-        horario_saida_local: horaSaidaLocal ? `${horaSaidaLocal}:00` : null,
+        horario_saida_quartel: horaSaidaQuartel ? combinarDataHora(dataHora, horaSaidaQuartel) : null,
+        horario_chegada_local: horaLocal ? combinarDataHora(dataHora, horaLocal) : null,
+        horario_saida_local: horaSaidaLocal ? combinarDataHora(dataHora, horaSaidaLocal) : null,
         
         // Informações da Vítima
         vitima_envolvida: formData.envolvida,
@@ -397,11 +405,6 @@ const CriarOcorrenciaScreen = () => {
         tipo_logradouro: formData.tipoLogradouro,
         ais: aisToSave,
         logradouro: formData.logradouro,
-        // Dentro do objeto ocorrenciaData, adicione:
-        viatura_empregada: formData.viatura || "Não informada",
-        numero_viatura: formData.numeroViatura || "Não informado",
-        forma_acionamento: formData.acionamento || "Não informada",
-        local_acionamento: formData.localAcionamento || "Não informado",
         latitude: formData.latitude ? parseFloat(formData.latitude) : null,
         longitude: formData.longitude ? parseFloat(formData.longitude) : null,
         

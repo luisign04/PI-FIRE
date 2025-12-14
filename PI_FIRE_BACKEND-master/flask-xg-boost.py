@@ -16,11 +16,15 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import mean_squared_error, r2_score, classification_report
 import warnings
+import requests
 
 warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
 CORS(app)
+
+# URL do backend Node.js
+BACKEND_URL = "http://localhost:3333/api"
 
 # Variáveis globais
 modelo_tempo_resposta = None
@@ -133,6 +137,51 @@ def criar_dados_sinteticos():
     return pd.DataFrame(dados)
 
 
+def carregar_dados_reais():
+    """Carrega dados reais do backend Node.js"""
+    try:
+        print("\n📥 Buscando dados reais do backend...")
+        response = requests.get(f"{BACKEND_URL}/ml/training-data", timeout=10)
+        
+        if response.status_code == 200:
+            result = response.json()
+            if result.get('success') and result.get('data'):
+                dados_reais = result['data']
+                print(f"✅ {len(dados_reais)} registros carregados do backend")
+                
+                # Converter para DataFrame
+                df = pd.DataFrame(dados_reais)
+                
+                # Mapear dias da semana de número para nome
+                dias_map = {0: "Domingo", 1: "Segunda", 2: "Terça", 3: "Quarta", 
+                           4: "Quinta", 5: "Sexta", 6: "Sábado"}
+                df['dia_semana'] = df['dia_semana'].map(dias_map)
+                
+                # Preencher valores nulos com padrões
+                df['sexo'] = df['sexo'].fillna('Outro')
+                df['idade'] = df['idade'].fillna(30)
+                df['classificacao'] = df['classificacao_vitima'].fillna('Vítima ilesa')
+                df['necessita_samu'] = df['necessita_samu'].astype(int)
+                
+                # Remover registros sem tempo_resposta
+                df_completos = df[df['tempo_resposta'].notna()]
+                
+                if len(df_completos) >= 50:
+                    print(f"✅ {len(df_completos)} registros completos para treinamento")
+                    return df_completos
+                else:
+                    print(f"⚠️ Apenas {len(df_completos)} registros completos. Usando dados sintéticos.")
+                    return None
+        
+        print("⚠️ Nenhum dado real disponível. Usando dados sintéticos.")
+        return None
+        
+    except Exception as e:
+        print(f"❌ Erro ao carregar dados reais: {e}")
+        print("⚠️ Usando dados sintéticos.")
+        return None
+
+
 def preparar_encoders(df):
     """Prepara os label encoders para variáveis categóricas"""
     global label_encoders
@@ -154,8 +203,14 @@ def treinar_modelos():
     """Treina todos os modelos de ML"""
     global modelo_tempo_resposta, modelo_necessita_samu, modelo_classificacao
 
-    print("\n📊 Gerando dados sintéticos...")
-    df = criar_dados_sinteticos()
+    # Tentar carregar dados reais primeiro
+    df = carregar_dados_reais()
+    
+    if df is None:
+        print("\n📊 Gerando dados sintéticos...")
+        df = criar_dados_sinteticos()
+    else:
+        print("\n🎯 Usando dados reais do banco de dados!")
 
     print("🔧 Preparando encoders...")
     preparar_encoders(df)
@@ -240,6 +295,24 @@ def health():
             "message": "API funcionando corretamente",
         }
     )
+
+
+@app.route("/retrain", methods=["POST"])
+def retrain_models():
+    """Retreina os modelos com dados atualizados do backend"""
+    try:
+        print("\n🔄 Iniciando retreinamento dos modelos...")
+        treinar_modelos()
+        return jsonify({
+            "success": True,
+            "message": "Modelos retreinados com sucesso!",
+            "timestamp": pd.Timestamp.now().isoformat()
+        })
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 
 @app.route("/predict/tempo-resposta", methods=["POST"])
@@ -555,6 +628,20 @@ def analytics_dashboard():
         # Preparar encoders se necessário
         preparar_encoders(df)
 
+        # Amostra para visualizações de dispersão
+        scatter_sample = df.sample(n=min(150, len(df)), random_state=42)
+        turno_labels = {0: "Madrugada", 1: "Manhã", 2: "Tarde", 3: "Noite"}
+        scatter_data = [
+            {
+                "tempo_resposta": float(row["tempo_resposta"]),
+                "complexidade": int(row["complexidade"]),
+                "natureza": row["natureza"],
+                "regiao": row["regiao"],
+                "turno": turno_labels.get(int(row["turno"]), "Turno"),
+            }
+            for _, row in scatter_sample.iterrows()
+        ]
+
         # 1. Natureza da Ocorrência (para gráfico donut)
         natureza_counts = df["natureza"].value_counts().to_dict()
         natureza_data = [
@@ -591,6 +678,7 @@ def analytics_dashboard():
                 "natureza_ocorrencia": natureza_data,
                 "dias_semana": dias_data,
                 "obitos_regiao": obitos_data,
+                "scatter_tempo_complexidade": scatter_data,
                 "total_registros": len(df),
                 "total_obitos": len(obitos_df),
             }
@@ -607,6 +695,7 @@ if __name__ == "__main__":
     print("🔥 Modelos XGBoost carregados e prontos!")
     print("\nEndpoints disponíveis:")
     print("  GET  /health                      - Status da API")
+    print("  POST /retrain                     - Retreinar modelos com dados reais")
     print("  POST /predict/tempo-resposta      - Prever tempo de resposta")
     print("  POST /predict/necessita-samu      - Prever necessidade SAMU")
     print("  POST /predict/classificacao-vitima - Prever classificação")

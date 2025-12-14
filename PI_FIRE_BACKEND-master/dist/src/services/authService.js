@@ -60,12 +60,12 @@ class AuthService {
         const user = await userModel_1.userModel.findByEmail(email);
         // Se o email não existir ou a senha não bater, retorna erro genérico por segurança
         if (!user) {
-            throw new Error('Credenciais inválidas.');
+            throw new Error('Credenciais inválidas');
         }
-        // Compara a senha digitada com o hash salvo
+        // Compara a senha digitada com o hash salvo usando bcrypt
         const isMatch = await bcrypt.compare(password_input, user.password_hash);
         if (!isMatch) {
-            throw new Error('Credenciais inválidas.');
+            throw new Error('Credenciais inválidas');
         }
         // Gera o token de acesso
         const authUser = { id: user.id, name: user.name, email: user.email, role: user.role };

@@ -51,8 +51,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, senha) => {
     try {
-      //COMENTADO: Tentativa de login no backend (desabilitado para deploy no Vercel)
-      /*
+      // 🚀 Tentativa de login REAL no backend
       const response = await fetch('http://localhost:3333/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -72,17 +71,14 @@ export const AuthProvider = ({ children }) => {
         
         localStorage.setItem('@user_data', JSON.stringify(userData));
         if (data.token) localStorage.setItem('@auth_token', data.token);
-        console.log('✅ Login bem-sucedido:', userData);
+        console.log('✅ Login bem-sucedido (backend):', userData);
         setUser(userData);
         setIsAuthenticated(true);
         return { success: true, message: 'Login realizado com sucesso!' };
-      } else {
-        // Se o backend falhar, usa os mock users como fallback
-      */
-      
-      // ✅ USANDO MOCK USERS (fallback ativo para deploy)
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
+      }
+
+      // Se o backend falhar, usar mock como fallback
+      await new Promise(resolve => setTimeout(resolve, 400));
       const foundUser = MOCK_USERS.find(
         u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha
       );
@@ -90,17 +86,13 @@ export const AuthProvider = ({ children }) => {
       if (foundUser) {
         const { senha: _, ...userWithoutPassword } = foundUser;
         localStorage.setItem('@user_data', JSON.stringify(userWithoutPassword));
+        localStorage.setItem('@auth_token', 'mock-token');
         setUser(userWithoutPassword);
         setIsAuthenticated(true);
-        return { success: true, message: 'Login realizado com sucesso!' };
+        return { success: true, message: 'Login mock realizado (fallback)' };
       }
 
       return { success: false, message: 'Email ou senha incorretos' };
-      
-      // ❌ COMENTADO: Fim do bloco de backend
-      /*
-      }
-      */
     } catch (error) {
       console.error('Erro no login:', error);
       return { success: false, message: 'Erro ao conectar com o servidor' };

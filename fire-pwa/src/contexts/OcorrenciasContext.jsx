@@ -1,13 +1,19 @@
 // contexts/OcorrenciasContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const OcorrenciasContext = createContext();
+export const OcorrenciasContext = createContext(null);
 const OCORRENCIAS_STORAGE_KEY = 'ocorrencias_data';
 
-export const OcorrenciasProvider = ({ children }) => {
+export function OcorrenciasProvider({ children }) {
   const [ocorrencias, setOcorrencias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  // 🔄 Limpa qualquer cache local para garantir base vazia
+  useEffect(() => {
+    localStorage.removeItem(OCORRENCIAS_STORAGE_KEY);
+    setOcorrencias([]);
+  }, []);
 
   // 🔄 Carregar ocorrências do localStorage ao iniciar
   useEffect(() => {
@@ -25,8 +31,8 @@ export const OcorrenciasProvider = ({ children }) => {
         setOcorrencias(data.ocorrencias || []);
         console.log('✅ Ocorrências carregadas:', data.ocorrencias?.length || 0);
       } else {
-        console.log('⚠️ Nenhuma ocorrência encontrada, iniciando vazio');
-        setOcorrencias([]);
+        console.log('⚠️ Nenhuma ocorrência local; buscando no backend...');
+        await buscarDoBackend();
       }
     } catch (error) {
       console.error('❌ Erro ao carregar ocorrências:', error);
@@ -34,6 +40,33 @@ export const OcorrenciasProvider = ({ children }) => {
     } finally {
       setLoading(false);
       setRefreshing(false);
+    }
+  };
+
+  // 🌐 Buscar ocorrências do backend
+  const buscarDoBackend = async () => {
+    try {
+      const token = localStorage.getItem('@auth_token');
+      const resp = await fetch('http://localhost:3333/api/ocorrencias', {
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : ''
+        }
+      });
+
+      if (!resp.ok) {
+        console.warn('⚠️ Falha ao buscar backend, status:', resp.status);
+        setOcorrencias([]);
+        return;
+      }
+
+      const data = await resp.json();
+      const lista = Array.isArray(data) ? data : data.data || [];
+      setOcorrencias(lista);
+      await salvarOcorrencias(lista);
+      console.log('✅ Ocorrências carregadas do backend:', lista.length);
+    } catch (err) {
+      console.error('❌ Erro ao buscar backend:', err);
+      setOcorrencias([]);
     }
   };
 
@@ -105,7 +138,7 @@ const adicionarOcorrencia = async (ocorrencia) => {
     console.error('❌ Erro ao adicionar ocorrência:', error);
     throw error;
   }
-};
+}
 
   // 🗑️ Remover ocorrência
   const removerOcorrencia = async (id) => {
@@ -167,7 +200,8 @@ const adicionarOcorrencia = async (ocorrencia) => {
 
   // 🔄 Recarregar ocorrências
   const recarregarOcorrencias = async () => {
-    await carregarOcorrencias();
+    // força buscar do backend e salvar em cache
+    await buscarDoBackend();
   };
 
   const value = {
@@ -190,10 +224,13 @@ const adicionarOcorrencia = async (ocorrencia) => {
   );
 };
 
-export const useOcorrenciasContext = () => {
+export function useOcorrenciasContext() {
   const context = useContext(OcorrenciasContext);
   if (!context) {
     throw new Error('useOcorrenciasContext deve ser usado dentro de OcorrenciasProvider');
   }
   return context;
-};
+}
+
+export default OcorrenciasProvider;
+

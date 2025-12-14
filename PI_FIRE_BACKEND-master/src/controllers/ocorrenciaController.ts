@@ -10,12 +10,23 @@ export const ocorrenciaController = {
   // CREATE - Criar nova ocorrência
   async create(req: Request, res: Response) {
     try {
-      const ocorrenciaData: CreateOcorrencia = req.body;
+      const ocorrenciaData: any = req.body;
       const foto = req.file ? req.file.filename : null;
 
       // Adicionar carimbo de data/hora atual se não fornecido
       if (!ocorrenciaData.carimbo_data_hora) {
         ocorrenciaData.carimbo_data_hora = new Date();
+      }
+
+      // Se o ID for uma string (ID customizado), salvar em id_custom e remover
+      if (ocorrenciaData.id && typeof ocorrenciaData.id === 'string') {
+        ocorrenciaData.id_custom = ocorrenciaData.id;
+        delete ocorrenciaData.id;
+      }
+
+      // Remover campos que podem causar problemas de SQL injection ou sintaxe
+      if (ocorrenciaData.fotos && typeof ocorrenciaData.fotos === 'object') {
+        ocorrenciaData.fotos = JSON.stringify(ocorrenciaData.fotos);
       }
 
       console.log('📝 Dados recebidos:', ocorrenciaData);
@@ -328,6 +339,95 @@ export const ocorrenciaController = {
       res.status(500).json({
         success: false,
         error: 'Erro ao gerar estatísticas',
+        details: error.message
+      });
+    }
+  },
+
+  // GET ML TRAINING DATA - Obter dados formatados para treinar o modelo de ML
+  async getMLTrainingData(req: Request, res: Response) {
+    try {
+      console.log('🤖 Preparando dados para Machine Learning...');
+      
+      const ocorrencias = await ocorrenciaModel.findAll();
+      
+      // Formatar dados para o formato esperado pelo ML
+      const trainingData = ocorrencias.map((oc: any) => {
+        // Calcular turno baseado no horário
+        let turno = 0;
+        if (oc.horario_saida_quartel || oc.data_acionamento) {
+          const dataHora = new Date(oc.horario_saida_quartel || oc.data_acionamento);
+          const hora = dataHora.getHours();
+          if (hora >= 6 && hora < 12) turno = 1; // Manhã
+          else if (hora >= 12 && hora < 18) turno = 2; // Tarde
+          else if (hora >= 18 && hora < 24) turno = 3; // Noite
+          else turno = 0; // Madrugada
+        }
+
+        // Calcular dia da semana
+        const diaSemana = oc.data_acionamento ? new Date(oc.data_acionamento).getDay() : 0;
+
+        // Calcular tempo de resposta em minutos
+        let tempoResposta = null;
+        if (oc.horario_saida_quartel && oc.horario_chegada_local) {
+          const saida = new Date(oc.horario_saida_quartel);
+          const chegada = new Date(oc.horario_chegada_local);
+          if (!isNaN(saida.getTime()) && !isNaN(chegada.getTime())) {
+            tempoResposta = Math.abs(chegada.getTime() - saida.getTime()) / 1000 / 60;
+          }
+        }
+
+        // Estimar complexidade baseada na natureza
+        let complexidade = 5;
+        if (oc.natureza_ocorrencia) {
+          const natureza = oc.natureza_ocorrencia.toLowerCase();
+          if (natureza.includes('incêndio') || natureza.includes('produtos perigosos')) {
+            complexidade = 8;
+          } else if (natureza.includes('aph')) {
+            complexidade = 6;
+          } else if (natureza.includes('resgate')) {
+            complexidade = 7;
+          }
+        }
+
+        return {
+          // Dados básicos
+          natureza: oc.natureza_ocorrencia || 'Outro',
+          regiao: oc.regiao || 'Não especificado',
+          dia_semana: diaSemana,
+          turno: turno,
+          complexidade: complexidade,
+          
+          // Dados da vítima
+          idade: oc.idade_vitima || null,
+          sexo: oc.sexo_vitima || null,
+          classificacao_vitima: oc.classificacao_vitima || null,
+          
+          // Métricas calculadas
+          tempo_resposta: tempoResposta,
+          necessita_samu: oc.classificacao_vitima ? 
+            (oc.classificacao_vitima.toLowerCase().includes('grave') || 
+             oc.classificacao_vitima.toLowerCase().includes('óbito')) : false,
+          
+          // Metadados
+          situacao: oc.situacao_ocorrencia || oc.situacao,
+          data_ocorrencia: oc.data_acionamento || oc.carimbo_data_hora
+        };
+      }).filter(item => item.natureza && item.regiao); // Filtrar registros incompletos
+
+      res.json({
+        success: true,
+        total_records: trainingData.length,
+        data: trainingData,
+        generated_at: new Date().toISOString()
+      });
+      
+      console.log(`✅ ${trainingData.length} registros preparados para ML`);
+    } catch (error: any) {
+      console.error('❌ Erro ao preparar dados para ML:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Erro ao preparar dados para ML',
         details: error.message
       });
     }

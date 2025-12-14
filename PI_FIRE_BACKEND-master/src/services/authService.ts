@@ -31,19 +31,19 @@ export class AuthService {
     }
 
     // 2. LOGIN (Compara o hash da senha e gera o token)
-        public async login(email: string, password_input: string): Promise<{ user: AuthUser, token: string }> {
+    public async login(email: string, password_input: string): Promise<{ user: AuthUser, token: string }> {
         const user = await userModel.findByEmail(email);
 
         // Se o email não existir ou a senha não bater, retorna erro genérico por segurança
         if (!user) {
-            throw new Error('email inválido.'); 
+            throw new Error('Credenciais inválidas'); 
         }
 
-        // Compara a senha digitada com o hash salvo
-        const isMatch = password_input === user.password_hash; 
+        // Compara a senha digitada com o hash salvo usando bcrypt
+        const isMatch = await bcrypt.compare(password_input, user.password_hash);
         
         if (!isMatch) {
-            throw new Error('senha inválida.');
+            throw new Error('Credenciais inválidas');
         }
 
         // Gera o token de acesso

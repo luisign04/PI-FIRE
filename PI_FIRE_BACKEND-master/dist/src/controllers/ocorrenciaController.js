@@ -14,6 +14,15 @@ exports.ocorrenciaController = {
             if (!ocorrenciaData.carimbo_data_hora) {
                 ocorrenciaData.carimbo_data_hora = new Date();
             }
+            // Se o ID for uma string (ID customizado), salvar em id_custom e remover
+            if (ocorrenciaData.id && typeof ocorrenciaData.id === 'string') {
+                ocorrenciaData.id_custom = ocorrenciaData.id;
+                delete ocorrenciaData.id;
+            }
+            // Remover campos que podem causar problemas de SQL injection ou sintaxe
+            if (ocorrenciaData.fotos && typeof ocorrenciaData.fotos === 'object') {
+                ocorrenciaData.fotos = JSON.stringify(ocorrenciaData.fotos);
+            }
             console.log('📝 Dados recebidos:', ocorrenciaData);
             console.log('📸 Foto recebida:', foto);
             const id = await ocorrenciaModel.create({

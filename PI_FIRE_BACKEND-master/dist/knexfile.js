@@ -12,7 +12,7 @@ const config = {
         },
         migrations: {
             directory: path_1.default.resolve(__dirname, 'migrations'),
-            extension: 'ts'
+            extension: 'js'
         },
         useNullAsDefault: true
     }

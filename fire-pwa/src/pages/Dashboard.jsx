@@ -58,25 +58,46 @@ const DashboardScreen = () => {
 
     const totalOcorrencias = ocorrencias.length;
     
+    // Mapear campo do backend: situacao_ocorrencia ou status
+    const getSituacao = (oc) => oc.situacao_ocorrencia || oc.situacao || oc.status || "";
+    
     const atendidas = ocorrencias.filter(
-      (oc) => oc.status === "Atendidas"
+      (oc) => getSituacao(oc).toLowerCase().includes("atend")
     ).length;
     
     const naoAtendidas = ocorrencias.filter(
-      (oc) => oc.status === "Não Atendidas"
+      (oc) => getSituacao(oc).toLowerCase().includes("não atend") || 
+              getSituacao(oc).toLowerCase().includes("nao atend")
     ).length;
     
     const semAtuacao = ocorrencias.filter(
-      (oc) => oc.status === "Sem Atuação"
+      (oc) => getSituacao(oc).toLowerCase().includes("sem atua")
     ).length;
     
     const canceladas = ocorrencias.filter(
-      (oc) => oc.status === "Cancelada"
+      (oc) => getSituacao(oc).toLowerCase().includes("cancel")
     ).length;
 
+    // Calcular tempo médio de resposta
     const tempos = ocorrencias
-      .filter((o) => o.tempoResposta)
-      .map((o) => o.tempoResposta);
+      .filter((o) => {
+        const saida = o.horario_saida_quartel;
+        const chegada = o.horario_chegada_local;
+        return saida && chegada;
+      })
+      .map((o) => {
+        const saida = new Date(o.horario_saida_quartel);
+        const chegada = new Date(o.horario_chegada_local);
+        
+        // Validar se as datas são válidas
+        if (isNaN(saida.getTime()) || isNaN(chegada.getTime())) {
+          return null;
+        }
+        
+        return Math.abs(chegada - saida) / 1000 / 60; // minutos
+      })
+      .filter((tempo) => tempo !== null && tempo >= 0 && tempo < 1440); // Filtrar valores inválidos e > 24h
+    
     const tempoMedio =
       tempos.length > 0
         ? Math.round(tempos.reduce((a, b) => a + b, 0) / tempos.length)
@@ -106,7 +127,8 @@ const DashboardScreen = () => {
 
     const tiposCount = {};
     ocorrencias.forEach((oc) => {
-      const tipo = oc.tipo || oc.natureza || "Outros";
+      // Mapear campo: natureza_ocorrencia, natureza ou tipo
+      const tipo = oc.natureza_ocorrencia || oc.natureza || oc.tipo || "Outros";
       tiposCount[tipo] = (tiposCount[tipo] || 0) + 1;
     });
 
@@ -179,8 +201,13 @@ const DashboardScreen = () => {
     };
 
     ocorrencias.forEach((oc) => {
-      if (!oc.dataHora) return;
-      const date = new Date(oc.dataHora);
+      // Mapear campo: dataHora, data_acionamento, carimbo_data_hora, etc
+      const dataString = oc.dataHora || oc.data_acionamento || oc.carimbo_data_hora || oc.dataCriacao;
+      if (!dataString) return;
+      
+      const date = new Date(dataString);
+      if (isNaN(date.getTime())) return; // Verifica se data é válida
+      
       const dia = date.getDay();
       const nomes = [
         "Domingo",
@@ -225,8 +252,14 @@ const DashboardScreen = () => {
     const turnos = { Manhã: 0, Tarde: 0, Noite: 0, Madrugada: 0 };
 
     ocorrencias.forEach((oc) => {
-      if (!oc.dataHora) return;
-      const hora = new Date(oc.dataHora).getHours();
+      // Mapear campo: dataHora, data_acionamento, carimbo_data_hora, etc
+      const dataString = oc.dataHora || oc.data_acionamento || oc.carimbo_data_hora || oc.dataCriacao;
+      if (!dataString) return;
+      
+      const date = new Date(dataString);
+      if (isNaN(date.getTime())) return; // Verifica se data é válida
+      
+      const hora = date.getHours();
       if (hora >= 6 && hora < 12) turnos.Manhã++;
       else if (hora >= 12 && hora < 18) turnos.Tarde++;
       else if (hora >= 18 && hora < 24) turnos.Noite++;
