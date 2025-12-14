@@ -51,7 +51,7 @@ feature_names_classificacao = [
 
 def criar_dados_sinteticos():
     """Cria dados sintéticos baseados no padrão do sistema de bombeiros"""
-    np.random.seed(42)
+    np.random.seed(None)
 
     # Dados do pickerData.js
     naturezas = ["APH", "Incêndio", "Prevenção", "Produtos perigosos", "Resgate"]
@@ -60,16 +60,16 @@ def criar_dados_sinteticos():
     classificacoes = ["Ferida grave", "Ferida leve", "Óbito", "Vítima ilesa"]
     dias_semana = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
 
-    n_samples = 500
+    n_samples = 1000
     dados = []
 
-    for i in range(n_samples):
-        natureza = np.random.choice(naturezas)
-        regiao = np.random.choice(regioes)
+    for _ in range(n_samples):
+        natureza = np.random.choice(naturezas, p=[0.35, 0.25, 0.15, 0.1, 0.15])
+        regiao = np.random.choice(regioes, p=[0.25, 0.35, 0.2, 0.2])
         dia = np.random.choice(dias_semana)
         hora = np.random.randint(0, 24)
 
-        # Turno: 0=Madrugada, 1=Manhã, 2=Tarde, 3=Noite
+        # Turno: 0=Madrugada, 1=Manhã, 2=Tarde, 3=Noite (com leve ruído para variar picos)
         if hora >= 6 and hora < 12:
             turno = 1
         elif hora >= 12 and hora < 18:
@@ -79,44 +79,53 @@ def criar_dados_sinteticos():
         else:
             turno = 0
 
-        # Complexidade baseada na natureza
-        if natureza in ["Incêndio", "Produtos perigosos"]:
-            complexidade = np.random.randint(7, 11)
-        elif natureza in ["APH"]:
-            complexidade = np.random.randint(4, 8)
-        else:
-            complexidade = np.random.randint(3, 7)
+        # Complexidade baseada em natureza + ruído aleatório
+        base_complexidade = {
+            "Incêndio": 7.5,
+            "Produtos perigosos": 7.5,
+            "APH": 5.5,
+            "Prevenção": 4.5,
+            "Resgate": 5.0,
+        }[natureza]
+        complexidade = np.clip(
+            int(np.round(np.random.normal(loc=base_complexidade, scale=1.8))), 1, 10
+        )
 
-        # Tempo de resposta (minutos) - influenciado por turno e complexidade
-        tempo_base = 15
-        if turno == 3:  # Noite
-            tempo_base += 5
-        if complexidade > 7:
-            tempo_base += 8
-        tempo_resposta = max(5, tempo_base + np.random.randint(-5, 10))
+        # Tempo de resposta incorpora turno, região e complexidade
+        regiao_delay = {"RMR": 6, "Agreste": 4, "Sertão": 5, "Zona da mata": 5}[regiao]
+        turno_delay = {0: 2, 1: 0, 2: 3, 3: 5}[turno]
+        dia_bonus = 3 if dia in ["Sábado", "Domingo"] else 0
 
-        # Dados da vítima
-        idade = np.random.randint(1, 90)
-        sexo = np.random.choice(sexos)
+        tempo_base = 12 + regiao_delay + turno_delay + dia_bonus + complexidade
+        tempo_resposta = max(5, int(np.random.normal(loc=tempo_base, scale=4)))
 
-        # Necessita SAMU (baseado em natureza e idade)
-        prob_samu = 0.3
-        if natureza == "APH":
-            prob_samu = 0.7
-        if idade > 60:
-            prob_samu += 0.2
+        # Dados da vítima com distribuição mais ampla
+        idade = int(np.clip(np.random.normal(loc=38, scale=18), 1, 95))
+        sexo = np.random.choice(sexos, p=[0.49, 0.49, 0.02])
+
+        # Probabilidade de SAMU mais rica: influencia natureza, idade, complexidade e horário
+        prob_samu = 0.15
+        prob_samu += 0.35 if natureza == "APH" else 0
+        prob_samu += 0.25 if complexidade >= 7 else 0
+        prob_samu += 0.15 if idade >= 60 else 0
+        prob_samu += 0.05 if turno in [0, 3] else 0
+        prob_samu = np.clip(prob_samu, 0.05, 0.9)
         necessita_samu = np.random.random() < prob_samu
 
-        # Classificação (baseada em idade e tipo)
-        if necessita_samu and idade > 60:
-            classificacao = np.random.choice(["Ferida grave", "Óbito"], p=[0.7, 0.3])
+        # Classificação leva em conta tempo, complexidade e idade
+        if necessita_samu and (complexidade >= 8 or tempo_resposta > 28):
+            classificacao = np.random.choice(["Ferida grave", "Óbito"], p=[0.75, 0.25])
         elif natureza in ["Incêndio", "Produtos perigosos"]:
             classificacao = np.random.choice(
-                ["Ferida grave", "Ferida leve", "Óbito"], p=[0.5, 0.4, 0.1]
+                ["Ferida grave", "Ferida leve", "Óbito"], p=[0.45, 0.45, 0.1]
+            )
+        elif complexidade <= 3 and tempo_resposta < 18:
+            classificacao = np.random.choice(
+                ["Vítima ilesa", "Ferida leve"], p=[0.7, 0.3]
             )
         else:
             classificacao = np.random.choice(
-                ["Vítima ilesa", "Ferida leve"], p=[0.6, 0.4]
+                ["Vítima ilesa", "Ferida leve", "Ferida grave"], p=[0.5, 0.35, 0.15]
             )
 
         dados.append(

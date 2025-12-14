@@ -367,43 +367,43 @@ const MLDashboard = () => {
               </p>
             </div>
 
-            {/* Gráfico Scatter - Tempo x Complexidade */}
-            {scatterSeries.length > 0 && (
-              <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                  <TrendingUp size={24} color="#8e24aa" />
-                  <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#212121' }}>Tempo x Complexidade (amostra)</h3>
-                </div>
-                <ResponsiveContainer width="100%" height={320}>
-                  <ScatterChart margin={{ top: 8, right: 12, bottom: 12, left: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" dataKey="complexidade" name="Complexidade" domain={[0, 10]} />
-                    <YAxis type="number" dataKey="tempo_resposta" name="Tempo de resposta (min)" />
-                    <ZAxis type="category" dataKey="turno" name="Turno" />
-                    <Tooltip 
-                      formatter={(value, name) => {
-                        if (name === 'tempo_resposta') return [`${value} min`, 'Tempo']
-                        if (name === 'complexidade') return [value, 'Complexidade']
-                        return [value, name]
-                      }}
-                      labelFormatter={() => 'Ponto da amostra'}
-                    />
-                    <Legend />
-                    {scatterSeries.map((serie, index) => (
-                      <Scatter
-                        key={serie.natureza}
-                        name={serie.natureza}
-                        data={serie.pontos}
-                        fill={NATUREZA_COLORS[serie.natureza] || COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </ScatterChart>
-                </ResponsiveContainer>
-                <p style={{ fontSize: '14px', color: '#757575', marginTop: '12px', textAlign: 'center' }}>
-                  Relação entre complexidade e tempo estimado, colorido por natureza da ocorrência
-                </p>
-              </div>
-            )}
+          </div>
+        )}
+
+        {scatterSeries.length > 0 && (
+          <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <TrendingUp size={24} color="#8e24aa" />
+              <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#212121' }}>Tempo x Complexidade (amostra)</h3>
+            </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <ScatterChart margin={{ top: 8, right: 16, bottom: 16, left: 8 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" dataKey="complexidade" name="Complexidade" domain={[0, 10]} />
+                <YAxis type="number" dataKey="tempo_resposta" name="Tempo de resposta (min)" />
+                <ZAxis type="category" dataKey="turno" name="Turno" />
+                <Tooltip
+                  formatter={(value, name) => {
+                    if (name === 'tempo_resposta') return [`${value} min`, 'Tempo']
+                    if (name === 'complexidade') return [value, 'Complexidade']
+                    return [value, name]
+                  }}
+                  labelFormatter={() => 'Ponto da amostra'}
+                />
+                <Legend />
+                {scatterSeries.map((serie, index) => (
+                  <Scatter
+                    key={serie.natureza}
+                    name={serie.natureza}
+                    data={serie.pontos}
+                    fill={NATUREZA_COLORS[serie.natureza] || COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </ScatterChart>
+            </ResponsiveContainer>
+            <p style={{ fontSize: '14px', color: '#757575', marginTop: '12px', textAlign: 'center' }}>
+              Relação entre complexidade e tempo estimado, colorido por natureza da ocorrência
+            </p>
           </div>
         )}
 
